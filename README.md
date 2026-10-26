@@ -10,7 +10,7 @@ Chụp từ máy của mình: CachyOS, GNOME Shell 51 (xem `manifest.env`). Khá
 
 ```bash
 git clone https://github.com/duy150905/mactahoe-cachyos-fork.git
-cd mactahoe-setup-v7
+cd mactahoe-cachyos-fork
 
 bash install.sh --dry-run    # chạy thử, chỉ in ra chứ không đụng gì
 bash install.sh              # cài thật, sẽ hỏi mật khẩu sudo để cài gói pacman
