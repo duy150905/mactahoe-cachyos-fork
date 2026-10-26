@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+THEME_DIR="$HOME/.cache/mactahoe-widgets"
+mkdir -p "$THEME_DIR"
+
+CHOICE=$(zenity --list --title="Chọn màu đồng hồ MacTahoe" \
+    --column="Mã" --column="Tên chủ đề" \
+    cyan "Xanh băng (Cyan)" \
+    purple "Tím mộng mơ (Purple)" \
+    emerald "Xanh ngọc (Emerald)" \
+    sunset "Hoàng hôn (Sunset)" \
+    white "Trắng tinh khôi (White)" \
+    --width=320 --height=320)
+
+if [ -n "$CHOICE" ]; then
+    echo "$CHOICE" > "$THEME_DIR/clock_theme.txt"
+    notify-send "MacTahoe Clock" "Đã đổi sang chủ đề: $CHOICE"
+fi

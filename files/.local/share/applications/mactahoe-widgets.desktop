@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Widget MacTahoe
+Comment=Quản lý và bật các widget MacTahoe
+Exec=@HOME@/.local/bin/mactahoe-widgets
+Icon=preferences-desktop-display
+StartupWMClass=vn.adfox.MacTahoeWidgets
+Terminal=false
+Categories=Utility;
+Keywords=conky;weather;system;widget;calendar;

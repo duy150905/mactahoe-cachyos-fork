@@ -1,0 +1,647 @@
+#!/usr/bin/python3
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import urllib.parse
+import urllib.request
+from pathlib import Path
+
+HOME = Path.home()
+CONFIG_DIR = HOME / ".config" / "mactahoe-widgets"
+CONKY_DIR = HOME / ".config" / "conky"
+CACHE_DIR = HOME / ".cache" / "mactahoe-widgets"
+RUNTIME_DIR = CACHE_DIR / "runtime"
+PID_DIR = CACHE_DIR / "pids"
+SETTINGS_FILE = CONFIG_DIR / "settings.json"
+WEATHER_CONFIG = CONFIG_DIR / "weather.conf"
+WEATHER_FETCHER = HOME / ".local" / "bin" / "mactahoe-weather-fetch.py"
+LUA_FILE = CONKY_DIR / "mactahoe-widgets.lua"
+
+WIDGETS = {
+    "weather": {"label": "Thời tiết", "description": "Nhiệt độ và dự báo trong ngày", "height": 210},
+    "system": {"label": "Hệ thống", "description": "CPU, GPU, RAM, ổ đĩa và mạng", "height": 300},
+    "lunar": {"label": "Âm lịch", "description": "Ngày âm lịch và thông tin lịch", "height": 150},
+    "rest": {"label": "Nhắc nghỉ", "description": "Thời gian hoạt động và nhắc nghỉ", "height": 165},
+    "clock": {"label": "Đồng hồ lớn", "description": "Đồng hồ trang trí bên trái màn hình", "height": 360},
+}
+STACK_ORDER = ("weather", "system", "lunar", "rest")
+START_Y = 80
+WIDGET_GAP = 2
+SYSTEM_ACCENT_COLORS = {
+    "blue": "#3584e4",
+    "teal": "#2190a4",
+    "green": "#3a944a",
+    "yellow": "#c88800",
+    "orange": "#e66100",
+    "red": "#c01c28",
+    "pink": "#de3f8f",
+    "purple": "#9141ac",
+    "slate": "#6f8396",
+    "brown": "#986a44",
+}
+
+
+def default_settings() -> dict:
+    return {"widgets": {widget_id: True for widget_id in WIDGETS}}
+
+
+def load_settings() -> dict:
+    settings = default_settings()
+    try:
+        saved = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+        if isinstance(saved, dict) and isinstance(saved.get("widgets"), dict):
+            for widget_id in WIDGETS:
+                value = saved["widgets"].get(widget_id)
+                if isinstance(value, bool):
+                    settings["widgets"][widget_id] = value
+    except (OSError, ValueError, TypeError):
+        pass
+    return settings
+
+
+def save_settings(settings: dict) -> None:
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(dir=CONFIG_DIR, prefix=".widgets-", suffix=".json")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            json.dump(settings, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+        os.replace(temp_name, SETTINGS_FILE)
+    finally:
+        try:
+            os.unlink(temp_name)
+        except OSError:
+            pass
+
+
+def get_widget_config(widget_id: str) -> Path:
+    return CONKY_DIR / f"mactahoe-{widget_id}.conf"
+
+
+def widget_processes(widget_id: str) -> list[int]:
+    config_name = f"mactahoe-{widget_id}.conf"
+    processes = []
+    try:
+        proc_entries = Path("/proc").iterdir()
+        for proc_entry in proc_entries:
+            if not proc_entry.name.isdigit():
+                continue
+            try:
+                args = (proc_entry / "cmdline").read_bytes().split(b"\0")
+                args = [arg.decode(errors="replace") for arg in args if arg]
+                if not args or Path(args[0]).name != "conky":
+                    continue
+                config_index = args.index("-c") + 1
+                if Path(args[config_index]).name == config_name:
+                    processes.append(int(proc_entry.name))
+            except (OSError, ValueError, IndexError):
+                continue
+    except OSError:
+        pass
+    return processes
+
+
+def is_running(widget_id: str) -> bool:
+    return bool(widget_processes(widget_id))
+
+
+def stop_widget(widget_id: str) -> None:
+    for pid in widget_processes(widget_id):
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+    deadline = time.monotonic() + 1.5
+    while time.monotonic() < deadline and widget_processes(widget_id):
+        time.sleep(0.05)
+    for pid in widget_processes(widget_id):
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    (PID_DIR / f"{widget_id}.pid").unlink(missing_ok=True)
+
+
+def runtime_config(widget_id: str, gap_y: int) -> Path:
+    source = get_widget_config(widget_id)
+    if not source.is_file():
+        raise FileNotFoundError(f"Không tìm thấy cấu hình widget: {source}")
+    content = source.read_text(encoding="utf-8")
+    pattern = re.compile(r"(?m)^(\s*gap_y\s*=\s*)\d+(\s*,.*)?$")
+    content, count = pattern.subn(lambda match: f"{match.group(1)}{gap_y}{match.group(2) or ''}", content, count=1)
+    if count != 1:
+        raise ValueError(f"Không tìm thấy gap_y trong {source}")
+    RUNTIME_DIR.mkdir(parents=True, exist_ok=True)
+    target = RUNTIME_DIR / f"mactahoe-{widget_id}.conf"
+    target.write_text(content, encoding="utf-8")
+    return target
+
+
+def start_widget(widget_id: str, gap_y: int) -> None:
+    conky = shutil.which("conky")
+    if not conky:
+        raise RuntimeError("Chưa cài Conky. Hãy cài lại bộ tiện ích MacTahoe.")
+    config = runtime_config(widget_id, gap_y)
+    process = subprocess.Popen(
+        [conky, "-c", str(config)],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+    PID_DIR.mkdir(parents=True, exist_ok=True)
+    (PID_DIR / f"{widget_id}.pid").write_text(f"{process.pid}\n", encoding="ascii")
+
+
+def calculate_positions(settings: dict) -> dict[str, int]:
+    selected = settings["widgets"]
+    positions = {}
+    current_y = START_Y
+    for widget_id in STACK_ORDER:
+        if selected.get(widget_id):
+            positions[widget_id] = current_y
+            current_y += WIDGETS[widget_id]["height"] + WIDGET_GAP
+    if selected.get("clock"):
+        positions["clock"] = START_Y
+    return positions
+
+
+def start_selected(settings: dict | None = None) -> None:
+    settings = settings or load_settings()
+    stop_all()
+    selected = settings["widgets"]
+    positions = calculate_positions(settings)
+    errors = []
+    for widget_id in WIDGETS:
+        if not selected.get(widget_id):
+            continue
+        try:
+            start_widget(widget_id, positions[widget_id])
+        except (OSError, RuntimeError, ValueError) as exc:
+            errors.append(f"{WIDGETS[widget_id]['label']}: {exc}")
+    if errors:
+        print("\n".join(errors), file=sys.stderr)
+
+
+def stop_all() -> None:
+    for widget_id in WIDGETS:
+        stop_widget(widget_id)
+
+
+def selected_widgets(settings: dict | None = None) -> list[str]:
+    settings = settings or load_settings()
+    return [widget_id for widget_id in WIDGETS if settings["widgets"].get(widget_id)]
+
+
+def manager_enabled(settings: dict | None = None) -> bool:
+    selected = selected_widgets(settings)
+    return bool(selected) and all(is_running(widget_id) for widget_id in selected)
+
+
+def load_weather_config() -> dict[str, str]:
+    values = {
+        "LAT": "13.7820",
+        "LON": "109.2190",
+        "CITY": "Quy Nhơn",
+        "TIMEZONE": "Asia/Ho_Chi_Minh",
+        "ICON_THEME": str(HOME / ".local/share/icons/MacTahoe-blue/status/32"),
+        "LOCATION_MODE": "manual",
+    }
+    try:
+        for raw in WEATHER_CONFIG.read_text(encoding="utf-8").splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            if key.strip() in values:
+                values[key.strip()] = value.strip().strip('"').strip("'")
+    except OSError:
+        pass
+    return values
+
+
+def save_weather_config(config: dict[str, str]) -> None:
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    keys = ("LAT", "LON", "CITY", "TIMEZONE", "ICON_THEME", "LOCATION_MODE")
+    lines = [f"{key}={str(config[key]).replace(chr(10), ' ').replace(chr(13), ' ')}" for key in keys]
+    fd, temp_name = tempfile.mkstemp(dir=CONFIG_DIR, prefix=".weather-", suffix=".conf")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            stream.write("\n".join(lines) + "\n")
+        os.replace(temp_name, WEATHER_CONFIG)
+    finally:
+        try:
+            os.unlink(temp_name)
+        except OSError:
+            pass
+
+
+def search_locations(query: str) -> list[dict]:
+    params = urllib.parse.urlencode({"name": query, "count": 8, "language": "vi", "format": "json"})
+    request = urllib.request.Request(
+        f"https://geocoding-api.open-meteo.com/v1/search?{params}",
+        headers={"User-Agent": "MacTahoe-Widgets/1.0", "Accept": "application/json"},
+    )
+    with urllib.request.urlopen(request, timeout=12) as response:
+        data = json.load(response)
+    return data.get("results") or []
+
+
+def describe_location(location: dict) -> str:
+    parts = [location.get("name"), location.get("admin1"), location.get("country")]
+    return ", ".join(dict.fromkeys(part for part in parts if part))
+
+
+def print_status() -> None:
+    settings = load_settings()
+    print(f"Widget MacTahoe tổng thể: {'đang bật' if manager_enabled(settings) else 'đang tắt'}")
+    for widget_id, info in WIDGETS.items():
+        enabled = settings["widgets"].get(widget_id, False)
+        running = is_running(widget_id)
+        state = "đang hiển thị" if running else "đang ẩn"
+        print(f"{info['label']}: {'được chọn' if enabled else 'đã tắt'} · {state}")
+
+
+def run_command(command: str) -> int:
+    if command == "start":
+        start_selected()
+        print("Đã bật các widget được chọn.")
+    elif command == "stop":
+        stop_all()
+        print("Đã tắt widget MacTahoe.")
+    elif command == "restart":
+        start_selected()
+        print("Đã sắp xếp và khởi động lại các widget được chọn.")
+    elif command == "status":
+        print_status()
+    elif command == "gui":
+        return -1
+    elif command in ("--help", "-h"):
+        print("Cách dùng: mactahoe-widgets [gui|start|stop|restart|status]")
+        return 0
+    else:
+        print("Cách dùng: mactahoe-widgets [gui|start|stop|restart|status]", file=sys.stderr)
+        return 2
+    return 0
+
+
+def run_gui() -> int:
+    try:
+        import gi
+
+        gi.require_version("Gdk", "4.0")
+        gi.require_version("Gtk", "4.0")
+        from gi.repository import Gdk, Gio, GLib, Gtk
+    except (ImportError, ValueError) as exc:
+        print(f"Không mở được giao diện quản lý widget GTK 4: {exc}", file=sys.stderr)
+        return 1
+
+    class WidgetManager(Gtk.Application):
+        def __init__(self):
+            super().__init__(application_id="vn.adfox.MacTahoeWidgets", flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
+            self.window = None
+            self.settings = load_settings()
+            self.widget_switches = {}
+            self.result_locations = []
+            self.city_dropdown = None
+            self.status_label = None
+            self.master_switch = None
+            self.auto_location = None
+            self.city_entry = None
+            self.updating_master = False
+
+        def do_activate(self):
+            if self.window:
+                self.window.present()
+                return
+            self.build_window()
+            self.window.present()
+
+        def build_window(self):
+            self.window = Gtk.ApplicationWindow(application=self, title="")
+            self.window.set_default_size(540, 720)
+            self.window.set_resizable(True)
+
+            try:
+                accent_name = Gio.Settings.new("org.gnome.desktop.interface").get_string("accent-color")
+            except GLib.Error:
+                accent_name = ""
+            accent_color = SYSTEM_ACCENT_COLORS.get(accent_name, "@theme_selected_bg_color")
+            provider = Gtk.CssProvider()
+            css = f"""
+                @define-color app_accent {accent_color};
+                window {{ background: @theme_bg_color; color: @theme_fg_color; }}
+                .title {{ font-size: 24px; font-weight: 700; }}
+                .subtitle {{ color: @theme_fg_color; }}
+                .section-title {{ font-size: 16px; font-weight: 700; }}
+                .card {{ background: @theme_base_color; border-radius: 18px; padding: 16px; }}
+                .widget-title {{ font-weight: 600; }}
+                .muted {{ color: @theme_fg_color; font-size: 12px; }}
+                .accent {{ color: @app_accent; }}
+                switch:checked,
+                switch:checked:hover,
+                switch:checked:active,
+                switch:checked:backdrop {{
+                    background-color: @app_accent;
+                    background-image: none;
+                    box-shadow: none;
+                }}
+            """
+            provider.load_from_data(css.encode("utf-8"))
+            display = Gdk.Display.get_default()
+            if display:
+                Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+            outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+            outer.set_margin_top(22)
+            outer.set_margin_bottom(22)
+            outer.set_margin_start(22)
+            outer.set_margin_end(22)
+            scrolled = Gtk.ScrolledWindow()
+            scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+            scrolled.set_child(outer)
+            self.window.set_child(scrolled)
+
+            heading = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            title = Gtk.Label(label="Widget MacTahoe", xalign=0)
+            title.add_css_class("title")
+            subtitle = Gtk.Label(label="Chọn widget muốn hiển thị trên màn hình.", xalign=0)
+            subtitle.add_css_class("subtitle")
+            heading.append(title)
+            heading.append(subtitle)
+            outer.append(heading)
+
+            master_card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=14)
+            master_card.add_css_class("card")
+            master_text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            master_title = Gtk.Label(label="Bật widget đã chọn", xalign=0)
+            master_title.add_css_class("widget-title")
+            master_help = Gtk.Label(label="Công tắc tổng chỉ bật các widget đang được chọn.", xalign=0)
+            master_help.add_css_class("muted")
+            master_text.append(master_title)
+            master_text.append(master_help)
+            master_text.set_hexpand(True)
+            self.master_switch = Gtk.Switch()
+            self.master_switch.add_css_class("system-accent")
+            self.master_switch.set_valign(Gtk.Align.CENTER)
+            self.master_switch.set_active(manager_enabled(self.settings))
+            self.master_switch.connect("notify::active", self.on_master_changed)
+            master_card.append(master_text)
+            master_card.append(self.master_switch)
+            outer.append(master_card)
+
+            widget_heading = Gtk.Label(label="Widget", xalign=0)
+            widget_heading.add_css_class("section-title")
+            outer.append(widget_heading)
+
+            widget_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+            widget_card.add_css_class("card")
+            for index, (widget_id, info) in enumerate(WIDGETS.items()):
+                row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+                row.set_margin_top(8)
+                row.set_margin_bottom(8)
+                text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
+                label = Gtk.Label(label=info["label"], xalign=0)
+                label.add_css_class("widget-title")
+                description = Gtk.Label(label=info["description"], xalign=0)
+                description.add_css_class("muted")
+                text_box.append(label)
+                text_box.append(description)
+                text_box.set_hexpand(True)
+                toggle = Gtk.Switch()
+                toggle.add_css_class("system-accent")
+                toggle.set_valign(Gtk.Align.CENTER)
+                toggle.set_active(self.settings["widgets"].get(widget_id, True))
+                toggle.connect("notify::active", self.on_widget_changed, widget_id)
+                self.widget_switches[widget_id] = toggle
+                row.append(text_box)
+                row.append(toggle)
+                widget_card.append(row)
+                if index < len(WIDGETS) - 1:
+                    widget_card.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
+            outer.append(widget_card)
+
+            location_heading = Gtk.Label(label="Vị trí thời tiết", xalign=0)
+            location_heading.add_css_class("section-title")
+            outer.append(location_heading)
+
+            location_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            location_card.add_css_class("card")
+            weather_config = load_weather_config()
+            self.auto_location = Gtk.CheckButton(label="Tự xác định vị trí gần đúng qua Internet")
+            self.auto_location.set_active(weather_config.get("LOCATION_MODE") == "auto")
+            location_card.append(self.auto_location)
+            privacy = Gtk.Label(label="Dùng vị trí theo IP (không phải GPS); dịch vụ định vị sẽ thấy IP công khai của máy.", xalign=0, wrap=True)
+            privacy.add_css_class("muted")
+            location_card.append(privacy)
+            city_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            self.city_entry = Gtk.Entry()
+            self.city_entry.set_placeholder_text("Nhập thành phố, ví dụ: Quy Nhơn")
+            self.city_entry.set_text(weather_config.get("CITY", ""))
+            self.city_entry.set_hexpand(True)
+            search_button = Gtk.Button(label="Tìm")
+            search_button.connect("clicked", self.on_search_city)
+            city_row.append(self.city_entry)
+            city_row.append(search_button)
+            location_card.append(city_row)
+            self.city_dropdown = Gtk.DropDown.new(Gtk.StringList.new([]), None)
+            self.city_dropdown.set_visible(False)
+            location_card.append(self.city_dropdown)
+            use_city_button = Gtk.Button(label="Dùng thành phố đã chọn")
+            use_city_button.set_halign(Gtk.Align.END)
+            use_city_button.set_visible(False)
+            use_city_button.connect("clicked", self.on_use_city)
+            self.use_city_button = use_city_button
+            location_card.append(use_city_button)
+            self.location_status = Gtk.Label(label=f"Đang dùng: {weather_config.get('CITY', 'Quy Nhơn')}", xalign=0, wrap=True)
+            self.location_status.add_css_class("muted")
+            location_card.append(self.location_status)
+            apply_location = Gtk.Button(label="Áp dụng chế độ vị trí")
+            apply_location.connect("clicked", self.on_apply_location)
+            location_card.append(apply_location)
+            outer.append(location_card)
+
+            self.status_label = Gtk.Label(label="", xalign=0, wrap=True)
+            self.status_label.add_css_class("accent")
+            outer.append(self.status_label)
+            self.refresh_status()
+
+        def set_status(self, message: str):
+            self.status_label.set_text(message)
+
+        def refresh_status(self):
+            self.settings = load_settings()
+            enabled = manager_enabled(self.settings)
+            self.updating_master = True
+            self.master_switch.set_active(enabled)
+            self.updating_master = False
+            running = sum(1 for widget_id in WIDGETS if is_running(widget_id))
+            self.status_label.set_text(f"{running} widget đang hiển thị. Lựa chọn widget được lưu tự động.")
+
+        def on_master_changed(self, switch, _property):
+            if self.updating_master:
+                return
+            if switch.get_active():
+                if not selected_widgets(self.settings):
+                    self.set_status("Hãy bật ít nhất một widget bên dưới trước.")
+                    switch.set_active(False)
+                    return
+                start_selected(self.settings)
+                self.set_status("Đã bật các widget được chọn và tự sắp xếp lại vị trí.")
+            else:
+                stop_all()
+                self.set_status("Đã ẩn toàn bộ widget; lựa chọn riêng vẫn được giữ.")
+            GLib.timeout_add(250, self.refresh_status_once)
+
+        def refresh_status_once(self):
+            self.refresh_status()
+            return GLib.SOURCE_REMOVE
+
+        def on_widget_changed(self, switch, _property, widget_id):
+            self.settings["widgets"][widget_id] = switch.get_active()
+            save_settings(self.settings)
+            master_was_on = manager_enabled(self.settings) or any(is_running(item) for item in WIDGETS)
+            if master_was_on:
+                start_selected(self.settings)
+                self.set_status("Đã cập nhật widget và dồn lại các widget đang bật.")
+            else:
+                self.set_status("Đã lưu lựa chọn. Bật công tắc tổng để hiển thị các widget đã chọn.")
+            GLib.timeout_add(250, self.refresh_status_once)
+
+        def on_search_city(self, _button):
+            query = self.city_entry.get_text().strip()
+            if not query:
+                self.set_status("Nhập tên thành phố cần tìm trước.")
+                return
+            self.set_status("Đang tìm thành phố…")
+
+            def worker():
+                try:
+                    results = search_locations(query)
+                    error = "" if results else "Không tìm thấy thành phố phù hợp."
+                except Exception as exc:
+                    results = []
+                    error = f"Không tìm được vị trí: {exc}"
+                GLib.idle_add(self.show_search_results, results, error)
+
+            threading.Thread(target=worker, daemon=True).start()
+
+        def show_search_results(self, results, error):
+            self.result_locations = results
+            if not results:
+                self.city_dropdown.set_visible(False)
+                self.use_city_button.set_visible(False)
+                self.set_status(error)
+                return GLib.SOURCE_REMOVE
+            labels = [describe_location(location) for location in results]
+            self.city_dropdown.set_model(Gtk.StringList.new(labels))
+            self.city_dropdown.set_selected(0)
+            self.city_dropdown.set_visible(True)
+            self.use_city_button.set_visible(True)
+            self.set_status(f"Tìm thấy {len(results)} vị trí. Chọn đúng thành phố rồi bấm Dùng thành phố đã chọn.")
+            return GLib.SOURCE_REMOVE
+
+        def on_use_city(self, _button):
+            selected_index = self.city_dropdown.get_selected()
+            if selected_index >= len(self.result_locations):
+                self.set_status("Hãy tìm và chọn thành phố trước.")
+                return
+            location = self.result_locations[selected_index]
+            config = load_weather_config()
+            config.update({
+                "LAT": str(location.get("latitude", config["LAT"])),
+                "LON": str(location.get("longitude", config["LON"])),
+                "CITY": describe_location(location),
+                "TIMEZONE": str(location.get("timezone") or "auto"),
+                "LOCATION_MODE": "manual",
+            })
+            self.auto_location.set_active(False)
+            save_weather_config(config)
+            self.city_entry.set_text(config["CITY"])
+            self.location_status.set_text(f"Đang dùng: {config['CITY']}")
+            self.set_status("Đã lưu thành phố. Đang cập nhật thời tiết…")
+            self.refresh_weather_async("manual")
+
+        def on_apply_location(self, _button):
+            config = load_weather_config()
+            if self.auto_location.get_active():
+                config["LOCATION_MODE"] = "auto"
+                save_weather_config(config)
+                self.location_status.set_text("Đang dùng vị trí tự động gần đúng theo IP.")
+                self.set_status("Đang xác định vị trí và cập nhật thời tiết…")
+                self.refresh_weather_async("auto")
+            else:
+                config["LOCATION_MODE"] = "manual"
+                save_weather_config(config)
+                self.location_status.set_text(f"Đang dùng: {config.get('CITY', 'Quy Nhơn')}")
+                self.set_status("Đã lưu chế độ thành phố thủ công. Đang cập nhật thời tiết…")
+                self.refresh_weather_async("manual")
+
+        def refresh_weather_async(self, mode):
+            def worker():
+                try:
+                    result = subprocess.run(
+                        [sys.executable, str(WEATHER_FETCHER), "--force"],
+                        capture_output=True,
+                        text=True,
+                        timeout=30,
+                    )
+                    error = result.returncode != 0
+                except (OSError, subprocess.TimeoutExpired) as exc:
+                    error = True
+                    result = None
+                    message = str(exc)
+                else:
+                    message = (result.stderr or result.stdout or "").strip()
+                GLib.idle_add(self.weather_updated, mode, error, message)
+
+            threading.Thread(target=worker, daemon=True).start()
+
+        def weather_updated(self, mode, error, message):
+            config = load_weather_config()
+            if error:
+                location = "Không xác định được vị trí tự động; dùng vị trí đã lưu." if mode == "auto" else "Không cập nhật được dữ liệu thời tiết."
+                if message:
+                    location += f" ({message})"
+                self.location_status.set_text(location)
+                self.set_status(location)
+            else:
+                state = {}
+                try:
+                    for line in (CACHE_DIR / "weather.state").read_text(encoding="utf-8").splitlines():
+                        if "=" in line:
+                            key, value = line.split("=", 1)
+                            state[key] = value
+                except OSError:
+                    pass
+                active_city = state.get("city", config.get("CITY", ""))
+                self.location_status.set_text(f"Đang dùng: {active_city}")
+                self.set_status(f"Đã cập nhật thời tiết cho {active_city}.")
+            if is_running("weather"):
+                start_selected(load_settings())
+            return GLib.SOURCE_REMOVE
+
+    application = WidgetManager()
+    return application.run([sys.argv[0]])
+
+
+def main() -> int:
+    if len(sys.argv) > 1:
+        result = run_command(sys.argv[1])
+        if result >= 0:
+            return result
+    return run_gui()
+
+
+if __name__ == "__main__":
+    sys.exit(main())

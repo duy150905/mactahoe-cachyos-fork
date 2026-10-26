@@ -1,0 +1,17 @@
+{
+  "name": "CachyOSTahoe",
+  "description": "macOS Tahoe Interface Suite for CachyOS GNOME (Global Menu, Mac Clock, Overview Blur & Input Method Panel)",
+  "uuid": "CachyOSTahoe@adfoxtheme.github.io",
+  "settings-schema": "org.gnome.shell.extensions.cachyostahoe",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/adfoxtheme/mactahoe-ubuntu",
+  "version": 1
+}

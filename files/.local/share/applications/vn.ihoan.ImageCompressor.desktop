@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Nén ảnh
+Comment=Nén một hoặc nhiều ảnh sang WebP, PNG, JPG
+Exec=@HOME@/.local/bin/image-compressor
+Icon=vn.ihoan.ImageCompressor
+Terminal=false
+Categories=Graphics;
+Keywords=compress;image;webp;png;jpg;nén ảnh;
+StartupNotify=true
+StartupWMClass=vn.ihoan.ImageCompressor
+X-GNOME-UsesNotifications=false

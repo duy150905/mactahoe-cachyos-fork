@@ -1,0 +1,17 @@
+{
+  "name": "CachyOSTahoeDock",
+  "description": "Thanh Dock phong cách macOS Tahoe cho GNOME Shell",
+  "uuid": "CachyOSTahoeDock@adfoxtheme.github.io",
+  "settings-schema": "org.gnome.shell.extensions.cachyostahoedock",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/adfoxtheme/mactahoe-ubuntu",
+  "version": 1
+}

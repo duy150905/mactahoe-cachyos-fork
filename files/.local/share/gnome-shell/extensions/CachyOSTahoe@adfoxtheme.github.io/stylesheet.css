@@ -1,0 +1,4661 @@
+.popup-menu-boxpointer.kimpanel-popup-boxpointer {
+    /* you may customize pointer box here */
+}
+
+.popup-menu-content.kimpanel-popup-content {
+    /* you may customize pointer box here */
+    /* padding: 6px; */
+}
+
+.kimpanel-label {
+    font-family: sans;
+    font-weight: normal;
+    padding: 0.4em;
+}
+
+.kimpanel-candidate-item {
+    cursor: pointer;
+    transition-duration: 0ms;
+}
+
+.kimpanel-candidate-item:hover {
+    /* border-radius: 14px; */
+    /* background-color: rgba(200,200,200,0.33); */
+}
+
+.kimpanel-candidate-item:active {
+    /* border-radius: 14px; */
+    /* background-color: rgba(200,200,200,0.33); */
+}
+
+.kimpanel-candidate-item:active:hover {
+    /* border-radius: 14px; */
+    /* background-color: rgba(200,200,200,0.15); */
+}
+
+.minwidth-zero {
+    min-width: 0;
+}
+
+.icon-disable {
+    color: rgba(150, 150, 150, 0.5);
+}
+/*** PANEL ***/
+
+#panel {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/*
+* `.tahoe-transparent-panel`
+*/
+
+#panel.tahoe-transparent-panel {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    transition-duration: 0ms;
+}
+
+/*
+* `.tahoe-dark-panel`
+*/
+#panel.tahoe-dark-panel {
+    background-color: rgba(30, 30, 33, 0.5) !important;
+    box-shadow: none !important;
+    transition-duration: 500ms;
+}
+
+/*
+* `.tahoe-light-panel`
+*/
+#panel.tahoe-light-panel {
+    background-color: rgba(255, 255, 255, 0.58) !important;
+    box-shadow: none !important;
+    transition-duration: 500ms;
+}
+
+/*
+* `.tahoe-contrasted-panel`
+*/
+#panel.tahoe-contrasted-panel {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    transition-duration: 500ms;
+}
+
+/*
+* `.tahoe-gradient-panel`
+*/
+/* Internal use */
+
+#panel.tahoe-gradient-panel {
+    background-color: transparent !important;
+    background-gradient-direction: vertical !important;
+    background-gradient-start: rgba(0, 0, 0, 0.5) !important;
+    background-gradient-end: rgba(0, 0, 0, 0) !important;
+    box-shadow: none !important;
+    transition-duration: 500ms;
+}
+
+/*
+* `.tahoe-gradient-panel-reverse`
+*/
+/* Internal use */
+
+#panel.tahoe-gradient-panel-reverse {
+    background-color: transparent !important;
+    background-gradient-direction: vertical !important;
+    background-gradient-start: rgba(0, 0, 0, 0) !important;
+    background-gradient-end: rgba(0, 0, 0, 0.5) !important;
+    box-shadow: none !important;
+    transition-duration: 500ms;
+}
+
+.tahoe-contrasted-panel .panel-button,
+.tahoe-contrasted-panel .clock,
+.tahoe-contrasted-panel .clock-display StIcon {
+    color: #ffffff;
+    border-radius: 14px;
+    border: 3px solid transparent;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.tahoe-contrasted-panel .clock-display StIcon {
+    padding: 8px;
+    margin: 0;
+}
+
+.tahoe-contrasted-panel .panel-button:hover,
+.tahoe-contrasted-panel .panel-button:hover .clock {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.tahoe-contrasted-panel .clock-display {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.tahoe-contrasted-panel .clock {
+    margin: 0 !important;
+}
+/*** DOCKS ***/
+
+/*
+* `.tahoe-transparent-dash`
+*/
+.tahoe-transparent-dash .dash-background,
+.tahoe-transparent-dash.dash-background,
+#dash.tahoe-transparent-dash > .dash-background.tahoe-transparent-dash,
+#dash.tahoe-transparent-dash .dash-background,
+StBoxLayout > StWidget > #dash.tahoe-transparent-dash > .dash-background,
+.tahoe-transparent-dash .multimonitor-dock .dash-background,
+.multimonitor-dock.tahoe-transparent-dash .dash-background {
+    background: transparent !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    border-color: transparent !important;
+}
+
+.tahoe-transparent-dash.plank-like-dock-bg {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.tahoe-transparent-dash .dash-separator,
+#dash.tahoe-transparent-dash .dash-separator,
+.multimonitor-dock.tahoe-transparent-dash .dash-separator {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.tahoe-transparent-dash .app-grid-running-dot,
+.tahoe-transparent-dash .app-well-app-running-dot,
+.tahoe-transparent-dash .running-dot,
+#dash.tahoe-transparent-dash .app-grid-running-dot,
+#dash.tahoe-transparent-dash .app-well-app-running-dot,
+#dash.tahoe-transparent-dash .running-dot,
+.multimonitor-dock.tahoe-transparent-dash .app-grid-running-dot,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app-running-dot,
+.multimonitor-dock.tahoe-transparent-dash .running-dot {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Outer dock item buttons must remain completely transparent (suppress full-height column slot) */
+.tahoe-transparent-dash .overview-tile,
+.tahoe-transparent-dash .overview-tile:hover,
+.tahoe-transparent-dash .overview-tile:focus,
+.tahoe-transparent-dash .overview-tile:active,
+.tahoe-transparent-dash .overview-tile:selected,
+.tahoe-transparent-dash .overview-tile:highlighted,
+.tahoe-transparent-dash .overview-tile:checked,
+.tahoe-transparent-dash .overview-tile:drop,
+.tahoe-transparent-dash .app-well-app,
+.tahoe-transparent-dash .app-well-app:hover,
+.tahoe-transparent-dash .app-well-app:focus,
+.tahoe-transparent-dash .app-well-app:active,
+.tahoe-transparent-dash .app-well-app:selected,
+.tahoe-transparent-dash .app-well-app:highlighted,
+.tahoe-transparent-dash .app-well-app:checked,
+.tahoe-transparent-dash .app-well-app:drop,
+.tahoe-transparent-dash .show-apps,
+.tahoe-transparent-dash .show-apps:hover,
+.tahoe-transparent-dash .show-apps:focus,
+.tahoe-transparent-dash .show-apps:active,
+.tahoe-transparent-dash .show-apps:selected,
+.tahoe-transparent-dash .show-apps:highlighted,
+.tahoe-transparent-dash .show-apps:checked,
+.tahoe-transparent-dash .dash-item-container,
+.tahoe-transparent-dash .dash-item-container > StButton,
+.tahoe-transparent-dash .dash-item-container > StButton:hover,
+.tahoe-transparent-dash .dash-item-container > StButton:focus,
+.tahoe-transparent-dash .dash-item-container > StButton:active,
+.tahoe-transparent-dash .dash-item-container > StButton:checked,
+#dash.tahoe-transparent-dash .overview-tile,
+#dash.tahoe-transparent-dash .overview-tile:hover,
+#dash.tahoe-transparent-dash .overview-tile:focus,
+#dash.tahoe-transparent-dash .overview-tile:active,
+#dash.tahoe-transparent-dash .overview-tile:selected,
+#dash.tahoe-transparent-dash .overview-tile:highlighted,
+#dash.tahoe-transparent-dash .overview-tile:checked,
+#dash.tahoe-transparent-dash .overview-tile:drop,
+#dash.tahoe-transparent-dash .app-well-app,
+#dash.tahoe-transparent-dash .app-well-app:hover,
+#dash.tahoe-transparent-dash .app-well-app:focus,
+#dash.tahoe-transparent-dash .app-well-app:active,
+#dash.tahoe-transparent-dash .app-well-app:selected,
+#dash.tahoe-transparent-dash .app-well-app:highlighted,
+#dash.tahoe-transparent-dash .app-well-app:checked,
+#dash.tahoe-transparent-dash .app-well-app:drop,
+#dash.tahoe-transparent-dash .show-apps,
+#dash.tahoe-transparent-dash .show-apps:hover,
+#dash.tahoe-transparent-dash .show-apps:focus,
+#dash.tahoe-transparent-dash .show-apps:active,
+#dash.tahoe-transparent-dash .show-apps:selected,
+#dash.tahoe-transparent-dash .show-apps:highlighted,
+#dash.tahoe-transparent-dash .show-apps:checked,
+#dash.tahoe-transparent-dash .dash-item-container,
+#dash.tahoe-transparent-dash .dash-item-container > StButton,
+#dash.tahoe-transparent-dash .dash-item-container > StButton:hover,
+#dash.tahoe-transparent-dash .dash-item-container > StButton:focus,
+#dash.tahoe-transparent-dash .dash-item-container > StButton:active,
+#dash.tahoe-transparent-dash .dash-item-container > StButton:checked,
+.tahoe-transparent-dash #dashtopanelScrollview .overview-tile,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:hover,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:focus,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:active,
+.tahoe-transparent-dash .multimonitor-dock .app-well-app,
+.tahoe-transparent-dash .multimonitor-dock .app-well-app:hover,
+.tahoe-transparent-dash .multimonitor-dock .app-well-app:focus,
+.tahoe-transparent-dash .multimonitor-dock .app-well-app:active,
+.tahoe-transparent-dash .multimonitor-dock .show-apps,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:hover,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:focus,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:active,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:hover,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:focus,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:active,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app:hover,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app:focus,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app:active,
+.multimonitor-dock.tahoe-transparent-dash .show-apps,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:hover,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:focus,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* Default icon box transparency */
+.tahoe-transparent-dash .overview-icon,
+.tahoe-transparent-dash .overview-tile .overview-icon,
+.tahoe-transparent-dash .app-well-app .overview-icon,
+.tahoe-transparent-dash .show-apps .overview-icon,
+#dash.tahoe-transparent-dash .overview-icon,
+#dash.tahoe-transparent-dash .overview-tile .overview-icon,
+#dash.tahoe-transparent-dash .app-well-app .overview-icon,
+#dash.tahoe-transparent-dash .show-apps .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .overview-icon {
+    background-color: transparent !important;
+}
+
+/* Hover on icon box */
+.tahoe-transparent-dash .overview-tile:hover .overview-icon,
+.tahoe-transparent-dash .overview-tile:focus .overview-icon,
+.tahoe-transparent-dash .app-well-app:hover .overview-icon,
+.tahoe-transparent-dash .app-well-app:focus .overview-icon,
+.tahoe-transparent-dash .show-apps:hover .overview-icon,
+.tahoe-transparent-dash .show-apps:focus .overview-icon,
+#dash.tahoe-transparent-dash .overview-tile:hover .overview-icon,
+#dash.tahoe-transparent-dash .overview-tile:focus .overview-icon,
+#dash.tahoe-transparent-dash .app-well-app:hover .overview-icon,
+#dash.tahoe-transparent-dash .app-well-app:focus .overview-icon,
+#dash.tahoe-transparent-dash .show-apps:hover .overview-icon,
+#dash.tahoe-transparent-dash .show-apps:focus .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:hover .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:focus .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:hover .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:focus .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:hover .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:focus .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app:hover .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app:focus .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:hover .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:focus .overview-icon {
+    background-color: rgba(230, 230, 230, 0.08) !important;
+}
+
+/* Active / drop on icon box */
+.tahoe-transparent-dash .overview-tile:active .overview-icon,
+.tahoe-transparent-dash .overview-tile:focus:hover .overview-icon,
+.tahoe-transparent-dash .overview-tile:drop .overview-icon,
+.tahoe-transparent-dash .app-well-app:active .overview-icon,
+.tahoe-transparent-dash .app-well-app:focus:hover .overview-icon,
+.tahoe-transparent-dash .app-well-app:drop .overview-icon,
+.tahoe-transparent-dash .show-apps:checked .overview-icon,
+#dash.tahoe-transparent-dash .overview-tile:active .overview-icon,
+#dash.tahoe-transparent-dash .overview-tile:focus:hover .overview-icon,
+#dash.tahoe-transparent-dash .overview-tile:drop .overview-icon,
+#dash.tahoe-transparent-dash .app-well-app:active .overview-icon,
+#dash.tahoe-transparent-dash .app-well-app:focus:hover .overview-icon,
+#dash.tahoe-transparent-dash .app-well-app:drop .overview-icon,
+#dash.tahoe-transparent-dash .show-apps:checked .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:active .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:focus:hover .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .overview-tile:drop .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .app-well-app:active .overview-icon,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:checked .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:active .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:focus:hover .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .overview-tile:drop .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .app-well-app:active .overview-icon,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:checked .overview-icon {
+    background-color: rgba(230, 230, 230, 0.12) !important;
+}
+
+.tahoe-transparent-dash .show-apps:checked .overview-icon:hover,
+#dash.tahoe-transparent-dash .show-apps:checked .overview-icon:hover,
+.tahoe-transparent-dash .multimonitor-dock .show-apps:checked .overview-icon:hover,
+.multimonitor-dock.tahoe-transparent-dash .show-apps:checked .overview-icon:hover {
+    background-color: rgba(230, 230, 230, 0.15) !important;
+}
+
+/*
+* `.tahoe-light-dash`
+*/
+.tahoe-light-dash .dash-background,
+.tahoe-light-dash.dash-background,
+#dash.tahoe-light-dash > .dash-background.tahoe-light-dash,
+#dash.tahoe-light-dash .dash-background,
+StBoxLayout > StWidget > #dash.tahoe-light-dash > .dash-background,
+.tahoe-light-dash .multimonitor-dock .dash-background,
+.multimonitor-dock.tahoe-light-dash .dash-background {
+    background: rgba(255, 255, 255, 0.65) !important;
+    background-color: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.tahoe-light-dash.plank-like-dock-bg {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    box-shadow: none !important;
+}
+
+.tahoe-light-dash .dash-separator,
+#dash.tahoe-light-dash .dash-separator,
+.multimonitor-dock.tahoe-light-dash .dash-separator {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.tahoe-light-dash .app-grid-running-dot,
+.tahoe-light-dash .app-well-app-running-dot,
+.tahoe-light-dash .running-dot,
+#dash.tahoe-light-dash .app-grid-running-dot,
+#dash.tahoe-light-dash .app-well-app-running-dot,
+#dash.tahoe-light-dash .running-dot,
+.multimonitor-dock.tahoe-light-dash .app-grid-running-dot,
+.multimonitor-dock.tahoe-light-dash .app-well-app-running-dot,
+.multimonitor-dock.tahoe-light-dash .running-dot {
+    background-color: #222226 !important;
+    color: #222226 !important;
+}
+
+.tahoe-light-dash .show-apps-icon,
+.tahoe-light-dash .show-apps .overview-icon,
+#dash.tahoe-light-dash .show-apps-icon,
+#dash.tahoe-light-dash .show-apps .overview-icon,
+.multimonitor-dock.tahoe-light-dash .show-apps-icon,
+.multimonitor-dock.tahoe-light-dash .show-apps .overview-icon {
+    color: #222226;
+}
+
+/* Outer dock item buttons must remain completely transparent (suppress full-height column slot) */
+.tahoe-light-dash .overview-tile,
+.tahoe-light-dash .overview-tile:hover,
+.tahoe-light-dash .overview-tile:focus,
+.tahoe-light-dash .overview-tile:active,
+.tahoe-light-dash .overview-tile:selected,
+.tahoe-light-dash .overview-tile:highlighted,
+.tahoe-light-dash .overview-tile:checked,
+.tahoe-light-dash .overview-tile:drop,
+.tahoe-light-dash .app-well-app,
+.tahoe-light-dash .app-well-app:hover,
+.tahoe-light-dash .app-well-app:focus,
+.tahoe-light-dash .app-well-app:active,
+.tahoe-light-dash .app-well-app:selected,
+.tahoe-light-dash .app-well-app:highlighted,
+.tahoe-light-dash .app-well-app:checked,
+.tahoe-light-dash .app-well-app:drop,
+.tahoe-light-dash .show-apps,
+.tahoe-light-dash .show-apps:hover,
+.tahoe-light-dash .show-apps:focus,
+.tahoe-light-dash .show-apps:active,
+.tahoe-light-dash .show-apps:selected,
+.tahoe-light-dash .show-apps:highlighted,
+.tahoe-light-dash .show-apps:checked,
+.tahoe-light-dash .dash-item-container,
+.tahoe-light-dash .dash-item-container > StButton,
+.tahoe-light-dash .dash-item-container > StButton:hover,
+.tahoe-light-dash .dash-item-container > StButton:focus,
+.tahoe-light-dash .dash-item-container > StButton:active,
+.tahoe-light-dash .dash-item-container > StButton:checked,
+#dash.tahoe-light-dash .overview-tile,
+#dash.tahoe-light-dash .overview-tile:hover,
+#dash.tahoe-light-dash .overview-tile:focus,
+#dash.tahoe-light-dash .overview-tile:active,
+#dash.tahoe-light-dash .overview-tile:selected,
+#dash.tahoe-light-dash .overview-tile:highlighted,
+#dash.tahoe-light-dash .overview-tile:checked,
+#dash.tahoe-light-dash .overview-tile:drop,
+#dash.tahoe-light-dash .app-well-app,
+#dash.tahoe-light-dash .app-well-app:hover,
+#dash.tahoe-light-dash .app-well-app:focus,
+#dash.tahoe-light-dash .app-well-app:active,
+#dash.tahoe-light-dash .app-well-app:selected,
+#dash.tahoe-light-dash .app-well-app:highlighted,
+#dash.tahoe-light-dash .app-well-app:checked,
+#dash.tahoe-light-dash .app-well-app:drop,
+#dash.tahoe-light-dash .show-apps,
+#dash.tahoe-light-dash .show-apps:hover,
+#dash.tahoe-light-dash .show-apps:focus,
+#dash.tahoe-light-dash .show-apps:active,
+#dash.tahoe-light-dash .show-apps:selected,
+#dash.tahoe-light-dash .show-apps:highlighted,
+#dash.tahoe-light-dash .show-apps:checked,
+#dash.tahoe-light-dash .dash-item-container,
+#dash.tahoe-light-dash .dash-item-container > StButton,
+#dash.tahoe-light-dash .dash-item-container > StButton:hover,
+#dash.tahoe-light-dash .dash-item-container > StButton:focus,
+#dash.tahoe-light-dash .dash-item-container > StButton:active,
+#dash.tahoe-light-dash .dash-item-container > StButton:checked,
+.tahoe-light-dash #dashtopanelScrollview .overview-tile,
+.tahoe-light-dash .multimonitor-dock .overview-tile,
+.tahoe-light-dash .multimonitor-dock .overview-tile:hover,
+.tahoe-light-dash .multimonitor-dock .overview-tile:focus,
+.tahoe-light-dash .multimonitor-dock .overview-tile:active,
+.tahoe-light-dash .multimonitor-dock .app-well-app,
+.tahoe-light-dash .multimonitor-dock .app-well-app:hover,
+.tahoe-light-dash .multimonitor-dock .app-well-app:focus,
+.tahoe-light-dash .multimonitor-dock .app-well-app:active,
+.tahoe-light-dash .multimonitor-dock .show-apps,
+.tahoe-light-dash .multimonitor-dock .show-apps:hover,
+.tahoe-light-dash .multimonitor-dock .show-apps:focus,
+.tahoe-light-dash .multimonitor-dock .show-apps:active,
+.multimonitor-dock.tahoe-light-dash .overview-tile,
+.multimonitor-dock.tahoe-light-dash .overview-tile:hover,
+.multimonitor-dock.tahoe-light-dash .overview-tile:focus,
+.multimonitor-dock.tahoe-light-dash .overview-tile:active,
+.multimonitor-dock.tahoe-light-dash .app-well-app,
+.multimonitor-dock.tahoe-light-dash .app-well-app:hover,
+.multimonitor-dock.tahoe-light-dash .app-well-app:focus,
+.multimonitor-dock.tahoe-light-dash .app-well-app:active,
+.multimonitor-dock.tahoe-light-dash .show-apps,
+.multimonitor-dock.tahoe-light-dash .show-apps:hover,
+.multimonitor-dock.tahoe-light-dash .show-apps:focus,
+.multimonitor-dock.tahoe-light-dash .show-apps:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* Default icon box transparency */
+.tahoe-light-dash .overview-icon,
+.tahoe-light-dash .overview-tile .overview-icon,
+.tahoe-light-dash .app-well-app .overview-icon,
+.tahoe-light-dash .show-apps .overview-icon,
+#dash.tahoe-light-dash .overview-icon,
+#dash.tahoe-light-dash .overview-tile .overview-icon,
+#dash.tahoe-light-dash .app-well-app .overview-icon,
+#dash.tahoe-light-dash .show-apps .overview-icon,
+.tahoe-light-dash .multimonitor-dock .overview-icon,
+.multimonitor-dock.tahoe-light-dash .overview-icon {
+    background-color: transparent !important;
+}
+
+/* Hover on icon box */
+.tahoe-light-dash .dash-item-container .overview-tile:hover .overview-icon,
+.tahoe-light-dash .dash-item-container .overview-tile:focus .overview-icon,
+.tahoe-light-dash .dash-item-container .app-well-app:hover .overview-icon,
+.tahoe-light-dash .dash-item-container .app-well-app:focus .overview-icon,
+.tahoe-light-dash .dash-item-container .show-apps:hover .overview-icon,
+.tahoe-light-dash .dash-item-container .show-apps:focus .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .overview-tile:hover .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .overview-tile:focus .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .app-well-app:hover .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .app-well-app:focus .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .show-apps:hover .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .show-apps:focus .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:hover
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:focus
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:hover
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:focus
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .overview-tile:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .overview-tile:focus
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .app-well-app:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .app-well-app:focus
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .show-apps:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .show-apps:focus
+    .overview-icon {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+/* Active / drop on icon box */
+.tahoe-light-dash .dash-item-container .overview-tile:active .overview-icon,
+.tahoe-light-dash .dash-item-container .overview-tile:focus:hover .overview-icon,
+.tahoe-light-dash .dash-item-container .overview-tile:drop .overview-icon,
+.tahoe-light-dash .dash-item-container .app-well-app:active .overview-icon,
+.tahoe-light-dash .dash-item-container .app-well-app:focus:hover .overview-icon,
+.tahoe-light-dash .dash-item-container .app-well-app:drop .overview-icon,
+.tahoe-light-dash .dash-item-container .show-apps:checked .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .overview-tile:active .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .overview-tile:focus:hover .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .overview-tile:drop .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .app-well-app:active .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .app-well-app:focus:hover .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .app-well-app:drop .overview-icon,
+#dash.tahoe-light-dash .dash-item-container .show-apps:checked .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:active
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:focus:hover
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:drop
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .app-well-app:active
+    .overview-icon,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .overview-tile:active
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .overview-tile:focus:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .overview-tile:drop
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .app-well-app:active
+    .overview-icon,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon {
+    background-color: rgba(0, 0, 0, 0.19) !important;
+}
+
+.tahoe-light-dash .dash-item-container .show-apps:checked .overview-icon:hover,
+#dash.tahoe-light-dash .dash-item-container .show-apps:checked .overview-icon:hover,
+.tahoe-light-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon:hover,
+.multimonitor-dock.tahoe-light-dash
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon:hover {
+    background-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+/*
+* `.tahoe-dark-dash`
+*/
+.tahoe-dark-dash .dash-background,
+.tahoe-dark-dash.dash-background,
+#dash.tahoe-dark-dash > .dash-background.tahoe-dark-dash,
+#dash.tahoe-dark-dash .dash-background,
+StBoxLayout > StWidget > #dash.tahoe-dark-dash > .dash-background,
+.tahoe-dark-dash .multimonitor-dock .dash-background,
+.multimonitor-dock.tahoe-dark-dash .dash-background {
+    background: rgba(30, 30, 33, 0.5) !important;
+    background-color: rgba(30, 30, 33, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tahoe-dark-dash.plank-like-dock-bg {
+    background: rgba(30, 30, 33, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: none !important;
+}
+
+.tahoe-dark-dash .dash-separator,
+#dash.tahoe-dark-dash .dash-separator,
+.multimonitor-dock.tahoe-dark-dash .dash-separator {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.tahoe-dark-dash .app-grid-running-dot,
+.tahoe-dark-dash .app-well-app-running-dot,
+.tahoe-dark-dash .running-dot,
+#dash.tahoe-dark-dash .app-grid-running-dot,
+#dash.tahoe-dark-dash .app-well-app-running-dot,
+#dash.tahoe-dark-dash .running-dot,
+.multimonitor-dock.tahoe-dark-dash .app-grid-running-dot,
+.multimonitor-dock.tahoe-dark-dash .app-well-app-running-dot,
+.multimonitor-dock.tahoe-dark-dash .running-dot {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-dark-dash .show-apps-icon,
+.tahoe-dark-dash .show-apps .overview-icon,
+#dash.tahoe-dark-dash .show-apps-icon,
+#dash.tahoe-dark-dash .show-apps .overview-icon,
+.multimonitor-dock.tahoe-dark-dash .show-apps-icon,
+.multimonitor-dock.tahoe-dark-dash .show-apps .overview-icon {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Outer dock item buttons must remain completely transparent (suppress full-height column slot) */
+.tahoe-dark-dash .overview-tile,
+.tahoe-dark-dash .overview-tile:hover,
+.tahoe-dark-dash .overview-tile:focus,
+.tahoe-dark-dash .overview-tile:active,
+.tahoe-dark-dash .overview-tile:selected,
+.tahoe-dark-dash .overview-tile:highlighted,
+.tahoe-dark-dash .overview-tile:checked,
+.tahoe-dark-dash .overview-tile:drop,
+.tahoe-dark-dash .app-well-app,
+.tahoe-dark-dash .app-well-app:hover,
+.tahoe-dark-dash .app-well-app:focus,
+.tahoe-dark-dash .app-well-app:active,
+.tahoe-dark-dash .app-well-app:selected,
+.tahoe-dark-dash .app-well-app:highlighted,
+.tahoe-dark-dash .app-well-app:checked,
+.tahoe-dark-dash .app-well-app:drop,
+.tahoe-dark-dash .show-apps,
+.tahoe-dark-dash .show-apps:hover,
+.tahoe-dark-dash .show-apps:focus,
+.tahoe-dark-dash .show-apps:active,
+.tahoe-dark-dash .show-apps:selected,
+.tahoe-dark-dash .show-apps:highlighted,
+.tahoe-dark-dash .show-apps:checked,
+.tahoe-dark-dash .dash-item-container,
+.tahoe-dark-dash .dash-item-container > StButton,
+.tahoe-dark-dash .dash-item-container > StButton:hover,
+.tahoe-dark-dash .dash-item-container > StButton:focus,
+.tahoe-dark-dash .dash-item-container > StButton:active,
+.tahoe-dark-dash .dash-item-container > StButton:checked,
+#dash.tahoe-dark-dash .overview-tile,
+#dash.tahoe-dark-dash .overview-tile:hover,
+#dash.tahoe-dark-dash .overview-tile:focus,
+#dash.tahoe-dark-dash .overview-tile:active,
+#dash.tahoe-dark-dash .overview-tile:selected,
+#dash.tahoe-dark-dash .overview-tile:highlighted,
+#dash.tahoe-dark-dash .overview-tile:checked,
+#dash.tahoe-dark-dash .overview-tile:drop,
+#dash.tahoe-dark-dash .app-well-app,
+#dash.tahoe-dark-dash .app-well-app:hover,
+#dash.tahoe-dark-dash .app-well-app:focus,
+#dash.tahoe-dark-dash .app-well-app:active,
+#dash.tahoe-dark-dash .app-well-app:selected,
+#dash.tahoe-dark-dash .app-well-app:highlighted,
+#dash.tahoe-dark-dash .app-well-app:checked,
+#dash.tahoe-dark-dash .app-well-app:drop,
+#dash.tahoe-dark-dash .show-apps,
+#dash.tahoe-dark-dash .show-apps:hover,
+#dash.tahoe-dark-dash .show-apps:focus,
+#dash.tahoe-dark-dash .show-apps:active,
+#dash.tahoe-dark-dash .show-apps:selected,
+#dash.tahoe-dark-dash .show-apps:highlighted,
+#dash.tahoe-dark-dash .show-apps:checked,
+#dash.tahoe-dark-dash .dash-item-container,
+#dash.tahoe-dark-dash .dash-item-container > StButton,
+#dash.tahoe-dark-dash .dash-item-container > StButton:hover,
+#dash.tahoe-dark-dash .dash-item-container > StButton:focus,
+#dash.tahoe-dark-dash .dash-item-container > StButton:active,
+#dash.tahoe-dark-dash .dash-item-container > StButton:checked,
+.tahoe-dark-dash #dashtopanelScrollview .overview-tile,
+.tahoe-dark-dash .multimonitor-dock .overview-tile,
+.tahoe-dark-dash .multimonitor-dock .overview-tile:hover,
+.tahoe-dark-dash .multimonitor-dock .overview-tile:focus,
+.tahoe-dark-dash .multimonitor-dock .overview-tile:active,
+.tahoe-dark-dash .multimonitor-dock .app-well-app,
+.tahoe-dark-dash .multimonitor-dock .app-well-app:hover,
+.tahoe-dark-dash .multimonitor-dock .app-well-app:focus,
+.tahoe-dark-dash .multimonitor-dock .app-well-app:active,
+.tahoe-dark-dash .multimonitor-dock .show-apps,
+.tahoe-dark-dash .multimonitor-dock .show-apps:hover,
+.tahoe-dark-dash .multimonitor-dock .show-apps:focus,
+.tahoe-dark-dash .multimonitor-dock .show-apps:active,
+.multimonitor-dock.tahoe-dark-dash .overview-tile,
+.multimonitor-dock.tahoe-dark-dash .overview-tile:hover,
+.multimonitor-dock.tahoe-dark-dash .overview-tile:focus,
+.multimonitor-dock.tahoe-dark-dash .overview-tile:active,
+.multimonitor-dock.tahoe-dark-dash .app-well-app,
+.multimonitor-dock.tahoe-dark-dash .app-well-app:hover,
+.multimonitor-dock.tahoe-dark-dash .app-well-app:focus,
+.multimonitor-dock.tahoe-dark-dash .app-well-app:active,
+.multimonitor-dock.tahoe-dark-dash .show-apps,
+.multimonitor-dock.tahoe-dark-dash .show-apps:hover,
+.multimonitor-dock.tahoe-dark-dash .show-apps:focus,
+.multimonitor-dock.tahoe-dark-dash .show-apps:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* Default icon box transparency */
+.tahoe-dark-dash .overview-icon,
+.tahoe-dark-dash .overview-tile .overview-icon,
+.tahoe-dark-dash .app-well-app .overview-icon,
+.tahoe-dark-dash .show-apps .overview-icon,
+#dash.tahoe-dark-dash .overview-icon,
+#dash.tahoe-dark-dash .overview-tile .overview-icon,
+#dash.tahoe-dark-dash .app-well-app .overview-icon,
+#dash.tahoe-dark-dash .show-apps .overview-icon,
+.tahoe-dark-dash .multimonitor-dock .overview-icon,
+.multimonitor-dock.tahoe-dark-dash .overview-icon {
+    background-color: transparent !important;
+}
+
+/* Hover on icon box */
+.tahoe-dark-dash .dash-item-container .overview-tile:hover .overview-icon,
+.tahoe-dark-dash .dash-item-container .overview-tile:focus .overview-icon,
+.tahoe-dark-dash .dash-item-container .app-well-app:hover .overview-icon,
+.tahoe-dark-dash .dash-item-container .app-well-app:focus .overview-icon,
+.tahoe-dark-dash .dash-item-container .show-apps:hover .overview-icon,
+.tahoe-dark-dash .dash-item-container .show-apps:focus .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .overview-tile:hover .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .overview-tile:focus .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .app-well-app:hover .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .app-well-app:focus .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .show-apps:hover .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .show-apps:focus .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:hover
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:focus
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:hover
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:focus
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .overview-tile:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .overview-tile:focus
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .app-well-app:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .app-well-app:focus
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .show-apps:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .show-apps:focus
+    .overview-icon {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+/* Active / drop on icon box */
+.tahoe-dark-dash .dash-item-container .overview-tile:active .overview-icon,
+.tahoe-dark-dash .dash-item-container .overview-tile:focus:hover .overview-icon,
+.tahoe-dark-dash .dash-item-container .overview-tile:drop .overview-icon,
+.tahoe-dark-dash .dash-item-container .app-well-app:active .overview-icon,
+.tahoe-dark-dash .dash-item-container .app-well-app:focus:hover .overview-icon,
+.tahoe-dark-dash .dash-item-container .app-well-app:drop .overview-icon,
+.tahoe-dark-dash .dash-item-container .show-apps:checked .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .overview-tile:active .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .overview-tile:focus:hover .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .overview-tile:drop .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .app-well-app:active .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .app-well-app:focus:hover .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .app-well-app:drop .overview-icon,
+#dash.tahoe-dark-dash .dash-item-container .show-apps:checked .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:active
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:focus:hover
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .overview-tile:drop
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .app-well-app:active
+    .overview-icon,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .overview-tile:active
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .overview-tile:focus:hover
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .overview-tile:drop
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .app-well-app:active
+    .overview-icon,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-dark-dash .dash-item-container .show-apps:checked .overview-icon:hover,
+#dash.tahoe-dark-dash .dash-item-container .show-apps:checked .overview-icon:hover,
+.tahoe-dark-dash
+    .multimonitor-dock
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon:hover,
+.multimonitor-dock.tahoe-dark-dash
+    .dash-item-container
+    .show-apps:checked
+    .overview-icon:hover {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+/*** POPUP ***/
+
+/* Keep surface box shadows in the Shell theme; each popup type has its own. */
+
+.tahoe-popup-liquid-glass {
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.tahoe-popup-background-transparent .popup-menu-content,
+.tahoe-popup-background-transparent .popup-sub-menu,
+.tahoe-popup-background-transparent .candidate-popup-content,
+.tahoe-popup-background-transparent .quick-settings,
+.tahoe-popup-background-transparent .quick-toggle-menu,
+.tahoe-popup-background-transparent .osd-window,
+.tahoe-popup-background-transparent .resize-popup,
+.tahoe-popup-background-transparent .switcher-list,
+.tahoe-popup-background-transparent .workspace-switcher,
+.tahoe-popup-background-transparent .message,
+.tahoe-popup-background-transparent .modal-dialog,
+.tahoe-popup-background-transparent .run-dialog,
+.tahoe-popup-background-transparent .clipboard-dialog,
+.tahoe-popup-background-transparent .screenshot-ui-panel,
+.tahoe-popup-surface-transparent .popup-menu-content,
+.tahoe-popup-surface-transparent .popup-sub-menu,
+.tahoe-popup-surface-transparent .candidate-popup-content,
+.tahoe-popup-surface-transparent .quick-settings,
+.tahoe-popup-surface-transparent .quick-toggle-menu,
+.tahoe-popup-surface-transparent .osd-window,
+.tahoe-popup-surface-transparent .resize-popup,
+.tahoe-popup-surface-transparent .switcher-list,
+.tahoe-popup-surface-transparent .workspace-switcher,
+.tahoe-popup-surface-transparent .message,
+.tahoe-popup-surface-transparent .modal-dialog,
+.tahoe-popup-surface-transparent .run-dialog,
+.tahoe-popup-surface-transparent .clipboard-dialog,
+.tahoe-popup-surface-transparent .screenshot-ui-panel {
+    background: transparent !important;
+    border-color: transparent;
+}
+
+.tahoe-popup-background-light .popup-menu-content,
+.tahoe-popup-background-light .popup-sub-menu,
+.tahoe-popup-background-light .candidate-popup-content,
+.tahoe-popup-background-light .quick-settings,
+.tahoe-popup-background-light .quick-toggle-menu,
+.tahoe-popup-background-light .message,
+.tahoe-popup-background-light .osd-window,
+.tahoe-popup-background-light .resize-popup,
+.tahoe-popup-background-light .switcher-list,
+.tahoe-popup-background-light .workspace-switcher,
+.tahoe-popup-background-light .modal-dialog,
+.tahoe-popup-background-light .run-dialog,
+.tahoe-popup-background-light .clipboard-dialog,
+.tahoe-popup-background-light .screenshot-ui-panel {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.tahoe-popup-background-light .popup-menu-content,
+.tahoe-popup-background-light .popup-sub-menu,
+.tahoe-popup-background-light .candidate-popup-content,
+.tahoe-popup-background-light .quick-settings,
+.tahoe-popup-background-light .quick-toggle-menu,
+.tahoe-popup-background-light .osd-window,
+.tahoe-popup-background-light .resize-popup,
+.tahoe-popup-background-light .switcher-list,
+.tahoe-popup-background-light .workspace-switcher,
+.tahoe-popup-background-light .message,
+.tahoe-popup-background-light .modal-dialog,
+.tahoe-popup-background-light .run-dialog,
+.tahoe-popup-background-light .clipboard-dialog,
+.tahoe-popup-background-light .screenshot-ui-panel,
+.tahoe-popup-surface-light .popup-menu-content,
+.tahoe-popup-surface-light .popup-sub-menu,
+.tahoe-popup-surface-light .candidate-popup-content,
+.tahoe-popup-surface-light .quick-settings,
+.tahoe-popup-surface-light .quick-toggle-menu,
+.tahoe-popup-surface-light .osd-window,
+.tahoe-popup-surface-light .resize-popup,
+.tahoe-popup-surface-light .switcher-list,
+.tahoe-popup-surface-light .workspace-switcher,
+.tahoe-popup-surface-light .message,
+.tahoe-popup-surface-light .modal-dialog,
+.tahoe-popup-surface-light .run-dialog,
+.tahoe-popup-surface-light .clipboard-dialog,
+.tahoe-popup-surface-light .screenshot-ui-panel {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.tahoe-popup-background-light .modal-dialog,
+.tahoe-popup-background-light .run-dialog,
+.tahoe-popup-background-light .clipboard-dialog,
+.tahoe-popup-surface-light .modal-dialog,
+.tahoe-popup-surface-light .run-dialog {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tahoe-popup-background-light .message-list .message,
+.tahoe-popup-surface-light .message-list .message {
+    background: rgba(255, 255, 255, 0.58) !important;
+}
+
+.tahoe-popup-background-light .message-list .message:hover,
+.tahoe-popup-surface-light .message-list .message:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+
+.tahoe-popup-background-light .message-list .message:active,
+.tahoe-popup-surface-light .message-list .message:active,
+.tahoe-popup-background-light .message-list .message:focus,
+.tahoe-popup-surface-light .message-list .message:focus {
+    background: rgba(255, 255, 255, 0.7) !important;
+}
+
+.tahoe-popup-background-dark .popup-menu-content,
+.tahoe-popup-background-dark .popup-sub-menu,
+.tahoe-popup-background-dark .candidate-popup-content,
+.tahoe-popup-background-dark .quick-settings,
+.tahoe-popup-background-dark .quick-toggle-menu,
+.tahoe-popup-background-dark .message,
+.tahoe-popup-background-dark .osd-window,
+.tahoe-popup-background-dark .resize-popup,
+.tahoe-popup-background-dark .switcher-list,
+.tahoe-popup-background-dark .workspace-switcher,
+.tahoe-popup-background-dark .modal-dialog,
+.tahoe-popup-background-dark .run-dialog,
+.tahoe-popup-background-dark .clipboard-dialog,
+.tahoe-popup-background-dark .screenshot-ui-panel,
+.tahoe-popup-background-transparent .message {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .popup-menu-content,
+.tahoe-popup-background-dark .popup-sub-menu,
+.tahoe-popup-background-dark .candidate-popup-content,
+.tahoe-popup-background-dark .quick-settings,
+.tahoe-popup-background-dark .osd-window,
+.tahoe-popup-background-dark .resize-popup,
+.tahoe-popup-background-dark .switcher-list,
+.tahoe-popup-background-dark .workspace-switcher,
+.tahoe-popup-background-dark .message,
+.tahoe-popup-background-dark .modal-dialog,
+.tahoe-popup-background-dark .run-dialog,
+.tahoe-popup-background-dark .clipboard-dialog,
+.tahoe-popup-background-dark .screenshot-ui-panel,
+.tahoe-popup-surface-dark .screenshot-ui-panel,
+.tahoe-popup-surface-dark .popup-menu-content,
+.tahoe-popup-surface-dark .popup-sub-menu,
+.tahoe-popup-surface-dark .candidate-popup-content,
+.tahoe-popup-surface-dark .quick-settings,
+.tahoe-popup-surface-dark .osd-window,
+.tahoe-popup-surface-dark .resize-popup,
+.tahoe-popup-surface-dark .switcher-list,
+.tahoe-popup-surface-dark .workspace-switcher,
+.tahoe-popup-surface-dark .message,
+.tahoe-popup-surface-dark .modal-dialog,
+.tahoe-popup-surface-dark .run-dialog,
+.tahoe-popup-surface-dark .clipboard-dialog {
+    background: rgba(30, 30, 33, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.tahoe-popup-background-dark .quick-toggle-menu,
+.tahoe-popup-surface-dark .quick-toggle-menu {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.tahoe-popup-background-dark .modal-dialog,
+.tahoe-popup-background-dark .run-dialog,
+.tahoe-popup-background-dark .clipboard-dialog,
+.tahoe-popup-surface-dark .modal-dialog,
+.tahoe-popup-surface-dark .run-dialog,
+.tahoe-popup-surface-dark .clipboard-dialog {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tahoe-popup-background-dark .unlock-dialog .message,
+.tahoe-popup-background-light .unlock-dialog .message,
+.tahoe-popup-background-transparent .unlock-dialog .message,
+.tahoe-popup-surface-dark .unlock-dialog .message,
+.tahoe-popup-surface-light .unlock-dialog .message,
+.tahoe-popup-surface-transparent .unlock-dialog .message {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-dark .message-list .message,
+.tahoe-popup-background-transparent .message-list .message,
+.tahoe-popup-surface-dark .message-list .message,
+.tahoe-popup-surface-transparent .message-list .message {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-popup-background-dark .message-list .message:hover,
+.tahoe-popup-background-transparent .message-list .message:hover,
+.tahoe-popup-surface-dark .message-list .message:hover,
+.tahoe-popup-surface-transparent .message-list .message:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.tahoe-popup-background-dark .message-list .message:focus,
+.tahoe-popup-background-transparent .message-list .message:focus,
+.tahoe-popup-surface-dark .message-list .message:focus,
+.tahoe-popup-surface-transparent .message-list .message:focus,
+.tahoe-popup-background-dark .message-list .message:active,
+.tahoe-popup-background-transparent .message-list .message:active,
+.tahoe-popup-surface-dark .message-list .message:active,
+.tahoe-popup-surface-transparent .message-list .message:active {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent StScrollBar StBin#trough,
+.tahoe-popup-background-light StScrollBar StBin#trough,
+.tahoe-popup-background-dark StScrollBar StBin#trough {
+    background-color: transparent;
+}
+
+.tahoe-popup-background-transparent StScrollBar > .vhandle,
+.tahoe-popup-background-transparent StScrollBar > .hhandle,
+.tahoe-popup-background-dark StScrollBar > .vhandle,
+.tahoe-popup-background-dark StScrollBar > .hhandle {
+    background-color: rgba(255, 255, 255, 0.28);
+    border-color: transparent;
+}
+
+.tahoe-popup-background-transparent StScrollBar > .vhandle:hover,
+.tahoe-popup-background-transparent StScrollBar > .hhandle:hover,
+.tahoe-popup-background-dark StScrollBar > .vhandle:hover,
+.tahoe-popup-background-dark StScrollBar > .hhandle:hover {
+    background-color: rgba(255, 255, 255, 0.38);
+}
+
+.tahoe-popup-background-transparent StScrollBar > .vhandle:active,
+.tahoe-popup-background-transparent StScrollBar > .hhandle:active,
+.tahoe-popup-background-dark StScrollBar > .vhandle:active,
+.tahoe-popup-background-dark StScrollBar > .hhandle:active {
+    background-color: rgba(255, 255, 255, 0.46);
+}
+
+.tahoe-popup-background-light StScrollBar > .vhandle,
+.tahoe-popup-background-light StScrollBar > .hhandle {
+    background-color: rgba(34, 34, 38, 0.24);
+    border-color: transparent;
+}
+
+.tahoe-popup-background-light StScrollBar > .vhandle:hover,
+.tahoe-popup-background-light StScrollBar > .hhandle:hover {
+    background-color: rgba(34, 34, 38, 0.34);
+}
+
+.tahoe-popup-background-light StScrollBar > .vhandle:active,
+.tahoe-popup-background-light StScrollBar > .hhandle:active {
+    background-color: rgba(34, 34, 38, 0.42);
+}
+
+.tahoe-popup-background-transparent .osd-window,
+.tahoe-popup-background-light .osd-window,
+.tahoe-popup-background-dark .osd-window,
+.tahoe-popup-background-transparent .resize-popup,
+.tahoe-popup-background-light .resize-popup,
+.tahoe-popup-background-dark .resize-popup,
+.tahoe-popup-background-transparent .workspace-switcher,
+.tahoe-popup-background-light .workspace-switcher,
+.tahoe-popup-background-dark .workspace-switcher,
+.tahoe-popup-surface-transparent .osd-window,
+.tahoe-popup-surface-light .osd-window,
+.tahoe-popup-surface-dark .osd-window,
+.tahoe-popup-surface-transparent .resize-popup,
+.tahoe-popup-surface-light .resize-popup,
+.tahoe-popup-surface-dark .resize-popup,
+.tahoe-popup-surface-transparent .workspace-switcher,
+.tahoe-popup-surface-light .workspace-switcher,
+.tahoe-popup-surface-dark .workspace-switcher {
+    border-radius: 18px;
+}
+
+.tahoe-popup-background-light .osd-window .level {
+    -barlevel-background-color: rgba(0, 0, 0, 0.12);
+    -barlevel-active-background-color: #222226;
+    -barlevel-overdrive-color: #c01c28;
+}
+
+.tahoe-popup-background-dark .osd-window .level {
+    -barlevel-background-color: rgba(255, 255, 255, 0.14);
+    -barlevel-active-background-color: #ffffff;
+    -barlevel-overdrive-color: #f66151;
+}
+
+.tahoe-popup-background-light .switcher-list .item-box:focus,
+.tahoe-popup-background-light .switcher-list .item-box:selected,
+.tahoe-popup-surface-light .switcher-list .item-box:focus,
+.tahoe-popup-surface-light .switcher-list .item-box:selected {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.tahoe-popup-background-dark .switcher-list .item-box:focus,
+.tahoe-popup-background-dark .switcher-list .item-box:selected,
+.tahoe-popup-surface-dark .switcher-list .item-box:focus,
+.tahoe-popup-surface-dark .switcher-list .item-box:selected {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-transparent .switcher-list .item-box:focus,
+.tahoe-popup-background-transparent .switcher-list .item-box:selected,
+.tahoe-popup-surface-transparent .switcher-list .item-box:focus,
+.tahoe-popup-surface-transparent .switcher-list .item-box:selected {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-transparent .popup-sub-menu,
+.tahoe-popup-background-light .popup-sub-menu,
+.tahoe-popup-background-dark .popup-sub-menu,
+.tahoe-popup-surface-transparent .popup-sub-menu,
+.tahoe-popup-surface-light .popup-sub-menu,
+.tahoe-popup-surface-dark .popup-sub-menu {
+    background: transparent !important;
+    border-color: transparent;
+    border-radius: 0 0 13px 13px;
+}
+
+.tahoe-popup-background-dark .popup-sub-menu > StBoxLayout,
+.tahoe-popup-surface-dark .popup-sub-menu > StBoxLayout {
+    background-color: rgba(255, 255, 255, 0.11) !important;
+    border-radius: 0 0 13px 13px;
+}
+
+.tahoe-popup-background-light .popup-sub-menu > StBoxLayout,
+.tahoe-popup-surface-light .popup-sub-menu > StBoxLayout {
+    background-color: rgba(0, 0, 0, 0.11) !important;
+    border-radius: 0 0 13px 13px;
+}
+
+.tahoe-popup-background-transparent .popup-sub-menu .popup-menu-item,
+.tahoe-popup-background-light .popup-sub-menu .popup-menu-item,
+.tahoe-popup-background-dark .popup-sub-menu .popup-menu-item {
+    background-color: transparent !important;
+    border-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-transparent .popup-sub-menu .popup-menu-item:insensitive,
+.tahoe-popup-background-light .popup-sub-menu .popup-menu-item:insensitive,
+.tahoe-popup-background-dark .popup-sub-menu .popup-menu-item:insensitive {
+    background-color: transparent !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-type-button,
+.tahoe-popup-background-light .screenshot-ui-type-button,
+.tahoe-popup-background-dark .screenshot-ui-type-button,
+.tahoe-popup-background-transparent .screenshot-ui-type-button:insensitive,
+.tahoe-popup-background-light .screenshot-ui-type-button:insensitive,
+.tahoe-popup-background-dark .screenshot-ui-type-button:insensitive {
+    background-color: transparent !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-type-button:checked,
+.tahoe-popup-background-transparent .screenshot-ui-type-button:focus,
+.tahoe-popup-background-dark .screenshot-ui-type-button:checked,
+.tahoe-popup-background-dark .screenshot-ui-type-button:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-type-button:focus,
+.tahoe-popup-background-dark .screenshot-ui-type-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-type-button,
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button,
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button {
+    color: rgba(0, 0, 0, 0.92) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-type-button:insensitive,
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:insensitive,
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button:insensitive {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-type-button:hover,
+.tahoe-popup-background-dark .screenshot-ui-type-button:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-type-button:active,
+.tahoe-popup-background-transparent .screenshot-ui-type-button:outlined,
+.tahoe-popup-background-dark .screenshot-ui-type-button:active,
+.tahoe-popup-background-dark .screenshot-ui-type-button:outlined {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-type-button:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-type-button:checked,
+.tahoe-popup-background-light .screenshot-ui-type-button:focus {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-type-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-type-button:active,
+.tahoe-popup-background-light .screenshot-ui-type-button:outlined {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-show-pointer-button,
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button,
+.tahoe-popup-background-transparent
+    .screenshot-ui-show-pointer-button:insensitive,
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:insensitive,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button:insensitive {
+    background-color: transparent !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:checked,
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:focus {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-show-pointer-button:checked,
+.tahoe-popup-background-transparent .screenshot-ui-show-pointer-button:focus,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button:checked,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-show-pointer-button:hover,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-show-pointer-button:active,
+.tahoe-popup-background-transparent .screenshot-ui-show-pointer-button:outlined,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button:active,
+.tahoe-popup-background-dark .screenshot-ui-show-pointer-button:outlined {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:active,
+.tahoe-popup-background-light .screenshot-ui-show-pointer-button:outlined {
+    background-color: rgba(0, 0, 0, 0.16) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-capture-button {
+    border: 4px #1a1a1e !important;
+}
+
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button
+    .screenshot-ui-capture-button-circle {
+    background-color: #1a1a1e !important;
+}
+
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:hover
+    .screenshot-ui-capture-button-circle,
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:focus
+    .screenshot-ui-capture-button-circle {
+    background-color: #3a3a3e !important;
+}
+
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:active
+    .screenshot-ui-capture-button-circle {
+    background-color: #5a5a5e !important;
+}
+
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:cast
+    .screenshot-ui-capture-button-circle {
+    background-color: #c01c28 !important;
+}
+
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:cast:hover
+    .screenshot-ui-capture-button-circle,
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:cast:focus
+    .screenshot-ui-capture-button-circle {
+    background-color: #d61f2d !important;
+}
+
+.tahoe-popup-background-light
+    .screenshot-ui-capture-button:cast:active
+    .screenshot-ui-capture-button-circle {
+    background-color: #a11722 !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-shot-cast-container {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button:hover,
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button:focus {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button:active {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button:checked {
+    background-color: #1a1a1e !important;
+    color: #ffffff !important;
+}
+
+.tahoe-popup-background-light .screenshot-ui-shot-cast-button:insensitive {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-shot-cast-container,
+.tahoe-popup-background-dark .screenshot-ui-shot-cast-container {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-shot-cast-button:hover,
+.tahoe-popup-background-transparent .screenshot-ui-shot-cast-button:focus,
+.tahoe-popup-background-dark .screenshot-ui-shot-cast-button:hover,
+.tahoe-popup-background-dark .screenshot-ui-shot-cast-button:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-shot-cast-button:active,
+.tahoe-popup-background-dark .screenshot-ui-shot-cast-button:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-transparent .screenshot-ui-shot-cast-button:checked,
+.tahoe-popup-background-dark .screenshot-ui-shot-cast-button:checked {
+    background-color: #ffffff !important;
+    color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.tahoe-popup-background-transparent .popup-sub-menu .popup-menu-section,
+.tahoe-popup-background-light .popup-sub-menu .popup-menu-section,
+.tahoe-popup-background-dark .popup-sub-menu .popup-menu-section {
+    border-radius: 0 0 12px 12px;
+}
+
+.tahoe-popup-background-transparent .popup-sub-menu .popup-menu-item:last-child,
+.tahoe-popup-background-transparent
+    .popup-sub-menu
+    .popup-menu-section
+    .popup-menu-item:last-child,
+.tahoe-popup-background-transparent
+    .popup-sub-menu
+    .popup-menu-section:last-child
+    .popup-menu-item:last-child,
+.tahoe-popup-background-light .popup-sub-menu .popup-menu-item:last-child,
+.tahoe-popup-background-light
+    .popup-sub-menu
+    .popup-menu-section
+    .popup-menu-item:last-child,
+.tahoe-popup-background-light
+    .popup-sub-menu
+    .popup-menu-section:last-child
+    .popup-menu-item:last-child,
+.tahoe-popup-background-dark .popup-sub-menu .popup-menu-item:last-child,
+.tahoe-popup-background-dark
+    .popup-sub-menu
+    .popup-menu-section
+    .popup-menu-item:last-child,
+.tahoe-popup-background-dark
+    .popup-sub-menu
+    .popup-menu-section:last-child
+    .popup-menu-item:last-child {
+    border-radius: 0 0 12px 12px;
+}
+
+.tahoe-popup-background-dark .tahoe-keyboard-surface,
+.tahoe-popup-surface-dark .tahoe-keyboard-surface,
+.tahoe-popup-background-transparent .tahoe-keyboard-surface,
+.tahoe-popup-surface-transparent .tahoe-keyboard-surface {
+    background: rgba(30, 30, 33, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tahoe-popup-background-light .tahoe-keyboard-surface,
+.tahoe-popup-surface-light .tahoe-keyboard-surface {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tahoe-popup-background-dark .keyboard-subkeys,
+.tahoe-popup-background-transparent .keyboard-subkeys {
+    -arrow-background-color: rgba(35, 35, 35, 0.98);
+    -arrow-border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Base Keys */
+.tahoe-popup-background-dark .keyboard-key,
+.tahoe-popup-background-transparent .keyboard-key,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Interactive States */
+.tahoe-popup-background-dark .keyboard-key:hover,
+.tahoe-popup-background-transparent .keyboard-key:hover,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key:hover,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key:hover,
+.tahoe-popup-background-dark .keyboard-key:focus:hover,
+.tahoe-popup-background-transparent .keyboard-key:focus:hover,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key:focus:hover,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key:focus:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .keyboard-key:active,
+.tahoe-popup-background-transparent .keyboard-key:active,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key:active,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key:active,
+.tahoe-popup-background-dark .keyboard-key:focus:active,
+.tahoe-popup-background-transparent .keyboard-key:focus:active,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key:focus:active,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key:focus:active {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .keyboard-key:checked,
+.tahoe-popup-background-transparent .keyboard-key:checked,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key:checked,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key:checked {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.6);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .keyboard-key:focus,
+.tahoe-popup-background-transparent .keyboard-key:focus,
+.tahoe-popup-background-dark .keyboard-subkeys .keyboard-key:focus,
+.tahoe-popup-background-transparent .keyboard-subkeys .keyboard-key:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .keyboard-key:grayed,
+.tahoe-popup-background-transparent .keyboard-key:grayed {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.35);
+    border-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modifier & Function Keys */
+.tahoe-popup-background-dark .keyboard-key.default-key,
+.tahoe-popup-background-transparent .keyboard-key.default-key {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-popup-background-dark .keyboard-key.default-key:hover,
+.tahoe-popup-background-transparent .keyboard-key.default-key:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tahoe-popup-background-dark .keyboard-key.default-key:active,
+.tahoe-popup-background-transparent .keyboard-key.default-key:active {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+.tahoe-popup-background-dark .keyboard-key.default-key:checked,
+.tahoe-popup-background-transparent .keyboard-key.default-key:checked {
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+.tahoe-popup-background-dark .keyboard-key.default-key:latched,
+.tahoe-popup-background-transparent .keyboard-key.default-key:latched {
+    border-color: #4b92e7;
+    background-color: #3584e4;
+    color: #ffffff;
+}
+
+/* Enter Key */
+.tahoe-popup-background-dark .keyboard-key.enter-key,
+.tahoe-popup-background-transparent .keyboard-key.enter-key {
+    color: #ffffff;
+    background-color: #428ce6;
+}
+
+.tahoe-popup-background-dark .keyboard-key.enter-key:hover,
+.tahoe-popup-background-transparent .keyboard-key.enter-key:hover {
+    background-color: #5497e8;
+}
+
+.tahoe-popup-background-dark .keyboard-key.enter-key:active,
+.tahoe-popup-background-transparent .keyboard-key.enter-key:active {
+    background-color: #629fea;
+}
+
+/* Shift Key Uppercase */
+.tahoe-popup-background-dark .keyboard-key.shift-key-uppercase,
+.tahoe-popup-background-transparent .keyboard-key.shift-key-uppercase {
+    background-color: rgba(255, 255, 255, 0.35);
+    color: #1e1e1e;
+}
+
+.tahoe-popup-background-dark .keyboard-key.shift-key-uppercase:hover,
+.tahoe-popup-background-transparent .keyboard-key.shift-key-uppercase:hover {
+    background-color: rgba(255, 255, 255, 0.45);
+}
+
+.tahoe-popup-background-light .keyboard-subkeys {
+    -arrow-background-color: rgba(240, 240, 240, 0.98);
+    -arrow-border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Base Keys */
+.tahoe-popup-background-light .keyboard-key,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key {
+    color: #1a1a1a;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Interactive States */
+.tahoe-popup-background-light .keyboard-key:hover,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key:hover,
+.tahoe-popup-background-light .keyboard-key:focus:hover,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key:focus:hover {
+    background-color: rgba(0, 0, 0, 0.18) !important;
+    color: #000000;
+}
+
+.tahoe-popup-background-light .keyboard-key:active,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key:active,
+.tahoe-popup-background-light .keyboard-key:focus:active,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key:focus:active {
+    background-color: rgba(0, 0, 0, 0.16) !important;
+    color: #000000;
+}
+
+.tahoe-popup-background-light .keyboard-key:checked,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key:checked {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.6);
+    color: #000000;
+}
+
+.tahoe-popup-background-light .keyboard-key:focus,
+.tahoe-popup-background-light .keyboard-subkeys .keyboard-key:focus {
+    background-color: rgba(0, 0, 0, 0.07) !important;
+    box-shadow: none;
+    color: #1a1a1a;
+}
+
+.tahoe-popup-background-light .keyboard-key:grayed {
+    background-color: rgba(0, 0, 0, 0.03);
+    color: rgba(0, 0, 0, 0.4);
+    border-color: transparent;
+}
+
+/* Modifier & Function Keys */
+.tahoe-popup-background-light .keyboard-key.default-key {
+    color: #2c2c2c;
+    background-color: rgba(0, 0, 0, 0.11);
+}
+
+.tahoe-popup-background-light .keyboard-key.default-key:hover {
+    background-color: rgba(0, 0, 0, 0.18);
+}
+
+.tahoe-popup-background-light .keyboard-key.default-key:active {
+    background-color: rgba(0, 0, 0, 0.16);
+}
+
+.tahoe-popup-background-light .keyboard-key.default-key:checked {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.tahoe-popup-background-light .keyboard-key.default-key:latched {
+    border-color: #3584e4;
+    background-color: #3584e4;
+    color: #ffffff;
+}
+
+/* Enter Key */
+.tahoe-popup-background-light .keyboard-key.enter-key {
+    color: #ffffff;
+    background-color: #3584e4;
+}
+
+.tahoe-popup-background-light .keyboard-key.enter-key:hover {
+    background-color: #4b92e7;
+}
+
+.tahoe-popup-background-light .keyboard-key.enter-key:active {
+    background-color: #2871cc;
+}
+
+/* Shift Key Uppercase */
+.tahoe-popup-background-light .keyboard-key.shift-key-uppercase {
+    background-color: rgba(0, 0, 0, 0.22);
+    color: #000000;
+}
+
+.tahoe-popup-background-light .keyboard-key.shift-key-uppercase:hover {
+    background-color: rgba(0, 0, 0, 0.28);
+}
+.tahoe-popup-background-transparent .message:second-in-stack,
+.tahoe-popup-surface-transparent .message:second-in-stack {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.tahoe-popup-background-transparent .message:lower-in-stack,
+.tahoe-popup-surface-transparent .message:lower-in-stack {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.tahoe-popup-background-transparent .message-media-control,
+.tahoe-popup-surface-transparent .message-media-control {
+    background-color: transparent;
+}
+
+.tahoe-popup-background-transparent .message-media-control:hover,
+.tahoe-popup-surface-transparent .message-media-control:hover,
+.tahoe-popup-background-transparent .message-expand-button:hover,
+.tahoe-popup-surface-transparent .message-expand-button:hover,
+.tahoe-popup-background-transparent .switcher-list .item-box:hover,
+.tahoe-popup-surface-transparent .switcher-list .item-box:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent .message-media-control:active,
+.tahoe-popup-surface-transparent .message-media-control:active,
+.tahoe-popup-background-transparent .message-expand-button:active,
+.tahoe-popup-surface-transparent .message-expand-button:active,
+.tahoe-popup-background-transparent .switcher-list .item-box:active,
+.tahoe-popup-surface-transparent .switcher-list .item-box:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-transparent .message-media-control:focus,
+.tahoe-popup-background-transparent .message-media-control:checked,
+.tahoe-popup-surface-transparent .message-media-control:focus,
+.tahoe-popup-surface-transparent .message-media-control:checked,
+.tahoe-popup-background-transparent .message-expand-button:focus,
+.tahoe-popup-background-transparent .message-expand-button:checked,
+.tahoe-popup-surface-transparent .message-expand-button:focus,
+.tahoe-popup-surface-transparent .message-expand-button:checked {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .message-media-control:insensitive,
+.tahoe-popup-surface-transparent .message-media-control:insensitive {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-popup-background-transparent .message .message-header,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-header-content
+    .event-time,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-header-content
+    .message-source-title {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.tahoe-popup-background-transparent
+    .message
+    .message-box
+    .message-content
+    .message-title {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-source-icon {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.tahoe-popup-background-transparent .notification-button,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-expand-button,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-close-button,
+.tahoe-popup-background-transparent
+    .message-notification-group
+    .message-collapse-button,
+.tahoe-popup-background-transparent
+    .message-list-controls
+    .message-list-clear-button,
+.tahoe-popup-background-transparent .modal-dialog .button,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button,
+.tahoe-popup-background-transparent .quick-toggle,
+.tahoe-popup-background-transparent .quick-settings .icon-button,
+.tahoe-popup-background-transparent .quick-settings-system-item .button,
+.tahoe-popup-background-transparent .quick-settings-system-item .icon-button,
+.tahoe-popup-background-transparent .quick-settings-system-item .power-item {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .notification-button:hover,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-close-button:hover,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-expand-button:hover,
+.tahoe-popup-background-transparent
+    .message-notification-group
+    .message-collapse-button:hover,
+.tahoe-popup-background-transparent
+    .message-list-controls
+    .message-list-clear-button:hover,
+.tahoe-popup-background-transparent
+    .message-list-controls
+    .message-list-clear-button:focus,
+.tahoe-popup-background-transparent .modal-dialog .button:hover,
+.tahoe-popup-background-transparent .modal-dialog .button:focus,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:hover,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:focus,
+.tahoe-popup-background-transparent .quick-toggle:hover,
+.tahoe-popup-background-transparent .quick-toggle:focus,
+.tahoe-popup-background-transparent .quick-settings .icon-button:hover,
+.tahoe-popup-background-transparent .quick-settings .icon-button:focus,
+.tahoe-popup-background-transparent .quick-settings-system-item .button:hover,
+.tahoe-popup-background-transparent .quick-settings-system-item .button:focus,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .icon-button:hover,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .icon-button:focus,
+.tahoe-popup-background-transparent .quick-settings-system-item .power-item:hover,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .power-item:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent
+    .message-list-controls
+    .message-list-clear-button:focus,
+.tahoe-popup-background-transparent .modal-dialog .button:focus,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:focus,
+.tahoe-popup-background-transparent .quick-toggle:focus,
+.tahoe-popup-background-transparent .quick-settings .icon-button:focus,
+.tahoe-popup-background-transparent .quick-settings-system-item .button:focus,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .icon-button:focus,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .power-item:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent .notification-button:active,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-expand-button:active,
+.tahoe-popup-background-transparent
+    .message
+    .message-header
+    .message-close-button:active,
+.tahoe-popup-background-transparent
+    .message-notification-group
+    .message-collapse-button:active,
+.tahoe-popup-background-transparent
+    .message-list-controls
+    .message-list-clear-button:active,
+.tahoe-popup-background-transparent .modal-dialog .button:active,
+.tahoe-popup-background-transparent .modal-dialog .button:checked,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:active,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:checked,
+.tahoe-popup-background-transparent .quick-toggle:active,
+.tahoe-popup-background-transparent .quick-settings .icon-button:active,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .icon-button:active,
+.tahoe-popup-background-transparent .quick-settings-system-item .button:active,
+.tahoe-popup-background-transparent
+    .quick-settings-system-item
+    .power-item:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-transparent .notification-button:insensitive,
+.tahoe-popup-background-transparent
+    .message-list-controls
+    .message-list-clear-button:insensitive,
+.tahoe-popup-background-transparent .modal-dialog .button:insensitive,
+.tahoe-popup-background-transparent
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:insensitive {
+    color: rgba(255, 255, 255, 0.35) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.tahoe-popup-background-transparent .quick-toggle {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:active {
+    background-color: rgba(255, 255, 255, 0.34) !important;
+}
+
+.tahoe-popup-background-transparent .calendar {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-transparent .datemenu-today-button {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-transparent .datemenu-today-button:hover,
+.tahoe-popup-background-transparent .datemenu-today-button:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent .datemenu-today-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent .datemenu-today-button:active,
+.tahoe-popup-background-transparent .datemenu-today-button:checked {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-transparent .datemenu-today-button StLabel,
+.tahoe-popup-background-transparent .datemenu-today-button .date-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-popup-background-transparent .datemenu-today-button .day-label {
+    color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.tahoe-popup-background-transparent .events-button,
+.tahoe-popup-background-transparent .world-clocks-button,
+.tahoe-popup-background-transparent .weather-button {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-popup-background-transparent .events-button:hover,
+.tahoe-popup-background-transparent .world-clocks-button:hover,
+.tahoe-popup-background-transparent .weather-button:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.tahoe-popup-background-transparent .events-button:focus,
+.tahoe-popup-background-transparent .world-clocks-button:focus,
+.tahoe-popup-background-transparent .weather-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent .events-button:active,
+.tahoe-popup-background-transparent .world-clocks-button:active,
+.tahoe-popup-background-transparent .weather-button:active,
+.tahoe-popup-background-transparent .events-button:focus,
+.tahoe-popup-background-transparent .world-clocks-button:focus,
+.tahoe-popup-background-transparent .weather-button:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-transparent
+    .world-clocks-button
+    .world-clocks-header.no-world-clocks,
+.tahoe-popup-background-transparent
+    .weather-button
+    .weather-box
+    .weather-header-box
+    .weather-header.no-location {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-transparent .events-button .events-box .events-title,
+.tahoe-popup-background-transparent
+    .events-box
+    .events-list
+    .event-box
+    .event-time,
+.tahoe-popup-background-transparent
+    .events-button
+    .events-box
+    .events-list
+    .event-placeholder,
+.tahoe-popup-background-transparent .world-clocks-button .world-clocks-header,
+.tahoe-popup-background-transparent
+    .world-clocks-button
+    .world-clocks-grid
+    .world-clocks-timezone,
+.tahoe-popup-background-transparent
+    .weather-button
+    .weather-box
+    .weather-header-box
+    .weather-header {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-month-header
+    .calendar-month-label,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-month-header
+    .pager-button {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day-heading,
+.tahoe-popup-background-transparent .calendar .calendar-day {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day-heading {
+    color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day.calendar-weekend {
+    color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day.calendar-other-month,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-other-month.calendar-weekend {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-popup-background-transparent .calendar-day.calendar-today {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color !important;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day:hover,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-month-header
+    .pager-button:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day:focus,
+.tahoe-popup-background-transparent .calendar .calendar-day-heading:focus,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-month-header
+    .calendar-month-label:focus,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-month-header
+    .pager-button:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent .calendar-day:selected,
+.tahoe-popup-background-transparent .calendar .calendar-day:checked,
+.tahoe-popup-background-transparent .calendar .calendar-day:active,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-month-header
+    .pager-button:active {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-popup-background-transparent .calendar-day:selected:focus,
+.tahoe-popup-background-transparent .calendar .calendar-day:checked:focus {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day:active:hover,
+.tahoe-popup-background-transparent .calendar .calendar-day:checked:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:selected,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:checked {
+    color: #ffffff !important;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color !important;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day.calendar-today:hover,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:checked:hover,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:selected:hover {
+    color: #ffffff !important;
+    background-color: #468ee6 !important;
+    background-color: st-lighten(-st-accent-color, 4%) !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day.calendar-today:active,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:checked:active,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:selected:active {
+    color: #ffffff !important;
+    background-color: #5d9ce9 !important;
+    background-color: st-lighten(-st-accent-color, 9%) !important;
+}
+
+.tahoe-popup-background-transparent .calendar .calendar-day.calendar-today:focus,
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:checked:focus {
+    background-color: #3584e4 !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-mix(-st-accent-color, #ffffff, 60%), 0.2) !important;
+}
+
+.tahoe-popup-background-transparent
+    .calendar
+    .calendar-day.calendar-today:selected:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-lighten(-st-accent-color, 30%), 0.2) !important;
+}
+
+.tahoe-popup-background-transparent .quick-toggle:checked {
+    color: #ffffff;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-transparent .quick-toggle:checked:hover,
+.tahoe-popup-background-transparent .quick-toggle:hover:checked {
+    color: #ffffff;
+    background-color: #468ee6 !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(-st-accent-color, 4%) !important;
+}
+
+.tahoe-popup-background-transparent .quick-toggle:checked:active,
+.tahoe-popup-background-transparent .quick-toggle:active:checked {
+    color: #ffffff;
+    background-color: #5d9ce9 !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(-st-accent-color, 9%) !important;
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked {
+    color: #ffffff;
+    background-color: #327bd4 !important;
+    color: -st-accent-fg-color;
+    background-color: st-mix(-st-accent-color, #ffffff, 85%) !important;
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:hover {
+    color: #ffffff;
+    background-color: #64a0ea !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(
+        st-mix(-st-accent-color, #ffffff, 85%),
+        4%
+    ) !important;
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:active {
+    color: #ffffff;
+    background-color: #7baeed !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(
+        st-mix(-st-accent-color, #ffffff, 85%),
+        9%
+    ) !important;
+}
+
+.tahoe-popup-background-transparent .quick-toggle:checked:focus,
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:focus,
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:focus:checked {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-lighten(-st-accent-color, 30%), 0.2) !important;
+}
+
+.tahoe-popup-background-transparent
+    .quick-toggle-has-menu:checked
+    .quick-toggle-separator {
+    background-color: rgba(255, 255, 255, 0.3);
+    background-color: st-mix(-st-accent-fg-color, -st-accent-color, 30%);
+}
+
+.tahoe-popup-background-transparent StEntry {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.tahoe-popup-background-transparent StEntry:focus {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent StEntry:insensitive {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-popup-background-transparent StEntry StLabel.hint-text {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.tahoe-popup-background-light .message:second-in-stack,
+.tahoe-popup-surface-light .message:second-in-stack {
+    background: rgba(255, 255, 255, 0.54) !important;
+}
+
+.tahoe-popup-background-light .message:lower-in-stack,
+.tahoe-popup-surface-light .message:lower-in-stack {
+    background: rgba(255, 255, 255, 0.44) !important;
+}
+
+.tahoe-popup-background-light .message-media-control,
+.tahoe-popup-surface-light .message-media-control {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: transparent;
+}
+
+.tahoe-popup-background-light .message-media-control:hover,
+.tahoe-popup-surface-light .message-media-control:hover,
+.tahoe-popup-background-light .message-expand-button:hover,
+.tahoe-popup-surface-light .message-expand-button:hover,
+.tahoe-popup-background-light .switcher-list .item-box:hover,
+.tahoe-popup-surface-light .switcher-list .item-box:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tahoe-popup-background-light .message-media-control:active,
+.tahoe-popup-surface-light .message-media-control:active,
+.tahoe-popup-background-light .message-expand-button:active,
+.tahoe-popup-surface-light .message-expand-button:active,
+.tahoe-popup-background-light .switcher-list .item-box:active,
+.tahoe-popup-surface-light .switcher-list .item-box:active {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.tahoe-popup-background-light .message-media-control:focus,
+.tahoe-popup-background-light .message-media-control:checked,
+.tahoe-popup-surface-light .message-media-control:focus,
+.tahoe-popup-surface-light .message-media-control:checked,
+.tahoe-popup-background-light .message-expand-button:focus,
+.tahoe-popup-background-light .message-expand-button:checked,
+.tahoe-popup-surface-light .message-expand-button:focus,
+.tahoe-popup-surface-light .message-expand-button:checked {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tahoe-popup-background-light .message-media-control:insensitive,
+.tahoe-popup-surface-light .message-media-control:insensitive {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.tahoe-popup-background-light .message .message-header,
+.tahoe-popup-background-light
+    .message
+    .message-header
+    .message-header-content
+    .event-time,
+.tahoe-popup-background-light
+    .message
+    .message-header
+    .message-header-content
+    .message-source-title {
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.tahoe-popup-background-light
+    .message
+    .message-box
+    .message-content
+    .message-title {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.tahoe-popup-background-light .message .message-header .message-source-icon {
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.tahoe-popup-background-light .notification-button,
+.tahoe-popup-background-light .message .message-header .message-expand-button,
+.tahoe-popup-background-light .message .message-header .message-close-button,
+.tahoe-popup-background-light
+    .message-notification-group
+    .message-collapse-button,
+.tahoe-popup-background-light .message-list-controls .message-list-clear-button,
+.tahoe-popup-background-light .modal-dialog .button,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button,
+.tahoe-popup-background-light .quick-toggle,
+.tahoe-popup-background-light .quick-settings .icon-button,
+.tahoe-popup-background-light .quick-settings-system-item .button,
+.tahoe-popup-background-light .quick-settings-system-item .icon-button,
+.tahoe-popup-background-light .quick-settings-system-item .power-item {
+    color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tahoe-popup-background-light .notification-button:hover,
+.tahoe-popup-background-light
+    .message
+    .message-header
+    .message-expand-button:hover,
+.tahoe-popup-background-light
+    .message
+    .message-header
+    .message-close-button:hover,
+.tahoe-popup-background-light
+    .message-notification-group
+    .message-collapse-button:hover,
+.tahoe-popup-background-light
+    .message-list-controls
+    .message-list-clear-button:hover,
+.tahoe-popup-background-light
+    .message-list-controls
+    .message-list-clear-button:focus,
+.tahoe-popup-background-light .modal-dialog .button:hover,
+.tahoe-popup-background-light .modal-dialog .button:focus,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:hover,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:focus,
+.tahoe-popup-background-light .quick-toggle:hover,
+.tahoe-popup-background-light .quick-toggle:focus,
+.tahoe-popup-background-light .quick-settings .icon-button:hover,
+.tahoe-popup-background-light .quick-settings .icon-button:focus,
+.tahoe-popup-background-light .quick-settings-system-item .button:hover,
+.tahoe-popup-background-light .quick-settings-system-item .button:focus,
+.tahoe-popup-background-light .quick-settings-system-item .icon-button:hover,
+.tahoe-popup-background-light .quick-settings-system-item .icon-button:focus,
+.tahoe-popup-background-light .quick-settings-system-item .power-item:hover,
+.tahoe-popup-background-light .quick-settings-system-item .power-item:focus {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tahoe-popup-background-light
+    .message-list-controls
+    .message-list-clear-button:focus,
+.tahoe-popup-background-light .modal-dialog .button:focus,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:focus,
+.tahoe-popup-background-light .quick-toggle:focus,
+.tahoe-popup-background-light .quick-settings .icon-button:focus,
+.tahoe-popup-background-light .quick-settings-system-item .button:focus,
+.tahoe-popup-background-light .quick-settings-system-item .icon-button:focus,
+.tahoe-popup-background-light .quick-settings-system-item .power-item:focus {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .notification-button:active,
+.tahoe-popup-background-light
+    .message
+    .message-header
+    .message-expand-button:active,
+.tahoe-popup-background-light
+    .message
+    .message-header
+    .message-close-button:active,
+.tahoe-popup-background-light
+    .message-notification-group
+    .message-collapse-button:active,
+.tahoe-popup-background-light
+    .message-list-controls
+    .message-list-clear-button:active,
+.tahoe-popup-background-light .modal-dialog .button:active,
+.tahoe-popup-background-light .modal-dialog .button:checked,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:active,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:checked,
+.tahoe-popup-background-light .quick-toggle:active,
+.tahoe-popup-background-light .quick-settings .icon-button:active,
+.tahoe-popup-background-light .quick-settings-system-item .icon-button:active,
+.tahoe-popup-background-light .quick-settings-system-item .button:active,
+.tahoe-popup-background-light .quick-settings-system-item .power-item:active {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.tahoe-popup-background-light .notification-button:insensitive,
+.tahoe-popup-background-light
+    .message-list-controls
+    .message-list-clear-button:insensitive,
+.tahoe-popup-background-light .modal-dialog .button:insensitive,
+.tahoe-popup-background-light
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:insensitive {
+    color: rgba(0, 0, 0, 0.35) !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.tahoe-popup-background-light .quick-toggle {
+    border-color: rgba(0, 0, 0, 0.05);
+    box-shadow: none;
+}
+
+.tahoe-popup-background-light .quick-toggle-has-menu .quick-toggle-menu-button {
+    color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.14) !important;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:hover {
+    background-color: rgba(0, 0, 0, 0.19) !important;
+}
+
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:active {
+    background-color: rgba(0, 0, 0, 0.34) !important;
+}
+
+.tahoe-popup-background-light .calendar {
+    color: rgba(0, 0, 0, 0.85);
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-light .datemenu-today-button {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-light .datemenu-today-button:hover,
+.tahoe-popup-background-light .datemenu-today-button:focus {
+    background-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+.tahoe-popup-background-light .datemenu-today-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .datemenu-today-button:active,
+.tahoe-popup-background-light .datemenu-today-button:checked {
+    background-color: rgba(0, 0, 0, 0.09) !important;
+}
+
+.tahoe-popup-background-light .datemenu-today-button StLabel,
+.tahoe-popup-background-light .datemenu-today-button .date-label {
+    color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.tahoe-popup-background-light .datemenu-today-button .day-label {
+    color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.tahoe-popup-background-light .events-button,
+.tahoe-popup-background-light .world-clocks-button,
+.tahoe-popup-background-light .weather-button {
+    background-color: rgba(255, 255, 255, 0.58) !important;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.tahoe-popup-background-light .events-button:hover,
+.tahoe-popup-background-light .world-clocks-button:hover,
+.tahoe-popup-background-light .weather-button:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.tahoe-popup-background-light .events-button:focus,
+.tahoe-popup-background-light .world-clocks-button:focus,
+.tahoe-popup-background-light .weather-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .events-button:active,
+.tahoe-popup-background-light .world-clocks-button:active,
+.tahoe-popup-background-light .weather-button:active,
+.tahoe-popup-background-light .events-button:focus,
+.tahoe-popup-background-light .world-clocks-button:focus,
+.tahoe-popup-background-light .weather-button:focus {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.tahoe-popup-background-light
+    .world-clocks-button
+    .world-clocks-header.no-world-clocks,
+.tahoe-popup-background-light
+    .weather-button
+    .weather-box
+    .weather-header-box
+    .weather-header.no-location {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.tahoe-popup-background-light .events-button .events-box .events-title,
+.tahoe-popup-background-light .events-box .events-list .event-box .event-time,
+.tahoe-popup-background-light
+    .events-button
+    .events-box
+    .events-list
+    .event-placeholder,
+.tahoe-popup-background-light .world-clocks-button .world-clocks-header,
+.tahoe-popup-background-light
+    .world-clocks-button
+    .world-clocks-grid
+    .world-clocks-timezone,
+.tahoe-popup-background-light
+    .weather-button
+    .weather-box
+    .weather-header-box
+    .weather-header {
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.tahoe-popup-background-light
+    .calendar
+    .calendar-month-header
+    .calendar-month-label,
+.tahoe-popup-background-light .calendar .calendar-month-header .pager-button {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day-heading,
+.tahoe-popup-background-light .calendar .calendar-day {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day-heading {
+    color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day.calendar-weekend {
+    color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day.calendar-other-month,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-other-month.calendar-weekend {
+    color: rgba(0, 0, 0, 0.38) !important;
+}
+
+.tahoe-popup-background-light .calendar-day.calendar-today {
+    color: #ffffff !important;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color !important;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day:hover,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-month-header
+    .pager-button:hover {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day:focus,
+.tahoe-popup-background-light .calendar .calendar-day-heading:focus,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-month-header
+    .calendar-month-label:focus,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-month-header
+    .pager-button:focus {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .calendar-day:selected,
+.tahoe-popup-background-light .calendar .calendar-day:checked,
+.tahoe-popup-background-light .calendar .calendar-day:active,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-month-header
+    .pager-button:active {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(0, 0, 0, 0.19) !important;
+}
+
+.tahoe-popup-background-light .calendar-day:selected:focus,
+.tahoe-popup-background-light .calendar .calendar-day:checked:focus {
+    background-color: rgba(0, 0, 0, 0.19) !important;
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day:active:hover,
+.tahoe-popup-background-light .calendar .calendar-day:checked:hover {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day.calendar-today:selected,
+.tahoe-popup-background-light .calendar .calendar-day.calendar-today:checked {
+    color: #ffffff !important;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color !important;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day.calendar-today:hover,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-today:checked:hover,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-today:selected:hover {
+    color: #ffffff !important;
+    background-color: #2379e1 !important;
+    background-color: st-darken(-st-accent-color, 4%) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day.calendar-today:active,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-today:checked:active,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-today:selected:active {
+    color: #ffffff !important;
+    background-color: #1b6ccf !important;
+    background-color: st-darken(-st-accent-color, 9%) !important;
+}
+
+.tahoe-popup-background-light .calendar .calendar-day.calendar-today:focus,
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-today:checked:focus {
+    background-color: #3584e4 !important;
+    background-color: -st-accent-color !important;
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-darken(-st-accent-color, 20%), 0.2) !important;
+}
+
+.tahoe-popup-background-light
+    .calendar
+    .calendar-day.calendar-today:selected:focus {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-darken(-st-accent-color, 20%), 0.2) !important;
+}
+
+.tahoe-popup-background-light .quick-toggle:checked {
+    color: #ffffff;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-light .quick-toggle:checked:hover,
+.tahoe-popup-background-light .quick-toggle:hover:checked {
+    color: #ffffff;
+    background-color: #2379e1 !important;
+    color: -st-accent-fg-color;
+    background-color: st-darken(-st-accent-color, 4%) !important;
+}
+
+.tahoe-popup-background-light .quick-toggle:checked:active,
+.tahoe-popup-background-light .quick-toggle:active:checked {
+    color: #ffffff;
+    background-color: #2379e1 !important;
+    color: -st-accent-fg-color;
+    background-color: st-darken(-st-accent-color, 9%) !important;
+}
+
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked {
+    color: #ffffff;
+    background-color: #327bd4 !important;
+    color: -st-accent-fg-color;
+    background-color: st-mix(
+        -st-accent-color,
+        rgba(0, 0, 0, 0.9),
+        92%
+    ) !important;
+}
+
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:hover {
+    color: #ffffff;
+    background-color: #2b71c6 !important;
+    color: -st-accent-fg-color;
+    background-color: st-darken(
+        st-mix(-st-accent-color, rgba(0, 0, 0, 0.9), 92%),
+        4%
+    ) !important;
+}
+
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:active {
+    color: #ffffff;
+    background-color: #2665b1 !important;
+    color: -st-accent-fg-color;
+    background-color: st-darken(
+        st-mix(-st-accent-color, rgba(0, 0, 0, 0.9), 92%),
+        9%
+    ) !important;
+}
+
+.tahoe-popup-background-light .quick-toggle:checked:focus,
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:focus,
+.tahoe-popup-background-light
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:focus:checked {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-darken(-st-accent-color, 20%), 0.2) !important;
+}
+
+.tahoe-popup-background-light
+    .quick-toggle-has-menu:checked
+    .quick-toggle-separator {
+    background-color: rgba(255, 255, 255, 0.3);
+    background-color: st-mix(-st-accent-fg-color, -st-accent-color, 20%);
+}
+
+.tahoe-popup-background-light StEntry {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.tahoe-popup-background-light StEntry:focus {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light StEntry:insensitive {
+    color: rgba(0, 0, 0, 0.4) !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.tahoe-popup-background-light StEntry StLabel.hint-text {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+.tahoe-popup-background-dark .message:second-in-stack,
+.tahoe-popup-surface-dark .message:second-in-stack {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.tahoe-popup-background-dark .message:lower-in-stack,
+.tahoe-popup-surface-dark .message:lower-in-stack {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.tahoe-popup-background-dark .message-media-control,
+.tahoe-popup-surface-dark .message-media-control {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent;
+}
+
+.tahoe-popup-background-dark .message-media-control:hover,
+.tahoe-popup-surface-dark .message-media-control:hover,
+.tahoe-popup-background-dark .message-expand-button:hover,
+.tahoe-popup-surface-dark .message-expand-button:hover,
+.tahoe-popup-background-dark .switcher-list .item-box:hover,
+.tahoe-popup-surface-dark .switcher-list .item-box:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-dark .message-media-control:active,
+.tahoe-popup-surface-dark .message-media-control:active,
+.tahoe-popup-background-dark .message-expand-button:active,
+.tahoe-popup-surface-dark .message-expand-button:active,
+.tahoe-popup-background-dark .switcher-list .item-box:active,
+.tahoe-popup-surface-dark .switcher-list .item-box:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-dark .message-media-control:focus,
+.tahoe-popup-background-dark .message-media-control:checked,
+.tahoe-popup-surface-dark .message-media-control:focus,
+.tahoe-popup-surface-dark .message-media-control:checked,
+.tahoe-popup-background-dark .message-expand-button:focus,
+.tahoe-popup-background-dark .message-expand-button:checked,
+.tahoe-popup-surface-dark .message-expand-button:focus,
+.tahoe-popup-surface-dark .message-expand-button:checked {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-dark .message-media-control:insensitive,
+.tahoe-popup-surface-dark .message-media-control:insensitive {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-popup-background-dark .message .message-header,
+.tahoe-popup-background-dark
+    .message
+    .message-header
+    .message-header-content
+    .event-time,
+.tahoe-popup-background-dark
+    .message
+    .message-header
+    .message-header-content
+    .message-source-title {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.tahoe-popup-background-dark
+    .message
+    .message-box
+    .message-content
+    .message-title {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .message .message-header .message-source-icon {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.tahoe-popup-background-dark .notification-button,
+.tahoe-popup-background-dark .message .message-header .message-expand-button,
+.tahoe-popup-background-dark .message .message-header .message-close-button,
+.tahoe-popup-background-dark .message-notification-group .message-collapse-button,
+.tahoe-popup-background-dark .message-list-controls .message-list-clear-button,
+.tahoe-popup-background-dark .modal-dialog .button,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button,
+.tahoe-popup-background-dark .quick-toggle,
+.tahoe-popup-background-dark .quick-settings .icon-button,
+.tahoe-popup-background-dark .quick-settings-system-item .button,
+.tahoe-popup-background-dark .quick-settings-system-item .icon-button,
+.tahoe-popup-background-dark .quick-settings-system-item .power-item {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-dark .notification-button:hover,
+.tahoe-popup-background-dark .message .message-header .message-close-button:hover,
+.tahoe-popup-background-dark
+    .message
+    .message-header
+    .message-expand-button:hover,
+.tahoe-popup-background-dark
+    .message-notification-group
+    .message-collapse-button:hover,
+.tahoe-popup-background-dark
+    .message-list-controls
+    .message-list-clear-button:hover,
+.tahoe-popup-background-dark
+    .message-list-controls
+    .message-list-clear-button:focus,
+.tahoe-popup-background-dark .modal-dialog .button:hover,
+.tahoe-popup-background-dark .modal-dialog .button:focus,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:hover,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:focus,
+.tahoe-popup-background-dark .quick-toggle:hover,
+.tahoe-popup-background-dark .quick-toggle:focus,
+.tahoe-popup-background-dark .quick-settings .icon-button:hover,
+.tahoe-popup-background-dark .quick-settings .icon-button:focus,
+.tahoe-popup-background-dark .quick-settings-system-item .button:hover,
+.tahoe-popup-background-dark .quick-settings-system-item .button:focus,
+.tahoe-popup-background-dark .quick-settings-system-item .icon-button:hover,
+.tahoe-popup-background-dark .quick-settings-system-item .icon-button:focus,
+.tahoe-popup-background-dark .quick-settings-system-item .power-item:hover,
+.tahoe-popup-background-dark .quick-settings-system-item .power-item:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-dark
+    .message-list-controls
+    .message-list-clear-button:focus,
+.tahoe-popup-background-dark .modal-dialog .button:focus,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:focus,
+.tahoe-popup-background-dark .quick-toggle:focus,
+.tahoe-popup-background-dark .quick-settings .icon-button:focus,
+.tahoe-popup-background-dark .quick-settings-system-item .button:focus,
+.tahoe-popup-background-dark .quick-settings-system-item .icon-button:focus,
+.tahoe-popup-background-dark .quick-settings-system-item .power-item:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark .notification-button:active,
+.tahoe-popup-background-dark
+    .message
+    .message-header
+    .message-expand-button:active,
+.tahoe-popup-background-dark
+    .message
+    .message-header
+    .message-close-button:active,
+.tahoe-popup-background-dark
+    .message-notification-group
+    .message-collapse-button:active,
+.tahoe-popup-background-dark
+    .message-list-controls
+    .message-list-clear-button:active,
+.tahoe-popup-background-dark .modal-dialog .button:active,
+.tahoe-popup-background-dark .modal-dialog .button:checked,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:active,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:checked,
+.tahoe-popup-background-dark .quick-toggle:active,
+.tahoe-popup-background-dark .quick-settings .icon-button:active,
+.tahoe-popup-background-dark .quick-settings-system-item .icon-button:active,
+.tahoe-popup-background-dark .quick-settings-system-item .button:active,
+.tahoe-popup-background-dark .quick-settings-system-item .power-item:active {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-dark .notification-button:insensitive,
+.tahoe-popup-background-dark
+    .message-list-controls
+    .message-list-clear-button:insensitive,
+.tahoe-popup-background-dark .modal-dialog .button:insensitive,
+.tahoe-popup-background-dark
+    .modal-dialog
+    .modal-dialog-button-box
+    .modal-dialog-button:insensitive {
+    color: rgba(255, 255, 255, 0.35) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.tahoe-popup-background-dark .quick-toggle {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.tahoe-popup-background-dark .quick-toggle-has-menu .quick-toggle-menu-button {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:active {
+    background-color: rgba(255, 255, 255, 0.34) !important;
+}
+
+.tahoe-popup-background-dark .calendar {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-dark .datemenu-today-button {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-dark .datemenu-today-button:hover,
+.tahoe-popup-background-dark .datemenu-today-button:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-dark .datemenu-today-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark .datemenu-today-button:active,
+.tahoe-popup-background-dark .datemenu-today-button:checked {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.tahoe-popup-background-dark .datemenu-today-button StLabel,
+.tahoe-popup-background-dark .datemenu-today-button .date-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-popup-background-dark .datemenu-today-button .day-label {
+    color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.tahoe-popup-background-dark .events-button,
+.tahoe-popup-background-dark .world-clocks-button,
+.tahoe-popup-background-dark .weather-button {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-popup-background-dark .events-button:hover,
+.tahoe-popup-background-dark .world-clocks-button:hover,
+.tahoe-popup-background-dark .weather-button:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.tahoe-popup-background-dark .events-button:focus,
+.tahoe-popup-background-dark .world-clocks-button:focus,
+.tahoe-popup-background-dark .weather-button:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark .events-button:active,
+.tahoe-popup-background-dark .world-clocks-button:active,
+.tahoe-popup-background-dark .weather-button:active,
+.tahoe-popup-background-dark .events-button:focus,
+.tahoe-popup-background-dark .world-clocks-button:focus,
+.tahoe-popup-background-dark .weather-button:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.tahoe-popup-background-dark
+    .world-clocks-button
+    .world-clocks-header.no-world-clocks,
+.tahoe-popup-background-dark
+    .weather-button
+    .weather-box
+    .weather-header-box
+    .weather-header.no-location {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .events-button .events-box .events-title,
+.tahoe-popup-background-dark .events-box .events-list .event-box .event-time,
+.tahoe-popup-background-dark
+    .events-button
+    .events-box
+    .events-list
+    .event-placeholder,
+.tahoe-popup-background-dark .world-clocks-button .world-clocks-header,
+.tahoe-popup-background-dark
+    .world-clocks-button
+    .world-clocks-grid
+    .world-clocks-timezone,
+.tahoe-popup-background-dark
+    .weather-button
+    .weather-box
+    .weather-header-box
+    .weather-header {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-month-header
+    .calendar-month-label,
+.tahoe-popup-background-dark .calendar .calendar-month-header .pager-button {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day-heading,
+.tahoe-popup-background-dark .calendar .calendar-day {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day-heading {
+    color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-weekend {
+    color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-other-month,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-day.calendar-other-month.calendar-weekend {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-popup-background-dark .calendar-day.calendar-today {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color !important;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day:hover,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-month-header
+    .pager-button:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day:focus,
+.tahoe-popup-background-dark .calendar .calendar-day-heading:focus,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-month-header
+    .calendar-month-label:focus,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-month-header
+    .pager-button:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark .calendar-day:selected,
+.tahoe-popup-background-dark .calendar .calendar-day:checked,
+.tahoe-popup-background-dark .calendar .calendar-day:active,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-month-header
+    .pager-button:active {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-popup-background-dark .calendar-day:selected:focus,
+.tahoe-popup-background-dark .calendar .calendar-day:checked:focus {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day:active:hover,
+.tahoe-popup-background-dark .calendar .calendar-day:checked:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-today:selected,
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-today:checked {
+    color: #ffffff !important;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color !important;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-today:hover,
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-today:checked:hover,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-day.calendar-today:selected:hover {
+    color: #ffffff !important;
+    background-color: #468ee6 !important;
+    background-color: st-lighten(-st-accent-color, 4%) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-today:active,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-day.calendar-today:checked:active,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-day.calendar-today:selected:active {
+    color: #ffffff !important;
+    background-color: #5d9ce9 !important;
+    background-color: st-lighten(-st-accent-color, 9%) !important;
+}
+
+.tahoe-popup-background-dark .calendar .calendar-day.calendar-today:focus,
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-day.calendar-today:checked:focus {
+    background-color: #3986e4 !important;
+    background-color: st-mix(
+        st-mix(-st-accent-color, #ffffff, 60%),
+        -st-accent-color,
+        5%
+    ) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-mix(-st-accent-color, #ffffff, 60%), 0.2) !important;
+}
+
+.tahoe-popup-background-dark
+    .calendar
+    .calendar-day.calendar-today:selected:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-lighten(-st-accent-color, 30%), 0.2) !important;
+}
+
+.tahoe-popup-background-dark .quick-toggle:checked {
+    color: #ffffff;
+    background-color: #3584e4 !important;
+    color: -st-accent-fg-color;
+    background-color: -st-accent-color !important;
+}
+
+.tahoe-popup-background-dark .quick-toggle:checked:hover,
+.tahoe-popup-background-dark .quick-toggle:hover:checked {
+    color: #ffffff;
+    background-color: #468ee6 !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(-st-accent-color, 4%) !important;
+}
+
+.tahoe-popup-background-dark .quick-toggle:checked:active,
+.tahoe-popup-background-dark .quick-toggle:active:checked {
+    color: #ffffff;
+    background-color: #5d9ce9 !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(-st-accent-color, 9%) !important;
+}
+
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked {
+    color: #ffffff;
+    background-color: #327bd4 !important;
+    color: -st-accent-fg-color;
+    background-color: st-mix(-st-accent-color, #ffffff, 85%) !important;
+}
+
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:hover {
+    color: #ffffff;
+    background-color: #64a0ea !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(
+        st-mix(-st-accent-color, #ffffff, 85%),
+        4%
+    ) !important;
+}
+
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:active {
+    color: #ffffff;
+    background-color: #7baeed !important;
+    color: -st-accent-fg-color;
+    background-color: st-lighten(
+        st-mix(-st-accent-color, #ffffff, 85%),
+        9%
+    ) !important;
+}
+
+.tahoe-popup-background-dark .quick-toggle:checked:focus,
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:checked:focus,
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu
+    .quick-toggle-menu-button:focus:checked {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-lighten(-st-accent-color, 30%), 0.2) !important;
+}
+
+.tahoe-popup-background-dark
+    .quick-toggle-has-menu:checked
+    .quick-toggle-separator {
+    background-color: rgba(255, 255, 255, 0.3);
+    background-color: st-mix(-st-accent-fg-color, -st-accent-color, 30%);
+}
+
+.tahoe-popup-background-dark StEntry {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.tahoe-popup-background-dark StEntry:focus {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark StEntry:insensitive {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-popup-background-dark StEntry StLabel.hint-text {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.tahoe-popup-background-transparent .quick-settings .quick-slider,
+.tahoe-popup-background-transparent .quick-settings .quick-slider:hover,
+.tahoe-popup-background-transparent .quick-settings .quick-slider:focus,
+.tahoe-popup-background-transparent .quick-settings .quick-slider:active,
+.tahoe-popup-background-transparent .quick-settings .quick-slider:checked,
+.tahoe-popup-background-light .quick-settings .quick-slider,
+.tahoe-popup-background-light .quick-settings .quick-slider:hover,
+.tahoe-popup-background-light .quick-settings .quick-slider:focus,
+.tahoe-popup-background-light .quick-settings .quick-slider:active,
+.tahoe-popup-background-light .quick-settings .quick-slider:checked,
+.tahoe-popup-background-dark .quick-settings .quick-slider,
+.tahoe-popup-background-dark .quick-settings .quick-slider:hover,
+.tahoe-popup-background-dark .quick-settings .quick-slider:focus,
+.tahoe-popup-background-dark .quick-settings .quick-slider:active,
+.tahoe-popup-background-dark .quick-settings .quick-slider:checked,
+.tahoe-popup-background-transparent .quick-slider .slider-bin,
+.tahoe-popup-background-transparent .quick-slider .slider-bin:hover,
+.tahoe-popup-background-transparent .quick-slider .slider-bin:focus,
+.tahoe-popup-background-transparent .quick-slider .icon-button,
+.tahoe-popup-background-transparent .quick-slider .button,
+.tahoe-popup-background-light .quick-slider .slider-bin,
+.tahoe-popup-background-light .quick-slider .slider-bin:hover,
+.tahoe-popup-background-light .quick-slider .slider-bin:focus,
+.tahoe-popup-background-light .quick-slider .icon-button,
+.tahoe-popup-background-light .quick-slider .button,
+.tahoe-popup-background-dark .quick-slider .slider-bin,
+.tahoe-popup-background-dark .quick-slider .slider-bin:hover,
+.tahoe-popup-background-dark .quick-slider .slider-bin:focus,
+.tahoe-popup-background-dark .quick-slider .icon-button,
+.tahoe-popup-background-dark .quick-slider .button {
+    background-color: transparent !important;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.tahoe-popup-background-transparent .quick-slider .icon-button:hover,
+.tahoe-popup-background-transparent .quick-slider .button:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-transparent .quick-settings .quick-slider:focus,
+.tahoe-popup-background-transparent .quick-slider .slider-bin:focus,
+.tahoe-popup-background-transparent .quick-slider .icon-button:focus,
+.tahoe-popup-background-transparent .quick-slider .button:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-transparent .quick-slider .icon-button:active,
+.tahoe-popup-background-transparent .quick-slider .button:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-popup-background-light .quick-slider .icon-button:hover,
+.tahoe-popup-background-light .quick-slider .button:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.tahoe-popup-background-light .quick-settings .quick-slider:focus,
+.tahoe-popup-background-light .quick-slider .slider-bin:focus,
+.tahoe-popup-background-light .quick-slider .icon-button:focus,
+.tahoe-popup-background-light .quick-slider .button:focus {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-popup-background-light .quick-slider .icon-button:active,
+.tahoe-popup-background-light .quick-slider .button:active {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.tahoe-popup-background-dark .quick-slider .icon-button:hover,
+.tahoe-popup-background-dark .quick-slider .button:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-dark .quick-settings .quick-slider:focus,
+.tahoe-popup-background-dark .quick-slider .slider-bin:focus,
+.tahoe-popup-background-dark .quick-slider .icon-button:focus,
+.tahoe-popup-background-dark .quick-slider .button:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-popup-background-dark .quick-slider .icon-button:active,
+.tahoe-popup-background-dark .quick-slider .button:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-popup-background-transparent .popup-menu-item:hover,
+.tahoe-popup-background-transparent .popup-menu-item:focus,
+.tahoe-popup-background-transparent .popup-menu-item:selected {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-transparent .popup-menu-item:active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-popup-background-transparent .popup-menu-item:checked,
+.tahoe-popup-background-transparent .popup-menu-item:open {
+    background-color: transparent !important;
+}
+
+.tahoe-popup-background-light .popup-menu-item,
+.tahoe-popup-background-light .popup-menu-item:hover,
+.tahoe-popup-background-light .popup-menu-item:focus,
+.tahoe-popup-background-light .popup-menu-item:selected,
+.tahoe-popup-background-light .popup-menu-item:active,
+.tahoe-popup-background-light .popup-menu-item:checked {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.tahoe-popup-background-light .popup-menu-item:insensitive,
+.tahoe-popup-background-light .popup-inactive-menu-item:insensitive {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.tahoe-popup-background-light .popup-menu-item:hover,
+.tahoe-popup-background-light .popup-menu-item:focus {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.tahoe-popup-background-light .popup-menu-item:active,
+.tahoe-popup-background-light .popup-menu-item:open,
+.tahoe-popup-background-light .popup-menu-item:checked {
+    background-color: rgba(0, 0, 0, 0.19) !important;
+}
+
+.tahoe-popup-background-dark .popup-menu-item,
+.tahoe-popup-background-dark .popup-menu-item:hover,
+.tahoe-popup-background-dark .popup-menu-item:focus,
+.tahoe-popup-background-dark .popup-menu-item:selected,
+.tahoe-popup-background-dark .popup-menu-item:active,
+.tahoe-popup-background-dark .popup-menu-item:checked {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tahoe-popup-background-dark .popup-menu-item:insensitive,
+.tahoe-popup-background-dark .popup-inactive-menu-item:insensitive {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.tahoe-popup-background-dark .popup-menu-item:hover,
+.tahoe-popup-background-dark .popup-menu-item:focus {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-popup-background-dark .popup-menu-item:active,
+.tahoe-popup-background-dark .popup-menu-item:open,
+.tahoe-popup-background-dark .popup-menu-item:checked {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+/*** OVERVIEW ***/
+
+/*
+* Add transparency to the workspace animation (between workspaces)
+*/
+.tahoe-blurred-overview .workspace-animation {
+    background-color: transparent !important;
+}
+
+/*
+* `.tahoe-overview-components-transparent`
+*/
+
+.tahoe-overview-components-transparent .workspace-thumbnail {
+    border: 1px solid rgba(100, 100, 100, 0.35);
+}
+
+.tahoe-overview-components-transparent .search-entry,
+.tahoe-overview-components-transparent .search-entry:focus {
+    color: white !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.tahoe-overview-components-transparent .search-entry:focus {
+    background-color: rgba(230, 230, 230, 0.08) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.8) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-mix(-st-accent-color, #ffffff, 60%), 0.2) !important;
+}
+
+.tahoe-overview-components-transparent .search-entry .search-entry-icon,
+.tahoe-overview-components-transparent .search-entry StLabel.hint-text {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.tahoe-overview-components-transparent #appDisplay .overview-tile,
+.tahoe-overview-components-transparent #appDisplay .overview-icon,
+.tahoe-overview-components-transparent .overview-tile,
+.tahoe-overview-components-transparent .overview-icon,
+.tahoe-overview-components-transparent .grid-search-result,
+.tahoe-overview-components-transparent .list-search-result,
+.tahoe-overview-components-transparent .search-provider-icon,
+/* prevents the extension from interfering with Just Perfection */
+.tahoe-overview-components-transparent.just-perfection .search-section-content {
+    background-color: transparent !important;
+}
+
+.tahoe-overview-components-transparent .workspace-thumbnail,
+.tahoe-overview-components-transparent .search-section-content,
+.tahoe-overview-components-transparent .page-navigation-arrow {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.tahoe-overview-components-transparent #appDisplay .overview-tile:hover,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:focus,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:selected,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:highlighted,
+.tahoe-overview-components-transparent .overview-tile:hover,
+.tahoe-overview-components-transparent .overview-tile:focus,
+.tahoe-overview-components-transparent .overview-tile:selected,
+.tahoe-overview-components-transparent .overview-tile:highlighted,
+.tahoe-overview-components-transparent .grid-search-result:hover,
+.tahoe-overview-components-transparent .grid-search-result:focus,
+.tahoe-overview-components-transparent .grid-search-result:selected,
+.tahoe-overview-components-transparent .grid-search-result:highlighted,
+.tahoe-overview-components-transparent .list-search-result:hover,
+.tahoe-overview-components-transparent .list-search-result:focus,
+.tahoe-overview-components-transparent .list-search-result:selected,
+.tahoe-overview-components-transparent .list-search-result:highlighted,
+.tahoe-overview-components-transparent .search-provider-icon:hover,
+.tahoe-overview-components-transparent .search-provider-icon:focus,
+.tahoe-overview-components-transparent .page-navigation-arrow:hover,
+.tahoe-overview-components-transparent .page-navigation-arrow:focus {
+    background-color: rgba(230, 230, 230, 0.08) !important;
+}
+
+.tahoe-overview-components-transparent #appDisplay .overview-tile:active,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:focus:hover,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:drop,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:selected:hover,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:highlighted:hover,
+.tahoe-overview-components-transparent .overview-tile:active,
+.tahoe-overview-components-transparent .overview-tile:focus:hover,
+.tahoe-overview-components-transparent .overview-tile:drop,
+.tahoe-overview-components-transparent .overview-tile:selected:hover,
+.tahoe-overview-components-transparent .overview-tile:highlighted:hover,
+.tahoe-overview-components-transparent .grid-search-result:active,
+.tahoe-overview-components-transparent .grid-search-result:focus:hover,
+.tahoe-overview-components-transparent .grid-search-result:selected:hover,
+.tahoe-overview-components-transparent .grid-search-result:highlighted:hover,
+.tahoe-overview-components-transparent .list-search-result:active,
+.tahoe-overview-components-transparent .list-search-result:focus:hover,
+.tahoe-overview-components-transparent .list-search-result:selected:hover,
+.tahoe-overview-components-transparent .list-search-result:highlighted:hover,
+.tahoe-overview-components-transparent .search-provider-icon:active,
+.tahoe-overview-components-transparent .search-provider-icon:focus:hover,
+.tahoe-overview-components-transparent .page-navigation-arrow:active,
+.tahoe-overview-components-transparent .page-navigation-arrow:focus:hover {
+    background-color: rgba(230, 230, 230, 0.12) !important;
+}
+
+.tahoe-overview-components-transparent #appDisplay .overview-tile:focus:active,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:selected:active,
+.tahoe-overview-components-transparent #appDisplay .overview-tile:highlighted:active,
+.tahoe-overview-components-transparent .overview-tile:focus:active,
+.tahoe-overview-components-transparent .overview-tile:selected:active,
+.tahoe-overview-components-transparent .overview-tile:highlighted:active,
+.tahoe-overview-components-transparent .grid-search-result:focus:active,
+.tahoe-overview-components-transparent .grid-search-result:selected:active,
+.tahoe-overview-components-transparent .grid-search-result:highlighted:active,
+.tahoe-overview-components-transparent .list-search-result:focus:active,
+.tahoe-overview-components-transparent .list-search-result:selected:active,
+.tahoe-overview-components-transparent .list-search-result:highlighted:active,
+.tahoe-overview-components-transparent .search-provider-icon:focus:active,
+.tahoe-overview-components-transparent .page-navigation-arrow:focus:active {
+    background-color: rgba(230, 230, 230, 0.15) !important;
+}
+
+/* App Folders */
+.tahoe-overview-components-transparent #appDisplay .overview-tile.app-folder,
+.tahoe-overview-components-transparent #appDisplay .app-folder,
+.tahoe-overview-components-transparent .overview-tile.app-folder,
+.tahoe-overview-components-transparent .app-folder {
+    background-color: rgba(0, 0, 0, 0) !important;
+    border: none !important;
+    border-color: transparent !important;
+}
+
+/* remove the rectangular background from the dash */
+.tahoe-overview-components-transparent #dash .overview-tile,
+.tahoe-overview-components-transparent #dash .overview-tile:hover,
+.tahoe-overview-components-transparent #dash .overview-tile:focus,
+.tahoe-overview-components-transparent #dash .overview-tile:active,
+.tahoe-overview-components-transparent #dash .overview-tile:selected,
+.tahoe-overview-components-transparent #dash .overview-tile:highlighted,
+.tahoe-overview-components-transparent #dash .overview-tile:drop,
+.tahoe-overview-components-transparent #dash .app-well-app,
+.tahoe-overview-components-transparent #dash .app-well-app:hover,
+.tahoe-overview-components-transparent #dash .app-well-app:focus,
+.tahoe-overview-components-transparent #dash .app-well-app:active,
+.tahoe-overview-components-transparent #dash .show-apps,
+.tahoe-overview-components-transparent #dash .show-apps:hover,
+.tahoe-overview-components-transparent #dash .show-apps:focus,
+.tahoe-overview-components-transparent #dash .show-apps:active,
+.tahoe-overview-components-transparent #dashtopanelScrollview .overview-tile,
+.tahoe-overview-components-transparent #dashtopanelScrollview .overview-tile:hover,
+.tahoe-overview-components-transparent #dashtopanelScrollview .overview-tile:focus,
+.tahoe-overview-components-transparent #dashtopanelScrollview .overview-tile:active,
+.tahoe-overview-components-transparent .multimonitor-dock .overview-tile,
+.tahoe-overview-components-transparent .multimonitor-dock .overview-tile:hover,
+.tahoe-overview-components-transparent .multimonitor-dock .overview-tile:focus,
+.tahoe-overview-components-transparent .multimonitor-dock .overview-tile:active {
+    background-color: transparent !important;
+}
+
+/*
+* `.tahoe-overview-components-light`
+*/
+
+.search-entry.tahoe-overview-components-light,
+.tahoe-overview-components-light .search-entry,
+.search-entry.tahoe-overview-components-light:focus,
+.tahoe-overview-components-light .search-entry:focus {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(255, 255, 255, 0.58) !important;
+    box-shadow: none;
+}
+
+.search-entry.tahoe-overview-components-light:focus,
+.tahoe-overview-components-light .search-entry:focus {
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, 0.78) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.8) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.search-entry.tahoe-overview-components-light .search-entry-icon,
+.tahoe-overview-components-light .search-entry .search-entry-icon,
+.search-entry.tahoe-overview-components-light StLabel.hint-text,
+.tahoe-overview-components-light .search-entry StLabel.hint-text {
+    color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.tahoe-overview-components-light #appDisplay .overview-tile,
+.tahoe-overview-components-light #appDisplay .overview-icon,
+.tahoe-overview-components-light .overview-tile,
+.tahoe-overview-components-light .overview-icon,
+.tahoe-overview-components-light .grid-search-result,
+.tahoe-overview-components-light .list-search-result,
+.tahoe-overview-components-light .search-provider-icon,
+/* prevents the extension from interfering with Just Perfection */
+.tahoe-overview-components-light.just-perfection .search-section-content {
+    background-color: transparent !important;
+}
+
+.tahoe-overview-components-light .workspace-thumbnail {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-overview-components-light .search-section-content,
+.tahoe-overview-components-light .page-navigation-arrow {
+    background-color: rgba(255, 255, 255, 0.58) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tahoe-overview-components-light .search-statusbox,
+.tahoe-overview-components-light .search-statustext {
+    /* The spinner and status text sit over the wallpaper, outside result cards. */
+    color: rgba(250, 250, 251, 0.8);
+}
+
+/* Text styling inside search section content */
+.tahoe-overview-components-light .search-section-content,
+.tahoe-overview-components-light .search-section-content StLabel,
+.tahoe-overview-components-light .list-search-result,
+.tahoe-overview-components-light .list-search-result StLabel,
+.tahoe-overview-components-light .list-search-result-title,
+.tahoe-overview-components-light .search-provider-icon,
+.tahoe-overview-components-light .search-provider-icon StLabel,
+.tahoe-overview-components-light .list-search-provider-details,
+.tahoe-overview-components-light .page-navigation-arrow > StIcon {
+    color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.tahoe-overview-components-light .list-search-result .list-search-result-description {
+    color: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* Hover and active states */
+.tahoe-overview-components-light #appDisplay .overview-tile:hover,
+.tahoe-overview-components-light #appDisplay .overview-tile:focus,
+.tahoe-overview-components-light .overview-tile:hover,
+.tahoe-overview-components-light .overview-tile:focus,
+.tahoe-overview-components-light .grid-search-result:hover,
+.tahoe-overview-components-light .grid-search-result:focus,
+.tahoe-overview-components-light #dash .overview-tile:hover .overview-icon,
+.tahoe-overview-components-light #dash .overview-tile:focus .overview-icon,
+.tahoe-overview-components-light #dash .show-apps:hover .overview-icon,
+.tahoe-overview-components-light #dash .show-apps:focus .overview-icon,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .overview-tile:hover
+    .overview-icon,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .overview-tile:focus
+    .overview-icon,
+.tahoe-overview-components-light .multimonitor-dock .show-apps:hover .overview-icon,
+.tahoe-overview-components-light .multimonitor-dock .show-apps:focus .overview-icon {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+/* (Light mode) Use darker states in search result lists */
+.tahoe-overview-components-light .list-search-result:hover,
+.tahoe-overview-components-light .search-provider-icon:hover {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.tahoe-overview-components-light .list-search-result:focus,
+.tahoe-overview-components-light .list-search-result:highlighted,
+.tahoe-overview-components-light .search-provider-icon:focus {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.tahoe-overview-components-light .list-search-result:active,
+.tahoe-overview-components-light .list-search-result:selected,
+.tahoe-overview-components-light .list-search-result:focus:hover,
+.tahoe-overview-components-light .list-search-result:selected:hover,
+.tahoe-overview-components-light .list-search-result:highlighted:hover,
+.tahoe-overview-components-light .list-search-result:focus:active,
+.tahoe-overview-components-light .list-search-result:selected:active,
+.tahoe-overview-components-light .list-search-result:highlighted:active,
+.tahoe-overview-components-light .search-provider-icon:active,
+.tahoe-overview-components-light .search-provider-icon:focus:hover,
+.tahoe-overview-components-light .search-provider-icon:focus:active {
+    background-color: rgba(0, 0, 0, 0.19) !important;
+}
+
+.tahoe-overview-components-light .page-navigation-arrow:hover,
+.tahoe-overview-components-light .page-navigation-arrow:focus {
+    background-color: rgba(255, 255, 255, 0.78) !important;
+}
+
+/* Highlighted / selected search results */
+.tahoe-overview-components-light #appDisplay .overview-tile:selected,
+.tahoe-overview-components-light #appDisplay .overview-tile:highlighted,
+.tahoe-overview-components-light .overview-tile:selected,
+.tahoe-overview-components-light .overview-tile:highlighted,
+.tahoe-overview-components-light .grid-search-result:selected,
+.tahoe-overview-components-light .grid-search-result:highlighted {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-overview-components-light #appDisplay .overview-tile:active,
+.tahoe-overview-components-light #appDisplay .overview-tile:focus:hover,
+.tahoe-overview-components-light #appDisplay .overview-tile:drop,
+.tahoe-overview-components-light #appDisplay .overview-tile:selected:hover,
+.tahoe-overview-components-light #appDisplay .overview-tile:highlighted:hover,
+.tahoe-overview-components-light .overview-tile:active,
+.tahoe-overview-components-light .overview-tile:focus:hover,
+.tahoe-overview-components-light .overview-tile:drop,
+.tahoe-overview-components-light .overview-tile:selected:hover,
+.tahoe-overview-components-light .overview-tile:highlighted:hover,
+.tahoe-overview-components-light .grid-search-result:active,
+.tahoe-overview-components-light .grid-search-result:focus:hover,
+.tahoe-overview-components-light .grid-search-result:selected:hover,
+.tahoe-overview-components-light .grid-search-result:highlighted:hover,
+.tahoe-overview-components-light #dash .overview-tile:active .overview-icon,
+.tahoe-overview-components-light #dash .overview-tile:focus:hover .overview-icon,
+.tahoe-overview-components-light #dash .overview-tile:drop .overview-icon,
+.tahoe-overview-components-light #dash .show-apps:checked .overview-icon,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .overview-tile:active
+    .overview-icon,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .overview-tile:focus:hover
+    .overview-icon,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .overview-tile:drop
+    .overview-icon,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .show-apps:checked
+    .overview-icon {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.tahoe-overview-components-light .page-navigation-arrow:active,
+.tahoe-overview-components-light .page-navigation-arrow:focus:hover {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-overview-components-light #appDisplay .overview-tile:focus:active,
+.tahoe-overview-components-light #appDisplay .overview-tile:selected:active,
+.tahoe-overview-components-light #appDisplay .overview-tile:highlighted:active,
+.tahoe-overview-components-light .overview-tile:focus:active,
+.tahoe-overview-components-light .overview-tile:selected:active,
+.tahoe-overview-components-light .overview-tile:highlighted:active,
+.tahoe-overview-components-light .grid-search-result:focus:active,
+.tahoe-overview-components-light .grid-search-result:selected:active,
+.tahoe-overview-components-light .grid-search-result:highlighted:active,
+.tahoe-overview-components-light .page-navigation-arrow:focus:active,
+.tahoe-overview-components-light #dash .show-apps:checked .overview-icon:hover,
+.tahoe-overview-components-light
+    .multimonitor-dock
+    .show-apps:checked
+    .overview-icon:hover {
+    background-color: rgba(255, 255, 255, 0.38) !important;
+}
+
+/* App Folders */
+.tahoe-overview-components-light #appDisplay .overview-tile.app-folder,
+.tahoe-overview-components-light #appDisplay .app-folder,
+.tahoe-overview-components-light .overview-tile.app-folder,
+.tahoe-overview-components-light .app-folder {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: none !important;
+    border-color: transparent !important;
+}
+
+.tahoe-overview-components-light #appDisplay .overview-tile.app-folder,
+.tahoe-overview-components-light #appDisplay .overview-tile.app-folder StLabel,
+.tahoe-overview-components-light #appDisplay .app-folder,
+.tahoe-overview-components-light #appDisplay .app-folder StLabel,
+.tahoe-overview-components-light .overview-tile.app-folder,
+.tahoe-overview-components-light .overview-tile.app-folder StLabel,
+.tahoe-overview-components-light .app-folder,
+.tahoe-overview-components-light .app-folder StLabel {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-overview-components-light #appDisplay .overview-tile.app-folder:hover,
+.tahoe-overview-components-light #appDisplay .overview-tile.app-folder:focus,
+.tahoe-overview-components-light #appDisplay .app-folder:hover,
+.tahoe-overview-components-light #appDisplay .app-folder:focus,
+.tahoe-overview-components-light .overview-tile.app-folder:hover,
+.tahoe-overview-components-light .overview-tile.app-folder:focus,
+.tahoe-overview-components-light .app-folder:hover,
+.tahoe-overview-components-light .app-folder:focus {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-overview-components-light #appDisplay .overview-tile.app-folder:active,
+.tahoe-overview-components-light #appDisplay .app-folder:active,
+.tahoe-overview-components-light .overview-tile.app-folder:active,
+.tahoe-overview-components-light .app-folder:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+/* remove the rectangular background from the dash */
+.tahoe-overview-components-light #dash .overview-tile,
+.tahoe-overview-components-light #dash .overview-tile:hover,
+.tahoe-overview-components-light #dash .overview-tile:focus,
+.tahoe-overview-components-light #dash .overview-tile:active,
+.tahoe-overview-components-light #dash .overview-tile:selected,
+.tahoe-overview-components-light #dash .overview-tile:highlighted,
+.tahoe-overview-components-light #dash .overview-tile:drop,
+.tahoe-overview-components-light #dash .app-well-app,
+.tahoe-overview-components-light #dash .app-well-app:hover,
+.tahoe-overview-components-light #dash .app-well-app:focus,
+.tahoe-overview-components-light #dash .app-well-app:active,
+.tahoe-overview-components-light #dash .show-apps,
+.tahoe-overview-components-light #dash .show-apps:hover,
+.tahoe-overview-components-light #dash .show-apps:focus,
+.tahoe-overview-components-light #dash .show-apps:active,
+.tahoe-overview-components-light #dashtopanelScrollview .overview-tile,
+.tahoe-overview-components-light #dashtopanelScrollview .overview-tile:hover,
+.tahoe-overview-components-light #dashtopanelScrollview .overview-tile:focus,
+.tahoe-overview-components-light #dashtopanelScrollview .overview-tile:active,
+.tahoe-overview-components-light .multimonitor-dock .overview-tile,
+.tahoe-overview-components-light .multimonitor-dock .overview-tile:hover,
+.tahoe-overview-components-light .multimonitor-dock .overview-tile:focus,
+.tahoe-overview-components-light .multimonitor-dock .overview-tile:active {
+    background-color: transparent !important;
+}
+
+/*
+* `.tahoe-overview-components-dark`
+*/
+
+.search-entry.tahoe-overview-components-dark,
+.tahoe-overview-components-dark .search-entry,
+.search-entry.tahoe-overview-components-dark:focus,
+.tahoe-overview-components-dark .search-entry:focus {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    box-shadow: none;
+}
+
+.search-entry.tahoe-overview-components-dark:focus,
+.tahoe-overview-components-dark .search-entry:focus {
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.8) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(st-mix(-st-accent-color, #ffffff, 60%), 0.2) !important;
+}
+
+.search-entry.tahoe-overview-components-dark .search-entry-icon,
+.tahoe-overview-components-dark .search-entry .search-entry-icon,
+.search-entry.tahoe-overview-components-dark StLabel.hint-text,
+.tahoe-overview-components-dark .search-entry StLabel.hint-text {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.tahoe-overview-components-dark .list-search-result .list-search-result-description {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.tahoe-overview-components-dark #appDisplay .overview-tile,
+.tahoe-overview-components-dark #appDisplay .overview-icon,
+.tahoe-overview-components-dark .overview-tile,
+.tahoe-overview-components-dark .overview-icon,
+.tahoe-overview-components-dark .grid-search-result,
+.tahoe-overview-components-dark .list-search-result,
+.tahoe-overview-components-dark .search-provider-icon,
+/* prevents the extension from interfering with Just Perfection */
+.tahoe-overview-components-dark.just-perfection .search-section-content {
+    background-color: transparent !important;
+}
+
+.tahoe-overview-components-dark .workspace-thumbnail,
+.tahoe-overview-components-dark .search-section-content,
+.tahoe-overview-components-dark .page-navigation-arrow {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-overview-components-dark #appDisplay .overview-tile:hover,
+.tahoe-overview-components-dark #appDisplay .overview-tile:focus,
+.tahoe-overview-components-dark #appDisplay .overview-tile:selected,
+.tahoe-overview-components-dark #appDisplay .overview-tile:highlighted,
+.tahoe-overview-components-dark .overview-tile:hover,
+.tahoe-overview-components-dark .overview-tile:focus,
+.tahoe-overview-components-dark .overview-tile:selected,
+.tahoe-overview-components-dark .overview-tile:highlighted,
+.tahoe-overview-components-dark .grid-search-result:hover,
+.tahoe-overview-components-dark .grid-search-result:focus,
+.tahoe-overview-components-dark .grid-search-result:selected,
+.tahoe-overview-components-dark .grid-search-result:highlighted,
+.tahoe-overview-components-dark .list-search-result:hover,
+.tahoe-overview-components-dark .list-search-result:focus,
+.tahoe-overview-components-dark .list-search-result:selected,
+.tahoe-overview-components-dark .list-search-result:highlighted,
+.tahoe-overview-components-dark .search-provider-icon:hover,
+.tahoe-overview-components-dark .search-provider-icon:focus,
+.tahoe-overview-components-dark #dash .overview-tile:hover .overview-icon,
+.tahoe-overview-components-dark #dash .overview-tile:focus .overview-icon,
+.tahoe-overview-components-dark #dash .show-apps:hover .overview-icon,
+.tahoe-overview-components-dark #dash .show-apps:focus .overview-icon,
+.tahoe-overview-components-dark .page-navigation-arrow:hover,
+.tahoe-overview-components-dark .page-navigation-arrow:focus {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-overview-components-dark #appDisplay .overview-tile:active,
+.tahoe-overview-components-dark #appDisplay .overview-tile:focus:hover,
+.tahoe-overview-components-dark #appDisplay .overview-tile:drop,
+.tahoe-overview-components-dark #appDisplay .overview-tile:selected:hover,
+.tahoe-overview-components-dark #appDisplay .overview-tile:highlighted:hover,
+.tahoe-overview-components-dark .overview-tile:active,
+.tahoe-overview-components-dark .overview-tile:focus:hover,
+.tahoe-overview-components-dark .overview-tile:drop,
+.tahoe-overview-components-dark .overview-tile:selected:hover,
+.tahoe-overview-components-dark .overview-tile:highlighted:hover,
+.tahoe-overview-components-dark .grid-search-result:active,
+.tahoe-overview-components-dark .grid-search-result:focus:hover,
+.tahoe-overview-components-dark .grid-search-result:selected:hover,
+.tahoe-overview-components-dark .grid-search-result:highlighted:hover,
+.tahoe-overview-components-dark .list-search-result:active,
+.tahoe-overview-components-dark .list-search-result:focus:hover,
+.tahoe-overview-components-dark .list-search-result:selected:hover,
+.tahoe-overview-components-dark .list-search-result:highlighted:hover,
+.tahoe-overview-components-dark .search-provider-icon:active,
+.tahoe-overview-components-dark .search-provider-icon:focus:hover,
+.tahoe-overview-components-dark .page-navigation-arrow:active,
+.tahoe-overview-components-dark .page-navigation-arrow:focus:hover,
+.tahoe-overview-components-dark #dash .overview-tile:active .overview-icon,
+.tahoe-overview-components-dark #dash .overview-tile:focus:hover .overview-icon,
+.tahoe-overview-components-dark #dash .overview-tile:drop .overview-icon,
+.tahoe-overview-components-dark #dash .show-apps:checked .overview-icon,
+.tahoe-overview-components-dark
+    .multimonitor-dock
+    .overview-tile:active
+    .overview-icon,
+.tahoe-overview-components-dark
+    .multimonitor-dock
+    .overview-tile:focus:hover
+    .overview-icon,
+.tahoe-overview-components-dark .multimonitor-dock .overview-tile:drop .overview-icon,
+.tahoe-overview-components-dark .multimonitor-dock .show-apps:checked .overview-icon {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-overview-components-dark #appDisplay .overview-tile:focus:active,
+.tahoe-overview-components-dark #appDisplay .overview-tile:selected:active,
+.tahoe-overview-components-dark #appDisplay .overview-tile:highlighted:active,
+.tahoe-overview-components-dark .overview-tile:focus:active,
+.tahoe-overview-components-dark .overview-tile:selected:active,
+.tahoe-overview-components-dark .overview-tile:highlighted:active,
+.tahoe-overview-components-dark .grid-search-result:focus:active,
+.tahoe-overview-components-dark .grid-search-result:selected:active,
+.tahoe-overview-components-dark .grid-search-result:highlighted:active,
+.tahoe-overview-components-dark .list-search-result:focus:active,
+.tahoe-overview-components-dark .list-search-result:selected:active,
+.tahoe-overview-components-dark .list-search-result:highlighted:active,
+.tahoe-overview-components-dark .search-provider-icon:focus:active,
+.tahoe-overview-components-dark .page-navigation-arrow:focus:active,
+.tahoe-overview-components-dark #dash .show-apps:checked .overview-icon:hover,
+.tahoe-overview-components-dark
+    .multimonitor-dock
+    .show-apps:checked
+    .overview-icon:hover {
+    background-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+/* App Folders */
+.tahoe-overview-components-dark #appDisplay .overview-tile.app-folder,
+.tahoe-overview-components-dark #appDisplay .app-folder,
+.tahoe-overview-components-dark .overview-tile.app-folder,
+.tahoe-overview-components-dark .app-folder {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: none !important;
+    border-color: transparent !important;
+}
+
+.tahoe-overview-components-dark #appDisplay .overview-tile.app-folder:hover,
+.tahoe-overview-components-dark #appDisplay .overview-tile.app-folder:focus,
+.tahoe-overview-components-dark #appDisplay .app-folder:hover,
+.tahoe-overview-components-dark #appDisplay .app-folder:focus,
+.tahoe-overview-components-dark .overview-tile.app-folder:hover,
+.tahoe-overview-components-dark .overview-tile.app-folder:focus,
+.tahoe-overview-components-dark .app-folder:hover,
+.tahoe-overview-components-dark .app-folder:focus {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-overview-components-dark #appDisplay .overview-tile.app-folder:active,
+.tahoe-overview-components-dark #appDisplay .app-folder:active,
+.tahoe-overview-components-dark .overview-tile.app-folder:active,
+.tahoe-overview-components-dark .app-folder:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+/* remove the rectangular background from the dash */
+.tahoe-overview-components-dark #dash .overview-tile,
+.tahoe-overview-components-dark #dash .overview-tile:hover,
+.tahoe-overview-components-dark #dash .overview-tile:focus,
+.tahoe-overview-components-dark #dash .overview-tile:active,
+.tahoe-overview-components-dark #dash .overview-tile:selected,
+.tahoe-overview-components-dark #dash .overview-tile:highlighted,
+.tahoe-overview-components-dark #dash .overview-tile:drop,
+.tahoe-overview-components-dark #dash .app-well-app,
+.tahoe-overview-components-dark #dash .app-well-app:hover,
+.tahoe-overview-components-dark #dash .app-well-app:focus,
+.tahoe-overview-components-dark #dash .app-well-app:active,
+.tahoe-overview-components-dark #dash .show-apps,
+.tahoe-overview-components-dark #dash .show-apps:hover,
+.tahoe-overview-components-dark #dash .show-apps:focus,
+.tahoe-overview-components-dark #dash .show-apps:active,
+.tahoe-overview-components-dark #dashtopanelScrollview .overview-tile,
+.tahoe-overview-components-dark #dashtopanelScrollview .overview-tile:hover,
+.tahoe-overview-components-dark #dashtopanelScrollview .overview-tile:focus,
+.tahoe-overview-components-dark #dashtopanelScrollview .overview-tile:active,
+.tahoe-overview-components-dark .multimonitor-dock .overview-tile,
+.tahoe-overview-components-dark .multimonitor-dock .overview-tile:hover,
+.tahoe-overview-components-dark .multimonitor-dock .overview-tile:focus,
+.tahoe-overview-components-dark .multimonitor-dock .overview-tile:active {
+    background-color: transparent !important;
+}
+/*** APPFOLDER DIALOG ***/
+
+/*
+* `.tahoe-appfolder-dialogs-transparent`
+*/
+
+.app-folder-dialog.tahoe-appfolder-dialogs-transparent {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.tahoe-appfolder-dialogs-transparent .folder-name-entry {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    box-shadow: none;
+}
+
+/* Dialog controls follow the folder style independently of the overview. */
+.tahoe-appfolder-dialogs-transparent .edit-folder-button,
+.tahoe-appfolder-dialogs-transparent .icon-button,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+    border-color: transparent;
+}
+
+.tahoe-appfolder-dialogs-transparent .edit-folder-button StIcon,
+.tahoe-appfolder-dialogs-transparent .icon-button StIcon,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow StIcon,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow > StIcon {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-appfolder-dialogs-transparent .edit-folder-button:hover,
+.tahoe-appfolder-dialogs-transparent .edit-folder-button:focus,
+.tahoe-appfolder-dialogs-transparent .edit-folder-button:focus:hover,
+.tahoe-appfolder-dialogs-transparent .icon-button:hover,
+.tahoe-appfolder-dialogs-transparent .icon-button:focus,
+.tahoe-appfolder-dialogs-transparent .icon-button:focus:hover,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow:hover,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow:focus,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow:focus:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-appfolder-dialogs-transparent .edit-folder-button:active,
+.tahoe-appfolder-dialogs-transparent .icon-button:active,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow:active,
+.tahoe-appfolder-dialogs-transparent .edit-folder-button:focus:active,
+.tahoe-appfolder-dialogs-transparent .icon-button:focus:active,
+.tahoe-appfolder-dialogs-transparent .page-navigation-arrow:focus:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+/* Keep app highlights independent of the overview's selected style. */
+.tahoe-appfolder-dialogs-transparent .overview-tile,
+.tahoe-appfolder-dialogs-transparent .overview-tile .overview-icon {
+    background-color: transparent !important;
+}
+
+.tahoe-appfolder-dialogs-transparent .overview-tile:hover,
+.tahoe-appfolder-dialogs-transparent .overview-tile:focus,
+.tahoe-appfolder-dialogs-transparent .overview-tile:selected,
+.tahoe-appfolder-dialogs-transparent .overview-tile:highlighted {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.tahoe-appfolder-dialogs-transparent .overview-tile:active,
+.tahoe-appfolder-dialogs-transparent .overview-tile:focus:hover,
+.tahoe-appfolder-dialogs-transparent .overview-tile:drop,
+.tahoe-appfolder-dialogs-transparent .overview-tile:selected:hover,
+.tahoe-appfolder-dialogs-transparent .overview-tile:highlighted:hover {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-appfolder-dialogs-transparent .overview-tile:focus:active,
+.tahoe-appfolder-dialogs-transparent .overview-tile:selected:active,
+.tahoe-appfolder-dialogs-transparent .overview-tile:highlighted:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+/*
+* `.tahoe-appfolder-dialogs-light`
+*/
+
+.app-folder-dialog.tahoe-appfolder-dialogs-light {
+    color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: none;
+}
+
+.tahoe-appfolder-dialogs-light .folder-name-container .folder-name-entry,
+.tahoe-appfolder-dialogs-light .folder-name-container .folder-name-label,
+.tahoe-appfolder-dialogs-light .folder-name-entry,
+.tahoe-appfolder-dialogs-light .folder-name-entry StLabel,
+.tahoe-appfolder-dialogs-light .folder-name-entry StEntry {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: transparent !important;
+    border: 0;
+    box-shadow: none;
+}
+
+.tahoe-appfolder-dialogs-light .overview-tile,
+.tahoe-appfolder-dialogs-light .overview-tile StLabel,
+.tahoe-appfolder-dialogs-light .app-well-app,
+.tahoe-appfolder-dialogs-light .app-well-app StLabel {
+    color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.tahoe-appfolder-dialogs-light .edit-folder-button,
+.tahoe-appfolder-dialogs-light .icon-button,
+.tahoe-appfolder-dialogs-light .page-navigation-arrow {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tahoe-appfolder-dialogs-light .edit-folder-button StIcon,
+.tahoe-appfolder-dialogs-light .icon-button StIcon,
+.tahoe-appfolder-dialogs-light .page-navigation-arrow StIcon,
+.tahoe-appfolder-dialogs-light .page-navigation-arrow > StIcon,
+.tahoe-appfolder-dialogs-light .page-navigation-arrow StWidget {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: transparent !important;
+}
+
+.tahoe-appfolder-dialogs-light .edit-folder-button:hover,
+.tahoe-appfolder-dialogs-light .icon-button:hover,
+.tahoe-appfolder-dialogs-light .page-navigation-arrow:hover {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+.tahoe-appfolder-dialogs-dark .edit-folder-button:focus,
+.tahoe-appfolder-dialogs-dark .icon-button:focus,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow:focus {
+    box-shadow: inset 0 0 0 2px rgba(28, 113, 216, 0.5) !important;
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+}
+
+.tahoe-appfolder-dialogs-light .edit-folder-button:active,
+.tahoe-appfolder-dialogs-light .icon-button:active,
+.tahoe-appfolder-dialogs-light .page-navigation-arrow:active {
+    color: rgba(0, 0, 0, 0.85) !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Prevent double hover box on app icons inside folder dialog */
+.tahoe-appfolder-dialogs-light .overview-tile .overview-icon,
+.tahoe-appfolder-dialogs-light .overview-tile:hover .overview-icon,
+.tahoe-appfolder-dialogs-light .overview-tile:focus .overview-icon,
+.tahoe-appfolder-dialogs-light .overview-tile:active .overview-icon {
+    background-color: transparent !important;
+}
+
+.tahoe-appfolder-dialogs-light .overview-tile:hover,
+.tahoe-appfolder-dialogs-light .overview-tile:focus {
+    background-color: rgba(0, 0, 0, 0.13) !important;
+}
+
+.tahoe-appfolder-dialogs-light .overview-tile:active {
+    background-color: rgba(0, 0, 0, 0.19) !important;
+}
+
+.tahoe-appfolder-dialogs-light .page-indicators .page-indicator-icon,
+.tahoe-appfolder-dialogs-light .page-indicator .page-indicator-icon,
+.tahoe-appfolder-dialogs-light .page-indicator-icon {
+    background-color: rgba(34, 34, 38, 0.55) !important;
+}
+
+.tahoe-appfolder-dialogs-light .page-indicator:hover .page-indicator-icon {
+    background-color: rgba(34, 34, 38, 0.75) !important;
+}
+
+.tahoe-appfolder-dialogs-light .page-indicator.active .page-indicator-icon,
+.tahoe-appfolder-dialogs-light .page-indicator:checked .page-indicator-icon {
+    background-color: #222226 !important;
+}
+
+.tahoe-appfolder-dialogs-light .app-grid-running-dot,
+.tahoe-appfolder-dialogs-light .app-well-app-running-dot,
+.tahoe-appfolder-dialogs-light .running-dot {
+    background-color: #222226 !important;
+    color: #222226 !important;
+}
+
+/*
+* `.tahoe-appfolder-dialogs-dark`
+*/
+
+.app-folder-dialog.tahoe-appfolder-dialogs-dark {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(30, 30, 33, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: none;
+}
+
+.tahoe-appfolder-dialogs-dark .folder-name-container .folder-name-entry,
+.tahoe-appfolder-dialogs-dark .folder-name-container .folder-name-label,
+.tahoe-appfolder-dialogs-dark .folder-name-entry {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+    border: 0;
+    box-shadow: none;
+}
+
+.tahoe-appfolder-dialogs-dark .overview-tile,
+.tahoe-appfolder-dialogs-dark .overview-tile StLabel,
+.tahoe-appfolder-dialogs-dark .app-well-app,
+.tahoe-appfolder-dialogs-dark .app-well-app StLabel {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.tahoe-appfolder-dialogs-dark .edit-folder-button,
+.tahoe-appfolder-dialogs-dark .icon-button,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tahoe-appfolder-dialogs-dark .edit-folder-button StIcon,
+.tahoe-appfolder-dialogs-dark .icon-button StIcon,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow StIcon,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow > StIcon,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow StWidget {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: transparent !important;
+}
+
+.tahoe-appfolder-dialogs-dark .edit-folder-button:hover,
+.tahoe-appfolder-dialogs-dark .icon-button:hover,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow:hover {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.tahoe-appfolder-dialogs-dark .edit-folder-button:focus,
+.tahoe-appfolder-dialogs-dark .icon-button:focus,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow:focus {
+    box-shadow: inset 0 0 0 2px rgba(53, 132, 228, 0.5) !important;
+    box-shadow: inset 0 0 0 2px
+        st-transparentize(
+            st-mix(-st-accent-color, rgba(255, 255, 255, 0.9), 60%),
+            0.2
+        ) !important;
+}
+
+.tahoe-appfolder-dialogs-dark .edit-folder-button:active,
+.tahoe-appfolder-dialogs-dark .icon-button:active,
+.tahoe-appfolder-dialogs-dark .page-navigation-arrow:active {
+    color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Prevent double hover box on app icons inside folder dialog */
+.tahoe-appfolder-dialogs-dark .overview-tile .overview-icon,
+.tahoe-appfolder-dialogs-dark .overview-tile:hover .overview-icon,
+.tahoe-appfolder-dialogs-dark .overview-tile:focus .overview-icon,
+.tahoe-appfolder-dialogs-dark .overview-tile:active .overview-icon {
+    background-color: transparent !important;
+}
+
+.tahoe-appfolder-dialogs-dark .overview-tile:hover,
+.tahoe-appfolder-dialogs-dark .overview-tile:focus {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.tahoe-appfolder-dialogs-dark .overview-tile:active {
+    background-color: rgba(255, 255, 255, 0.19) !important;
+}
+
+.tahoe-appfolder-dialogs-dark .page-indicators .page-indicator-icon,
+.tahoe-appfolder-dialogs-dark .page-indicator .page-indicator-icon,
+.tahoe-appfolder-dialogs-dark .page-indicator-icon {
+    background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.tahoe-appfolder-dialogs-dark .page-indicator:hover .page-indicator-icon {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.tahoe-appfolder-dialogs-dark .page-indicator.active .page-indicator-icon,
+.tahoe-appfolder-dialogs-dark .page-indicator:checked .page-indicator-icon {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+/*** PANEL LIGHT TEXT ***/
+
+/*
+* `.tahoe-panel-light-text`, adapted from gnome-shell-light.css
+*/
+
+.tahoe-panel-light-text #panel .panel-button,
+.tahoe-panel-light-text #panel .panel-button.clock-display,
+.tahoe-panel-light-text #panel .netSpeedLabel {
+    color: #f6f5f4;
+    box-shadow: none;
+}
+
+.tahoe-panel-light-text #panel .panel-button:active,
+.tahoe-panel-light-text #panel .panel-button:focus,
+.tahoe-panel-light-text #panel .panel-button:checked,
+.tahoe-panel-light-text #panel .panel-button.clock-display:active .clock,
+.tahoe-panel-light-text #panel .panel-button.clock-display:focus .clock,
+.tahoe-panel-light-text #panel .panel-button.clock-display:checked .clock {
+    box-shadow: inset 0 0 0 100px rgba(246, 245, 244, 0.25);
+}
+
+.tahoe-panel-light-text #panel .panel-button:active:hover,
+.tahoe-panel-light-text #panel .panel-button:focus:hover,
+.tahoe-panel-light-text #panel .panel-button:checked:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:active:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:focus:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:checked:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:active .clock:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:focus .clock:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:checked .clock:hover {
+    box-shadow: inset 0 0 0 100px rgba(246, 245, 244, 0.35);
+}
+
+.tahoe-panel-light-text #panel .panel-button:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:hover,
+.tahoe-panel-light-text #panel .panel-button.clock-display:hover .clock {
+    box-shadow: inset 0 0 0 100px rgba(246, 245, 244, 0.2);
+}
+
+.tahoe-panel-light-text #panel .panel-button#panelActivities .workspace-dot {
+    background-color: #f6f5f4;
+}
+
+.tahoe-panel-light-text #panel .panel-button.clock-display:active,
+.tahoe-panel-light-text #panel .panel-button.clock-display:focus,
+.tahoe-panel-light-text #panel .panel-button.clock-display:checked,
+.tahoe-panel-light-text #panel .panel-button.clock-display:hover {
+    box-shadow: none !important;
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator {
+    color: #f6f5f4;
+    box-shadow: inset 0 0 0 100px rgba(192, 28, 40, 0.8);
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator:active,
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator:focus,
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator:checked {
+    box-shadow: inset 0 0 0 100px #c01c28;
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator:active:hover,
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator:focus:hover,
+.tahoe-panel-light-text
+    #panel
+    .panel-button.screen-recording-indicator:checked:hover {
+    box-shadow: inset 0 0 0 100px rgba(192, 28, 40, 0.95);
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-recording-indicator:hover {
+    box-shadow: inset 0 0 0 100px rgba(192, 28, 40, 0.9);
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator {
+    color: #282828;
+    box-shadow: inset 0 0 0 100px rgba(255, 120, 0, 0.8);
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:active,
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:focus,
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:checked {
+    box-shadow: inset 0 0 0 100px #ff7800;
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:active:hover,
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:focus:hover,
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:checked:hover {
+    box-shadow: inset 0 0 0 100px rgba(255, 120, 0, 0.95);
+}
+
+.tahoe-panel-light-text #panel .panel-button.screen-sharing-indicator:hover {
+    box-shadow: inset 0 0 0 100px rgba(255, 120, 0, 0.9);
+}
+.popup-menu *,
+.quick-settings-system *,
+.system-menu * {
+    text-shadow: none !important;
+}

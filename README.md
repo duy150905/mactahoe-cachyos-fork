@@ -1,170 +1,130 @@
-# MacTahoe cho GNOME
+# mactahoe-setup
 
-Bộ giao diện macOS Tahoe hoàn chỉnh cùng các tiện ích mở rộng độc quyền dành cho môi trường GNOME.
+Mấy file mình dùng để dựng lại giao diện kiểu macOS Tahoe trên GNOME (CachyOS/Arch). Cài máy mới, đỡ phải ngồi chỉnh từng thứ một. Chép theme, icon, font, extension, widget Conky và thiết lập GNOME về đúng chỗ, chạy một script là xong.
 
-> [!NOTE]
-> **Hệ điều hành hỗ trợ & đã kiểm thử thực tế (Tested):**
-> - **Ubuntu 26.04** (GNOME 48 trở lên)
-> - **Debian 13 (Trixie)** (GNOME 48 trở lên)
-> - **Fedora 40, 41, 42+** (GNOME 48 trở lên)
-> - **CachyOS GNOME / Arch Linux** (GNOME 48 trở lên)
+Chụp từ máy của mình: CachyOS, GNOME Shell 51 (xem `manifest.env`). Khác bản GNOME thì extension có thể hỏng, script sẽ cảnh báo chứ không chặn.
 
-## Hình ảnh
-
-<p align="center"><img src="assets/screenshots/mactahoe-desktop.png" alt="Desktop MacTahoe trên GNOME với widget và dock" width="100%"></p>
-
-<table>
-  <tr>
-    <td><img src="assets/screenshots/mactahoe-overview.png" alt="GNOME Overview với giao diện MacTahoe" width="100%"></td>
-    <td><img src="assets/screenshots/mactahoe-settings.png" alt="GNOME Settings và Files theo giao diện MacTahoe" width="100%"></td>
-  </tr>
-</table>
-
-## Nội dung đã gom
-
-- `vendor/MacTahoe-gtk-theme/` và `vendor/MacTahoe-icon-theme/`: snapshot nguồn theme, đã bỏ metadata Git lồng bên trong.
-- `assets/fonts/SF-Pro/` và `assets/fonts/SF-Mono/`: font đang dùng.
-- `assets/wallpapers/`: wallpaper ngày và đêm.
-- `assets/screenshots/`: ảnh giới thiệu desktop, Overview và giao diện ứng dụng.
-- `apps/`: trình quản lý icon MacTahoe, cùng mã nguồn và test cho **Âm lịch Việt Nam** (`apps/am-lich-viet-nam/`) và **Nén ảnh** (`apps/image-compressor/`).
-- `desktop/`: launcher ứng dụng.
-- `vendor/gnome-extensions/`: các tiện ích độc quyền gồm giao diện hợp nhất **UbuntuTahoe**, thanh dock macOS **UbuntuTahoeDock** (có sẵn icon Launchpad) và bộ widget desktop Native **UbuntuTahoeWidgets** (thay thế hoàn toàn Conky, tích hợp OpenWeather).
-- `docs/extension-settings/current-gnome-extensions.md`: các extension đang bật và cấu hình Blur/My Shell, Global Menu trên máy.
-- `docs/skin-tahoe-source.md`: hướng dẫn cấu hình ban đầu.
-- `config/gsettings.tsv`: tùy chọn GNOME, dock và extension được áp dụng.
-- `config/firefox-user.js`: tùy chọn cần cho CSS theme Firefox.
-
-## Thành phần giao diện
-
-- Theme GTK/GNOME Shell, bộ icon MacTahoe, con trỏ, font SF và wallpaper tạo phần giao diện nền.
-- Topbar dùng kiểu trong suốt vĩnh viễn (`#panel` trong CSS); không cần bật blur để có nền trong suốt.
-- Firefox bo góc 24 px khi cửa sổ ở trạng thái thường (chuẩn macOS Tahoe) và bỏ bo góc khi phóng tối đa; loại bỏ viền đen ngoài khung CSD.
-- **UbuntuTahoe** là tiện ích giao diện hợp nhất độc quyền cho bộ theme, tích hợp sẵn Global Menu, chuyển đồng hồ sang góc phải, hiệu ứng mờ kính Overview & thư mục ứng dụng và bộ gõ. Người dùng chỉ cần một công tắc bật duy nhất mà không cần cài đặt nhiều extension riêng rẽ.
-- **UbuntuTahoeDock** là tiện ích Dock độc quyền chuẩn phong cách macOS Tahoe (nổi ở đáy màn hình, bo cong kính mờ, đèn báo 1 chấm tròn DOT, tự ẩn thông minh, có thanh trượt chỉnh kích thước icon). Nhờ có UbuntuTahoeDock, bộ giao diện hoàn toàn độc lập và không phụ thuộc vào Ubuntu Dock của hệ thống, tương thích mượt mà trên mọi bản phân phối Linux dùng GNOME.
-- GNOME Tweaks và Extension Manager là ứng dụng quản lý tùy chọn/extension, không phải thành phần tạo giao diện. Trình quản lý icon MacTahoe, launcher widget, **Âm lịch Việt Nam** và **Nén ảnh** được đóng gói trong repo.
-- Bộ cài cài hai ứng dụng vào menu GNOME, kèm icon và launcher; Âm lịch chạy offline, còn Nén ảnh xử lý tệp cục bộ bằng Pillow.
-- Extension được kiểm tra theo phiên bản GNOME Shell khai báo trong metadata và chỉ được bật cho lần đăng nhập tiếp theo. Bộ tiện ích độc quyền (**UbuntuTahoe**, **UbuntuTahoeDock**, **UbuntuTahoeWidgets**) tương thích toàn diện từ **GNOME Shell 45 đến 51+** (đã chuẩn hóa sang `Meta.CursorTracker` và `Clutter.Orientation`, loại bỏ hoàn toàn các API cũ như `pointerWatcher.js` và thuộc tính `vertical`).
-
-## Trạng thái
-
-Mở Terminal ở bất kỳ thư mục nào, dán nguyên lệnh này để tải/cập nhật repo rồi cài:
+## Cài
 
 ```bash
-cd "$HOME" && if [ -d mactahoe-ubuntu/.git ]; then git -C mactahoe-ubuntu pull --ff-only; else git clone https://github.com/adfoxtheme/mactahoe-ubuntu.git mactahoe-ubuntu; fi && cd "$HOME/mactahoe-ubuntu" && ./install.sh
+git clone <link-fork-của-bạn>
+cd mactahoe-setup-v7
+
+bash install.sh --dry-run    # chạy thử, chỉ in ra chứ không đụng gì
+bash install.sh              # cài thật, sẽ hỏi mật khẩu sudo để cài gói pacman
 ```
 
-Nếu repo đã có trong `~/mactahoe-ubuntu` và chỉ muốn chạy lại cài đặt từ bất kỳ thư mục nào:
+Xong thì đăng xuất rồi đăng nhập lại là thấy.
+
+Vài điều nhớ giúp:
+
+- Chạy bằng user thường, đừng `sudo bash install.sh`. Script cần quyền sudo thì tự hỏi.
+- Chạy trong terminal của phiên GNOME đang đăng nhập (cần D-Bus session).
+- Chỉ chạy được trên Arch/CachyOS, và phải có sẵn GNOME Shell.
+- Đã có gói rồi, chỉ muốn chép cấu hình thì thêm `--skip-packages`.
+
+Các cờ khác: `--with-aur` (cài thêm gói AUR, cần `paru` hoặc `yay`), `--with-flatpak`, `--no-dconf` (không đụng thiết lập GNOME), `--no-firefox`.
+
+## Cài hỏng thì sao
+
+Trước khi chép gì, script tự sao lưu những thư mục sẽ bị ghi đè vào `~/.local/state/mactahoe-restore/` (kèm bản dump dconf). Muốn quay lại:
 
 ```bash
-cd "$HOME/mactahoe-ubuntu" && ./install.sh
+./uninstall.sh --dry-run   # xem trước
+./uninstall.sh             # xóa file đã chép, nạp lại bản sao lưu cũ nhất, reset dconf
 ```
 
-Nếu muốn màn hình đăng nhập (login) cũng đồng bộ giao diện Ubuntu Tahoe thì chạy tiếp lệnh dưới:
+Gói pacman đã cài thì không bị gỡ. Log mỗi lần cài nằm cùng thư mục đó.
 
-```bash
-cd "$HOME/mactahoe-ubuntu" && ./install-gdm.sh
+## Trong repo có gì
+
+```
+install.sh / uninstall.sh      script chính
+manifest.env                   thông tin máy gốc (user, distro, bản GNOME Shell)
+paths.txt                      những đường dẫn trong ~ sẽ được sao lưu và ghi đè
+packages-theme.txt             gói pacman sẽ cài
+packages-foreign.txt           gói AUR (chỉ cài khi có --with-aur)
+packages-explicit.txt          toàn bộ gói mình từng cài tay, chỉ để tham khảo
+flatpak-apps.txt               app Flatpak (chỉ cài khi có --with-flatpak)
+units-enabled.txt              service systemd --user sẽ được bật
+extensions.tsv                 extension nào bật/tắt trên máy gốc
+dconf/gnome.ini                thiết lập GNOME
+dconf/skipped-sections.txt     các mục dconf cố ý bỏ ra ngoài (chỉ để xem)
+firefox/                       trống, bước Firefox sẽ tự bỏ qua
+hooks/post-install.example.sh  mẫu để chạy lệnh riêng sau khi cài
+change_clock_color.txt         ghi chú nhỏ về lệnh đổi màu đồng hồ
+files/                         thứ sẽ được chép vào $HOME, giữ nguyên cấu trúc thư mục
 ```
 
-> [!CAUTION]
-> **CÀI GDM CÓ THỂ LÀM HỎNG MÀN HÌNH ĐĂNG NHẬP.** Đây là màn hình đăng nhập của hệ thống (GDM), không phải màn hình khóa trong phiên GNOME. Bước này thay resource GDM của hệ thống (Yaru trên Ubuntu hoặc Adwaita trên Debian) bằng resource theme đã biên dịch. Nếu resource không tương thích hoặc có lỗi ngoài bước kiểm tra, GDM có thể hiện màn hình đen hoặc không cho đăng nhập; điều này có thể trông giống GNOME bị treo.
->
-> Chỉ chạy nếu bạn chấp nhận rủi ro và biết cách vào TTY/khôi phục máy; nên tạo snapshot máy ảo hoặc bản sao lưu trước. Không chạy bằng `sudo ./install-gdm.sh` — script sẽ tự yêu cầu quyền quản trị khi cần.
->
-> Nếu GDM lỗi, chuyển sang TTY (`Ctrl`+`Alt`+`F3`; trong VirtualBox dùng **Host key** + `F3`, thường là `Right Ctrl` + `F3`), đăng nhập tài khoản thường rồi khôi phục resource GDM:
->
-> ```bash
-> sudo "$HOME/mactahoe-ubuntu/vendor/MacTahoe-gtk-theme/tweaks.sh" -g -r
-> sudo reboot
-> ```
->
-> Lệnh khôi phục trên giả định repo nằm ở `~/mactahoe-ubuntu`; nếu lưu ở chỗ khác, thay bằng đường dẫn repo thực tế. Nếu lần chạy dừng ở bước kiểm tra/biên dịch trước khi áp dụng, GDM chưa bị thay đổi.
+Trong `files/`:
 
-Bộ widget desktop được tích hợp trực tiếp qua tiện ích mở rộng **UbuntuTahoeWidgets**, hoàn toàn không cần cài đặt Conky hay chạy tiến trình nền bên ngoài. Người dùng có thể tùy chỉnh bật/tắt từng widget (Đồng hồ lớn, Thời tiết OpenWeather, Hệ thống, Âm lịch, Nhắc nghỉ), nhập API Key và căn lề ngay trong ứng dụng **Tiện ích mở rộng (Extension Manager)**.
-
-### Sau khi cài
-
-1. Chờ Terminal báo `Installed`, sau đó đăng xuất rồi đăng nhập lại để GNOME nạp theme và các extension. Sau khi cài riêng GDM bằng `install-gdm.sh`, khởi động lại máy.
-2. Mở **Tiện ích mở rộng (Extension Manager)**, bật tiện ích **UbuntuTahoeWidgets** để hiển thị bộ widget desktop và vào phần Cài đặt để tùy chỉnh theo ý muốn.
-3. Mở **Quản lý icon MacTahoe** trong danh sách ứng dụng để chọn icon riêng cho ứng dụng. Font, con trỏ, bộ icon/theme tổng thể và tiện ích **UbuntuTahoe**, **UbuntuTahoeDock** đã được tự động cài đặt và kích hoạt sẵn trọn bộ giao diện macOS Tahoe.
-4. **Âm lịch Việt Nam** và **Nén ảnh** được cài thành ứng dụng riêng, có thể mở từ danh sách ứng dụng GNOME hoặc chạy `am-lich-viet-nam` và `image-compressor` trong Terminal.
-5. Nếu không thấy thay đổi, kiểm tra Terminal đã hiện thông báo `Installed` chưa; nếu có, thử đăng xuất/đăng nhập lại một lần nữa.
-
-### Tùy chỉnh Widget Desktop (UbuntuTahoeWidgets)
-
-Toàn bộ widget desktop được quản lý tập trung và trực quan ngay trong phần Cài đặt của tiện ích mở rộng **UbuntuTahoeWidgets**:
-
-- **Cách mở bảng tùy chỉnh:**
-  - **Cách 1 (Giao diện):** Mở ứng dụng **Trình quản lý tiện ích (Extension Manager)** hoặc **Tiện ích (Extensions)** từ danh sách ứng dụng > tìm tiện ích **UbuntuTahoeWidgets** > bấm vào nút **Bánh răng (Cài đặt)**.
-  - **Cách 2 (Terminal):** Mở Terminal và chạy lệnh:
-    ```bash
-    gnome-extensions prefs UbuntuTahoeWidgets@adfoxtheme.github.io
-    ```
-
-- **Các tính năng có thể tùy chỉnh:**
-  - **Bật / Tắt từng widget:** Có công tắc bật/tắt độc lập cho từng widget:
-    - *Đồng hồ lớn (Clock):* Đồng hồ số viền kính phong cách macOS Tahoe đặt bên trái.
-    - *Thời tiết (Weather):* Thông tin thời tiết chi tiết, nhiệt độ, độ ẩm và gió.
-    - *Giám sát hệ thống (System Metrics):* Trực quan hóa tải CPU, GPU, RAM, ổ cứng SSD và tốc độ mạng.
-    - *Âm lịch Việt Nam (Lunar Calendar):* Lịch âm truyền thống Việt Nam.
-    - *Nhắc nhở nghỉ ngơi (Rest Reminder):* Theo dõi thời gian làm việc và nhắc nhở nghỉ ngơi.
-    *(Khi tắt một widget bên phải, các widget còn lại sẽ tự động dồn lên, không để lại khoảng trống trên màn hình).*
-  - **Cấu hình thời tiết OpenWeather:**
-    - Nhập **API Key OpenWeather** cá nhân (nếu để trống, tiện ích sẽ tự động dùng nguồn dữ liệu Open-Meteo miễn phí).
-    - Đặt **Tên thành phố** (ví dụ: `Hà Nội`, `Hồ Chí Minh`, `Đà Nẵng`...).
-    - Điều chỉnh chu kỳ làm mới dữ liệu (mặc định 15 phút).
-  - **Căn chỉnh vị trí & lề màn hình:**
-    - Tùy chỉnh khoảng cách lề trái và lề trên của Đồng hồ lớn.
-    - Tùy chỉnh khoảng cách lề phải và lề trên của Cụm widget để vừa vặn hoàn hảo với mọi độ phân giải màn hình.
-
-### Hỗ trợ & Kiểm thử trên Ubuntu 26.04, Debian 13, Fedora & CachyOS (Arch)
-
-Repo được hỗ trợ đầy đủ và kiểm thử thực tế (tested) thành công trên:
-- **Ubuntu 26.04 LTS** (APT, Snap Firefox, Yaru GDM)
-- **Debian 13 (Trixie)** (APT, Mozilla APT / ESR Firefox, Adwaita GDM)
-- **Fedora 40, 41, 42+** (DNF, RPM / Flatpak Firefox, Adwaita GDM + SELinux)
-- **CachyOS GNOME / Arch Linux** (Pacman, Native / Flatpak Firefox, Adwaita GDM)
-với môi trường GNOME 48 trở lên.
-
-Bộ cài tự động phát hiện trình quản lý gói phù hợp (`pacman` trên CachyOS/Arch, `dnf` trên Fedora, `apt-get` trên Ubuntu/Debian) và cài đặt đúng các gói tương thích.
-
-Trên Debian, để có trải nghiệm giao diện Firefox chuẩn Safari/macOS Tahoe đẹp nhất, khuyến nghị cài đặt Firefox bản mới nhất từ kho chính thức của Mozilla (Mozilla APT) thay vì dùng bản Firefox ESR cũ:
-
-```bash
-sudo apt install -y wget
-sudo mkdir -p /etc/apt/keyrings
-sudo wget -qO /etc/apt/keyrings/packages.mozilla.org.asc \
-    https://packages.mozilla.org/apt/repo-signing-key.gpg
-echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" \
-    | sudo tee /etc/apt/sources.list.d/mozilla.list
-echo -e 'Package: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000' | \
-    sudo tee /etc/apt/preferences.d/mozilla
-sudo apt update && sudo apt install -y firefox
+```
+.themes/                       theme MacTahoe (Light/Dark, solid, hdpi, xhdpi)
+.config/gtk-3.0, gtk-4.0/      settings, css, bookmarks
+.config/conky/                 5 widget + file lua vẽ
+.config/systemd/user/          color-scheme-sync.service
+.local/bin/                    các script nhỏ (kể bên dưới)
+.local/share/applications/     launcher .desktop
+.local/share/backgrounds/      hình nền
+.local/share/fonts/            SF Pro, SF Mono, Nerd Font, vài font lẻ
+.local/share/icons/            con trỏ chuột MacTahoe
+.local/share/gnome-shell/extensions/   CachyOSTahoe, CachyOSTahoeDock, blur-my-shell, moveclock
+.local/share/mactahoe-apps/    hai app Python: âm lịch, nén ảnh
+.local/share/mactahoe-widgets/ lunar.py cho widget âm lịch
 ```
 
-Bộ cài `install.sh` tự động nhận diện và đồng bộ theme Firefox trên cả 4 cấu hình đường dẫn:
-1. `${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox` *(Debian / Mozilla APT / Fedora hiện đại)*
-2. `$HOME/.mozilla/firefox` *(Debian ESR, Fedora RPM native, ...)*
-3. `$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox` *(Fedora / Linux Flatpak)*
-4. `$HOME/snap/firefox/common/.mozilla/firefox` *(Ubuntu Snap)*
+Cả repo khoảng 200 MB, gần hết là icon/con trỏ, theme và font.
 
-Nếu Firefox vừa cài đặt mà chưa từng mở lần nào, `install.sh` cũng sẽ tự động chạy tiến trình ngầm để khởi tạo profile chuẩn trước khi nạp giao diện Tahoe.
+Mấy script trong `.local/bin/`:
 
-### Gỡ cài đặt
+- `mactahoe-widgets`: giao diện bật/tắt widget, chọn thành phố cho thời tiết, chọn màu nhấn.
+- `mactahoe-weather-fetch.py`: lấy thời tiết từ Open-Meteo, Conky gọi 10 phút một lần.
+- `mactahoe-lunar-fetch.py`: tạo dữ liệu âm lịch cho widget.
+- `color-scheme-sync.sh`: theo dõi `color-scheme` của GNOME rồi tự đổi theme GTK/Shell giữa Light và Dark.
+- `mactahoe-color-menu`: hộp thoại chọn màu đồng hồ lớn.
+- `mactahoe-icon-manager`: app GTK4 đổi icon cho từng ứng dụng.
+- `gnome-theme-switcher`, `am-lich-viet-nam`, `image-compressor`: đúng như tên.
 
-Để gỡ giao diện, tiện ích và khôi phục các file đã sao lưu (giữ lại thư mục repo để có thể cài lại), mở Terminal ở bất kỳ vị trí nào và chạy:
+## Muốn chỉnh gì thì chỉnh ở đâu
 
-```bash
-cd "$HOME/mactahoe-ubuntu" && ./uninstall.sh
-```
+**Gói cài.** Sửa thẳng `packages-theme.txt` (mỗi dòng một gói, `#` là comment). `packages-foreign.txt` chủ yếu là app cá nhân của mình (Chrome, VS Code, Spotify, WPS...), không liên quan giao diện, nên coi trước rồi hãy dùng `--with-aur`.
 
-Chạy bằng tài khoản thường, không thêm `sudo`; trình gỡ sẽ hỏi xác nhận trước khi khôi phục bản sao cấu hình GNOME. Nếu đã cài theme màn hình đăng nhập, lệnh này cũng sẽ yêu cầu mật khẩu sudo để khôi phục. Các gói hệ thống được giữ lại.
+**Cái gì được chép.** `paths.txt`. Xóa một dòng là phần đó khỏi bị ghi đè, ví dụ bỏ `.local/share/backgrounds` nếu bạn muốn giữ hình nền của mình.
 
-Bộ cài (cả `install.sh` và `install-gdm.sh`) đã được kiểm thử và hỗ trợ đầy đủ trên **Ubuntu 26.04**, **Debian 13**, **Fedora** và **CachyOS / Arch Linux** (GNOME 48 trở lên). Bộ cài GDM kiểm tra dịch vụ GDM đang có (`gdm` trên CachyOS/Arch/Fedora, `gdm3` trên Ubuntu/Debian), tự động nhận diện gói và resource phù hợp cho từng hệ thống (Yaru trên Ubuntu hoặc Adwaita trên Debian/Fedora/CachyOS) trước khi áp dụng giao diện Tahoe. Trên Fedora, script tự động phục hồi context bảo mật SELinux (`restorecon`) sau khi cập nhật resource GDM để đăng nhập luôn an toàn và ổn định. Bước này thay đổi resource màn hình đăng nhập hệ thống; chạy riêng và reboot sau khi cài.
+**Thiết lập GNOME.** `dconf/gnome.ini`. Mấy chỗ hay đụng tới:
 
-## Nguồn và phiên bản theme
+- hình nền: `picture-uri`, `picture-uri-dark`
+- `gtk-theme`, `icon-theme`, `cursor-theme`, `cursor-size`, `accent-color`
+- `color-scheme`: `default` là sáng, `prefer-dark` là tối
+- `font-name`, `monospace-font-name`, `text-scaling-factor`
+- `button-layout`: nút đóng/thu nhỏ/phóng to đang để bên trái
+- `favorite-apps`: app ghim trên dock (app chưa cài sẽ tự bị lọc bỏ)
+- độ mờ của blur-my-shell (`sigma`, `brightness`, `unscaled_radius`)
+- thanh trên cùng: `clock-position`, `clock-offset`, `hide-activities`
+- dock: `click-action`, `dash-max-icon-size`
 
-- MacTahoe GTK: commit `1e45e19` theo tài liệu cấu hình.
-- MacTahoe icons: commit `839848b9` theo tài liệu cấu hình.
-- Theme gốc có hướng dẫn và thông tin giấy phép bên trong từng thư mục `vendor/`.
+Khi `color-scheme-sync` đang chạy thì `gtk-theme` và `user-theme` bị nó đổi theo sáng/tối, nên muốn đổi sáng/tối cứ đổi `color-scheme`, đừng sửa tên theme.
 
-Font SF Pro được đưa kèm trong repo. Hãy kiểm tra điều khoản giấy phép trước khi phân phối lại.
+**Thời tiết.** Nằm ở `~/.config/mactahoe-widgets/weather.conf`, không có sẵn trong repo, sinh ra khi bạn dùng `mactahoe-widgets`. Các khóa: `LAT`, `LON`, `CITY`, `TIMEZONE`, `LOCATION_MODE` (`manual` hoặc `auto` dò theo IP qua ipapi.co) và `ICON_THEME`. Đặt bằng giao diện cho nhanh, có ô tìm tên thành phố. Nếu để mặc định thì `mactahoe-weather-fetch.py` dùng Hà Nội, còn `mactahoe-widgets` dùng Quy Nhơn (mình quên đồng bộ hai chỗ này).
+
+**Widget Conky.** `files/.config/conky/mactahoe-*.conf`. Mỗi widget một file, chỉnh `alignment`, `gap_x`/`gap_y`, độ rộng, `font`, `update_interval`. Vị trí hiện tính cho màn hình của mình; `mactahoe-widgets` có tự xếp lại khi bật/tắt. Đừng sửa `output_backend = 'x11'`, bỏ nó đi thì Conky bản mới trên Wayland dễ crash.
+
+**Màu đồng hồ lớn.** Chạy `mactahoe-color-menu`, lựa chọn lưu ở `~/.cache/mactahoe-widgets/clock_theme.txt`.
+
+**GTK.** `files/.config/gtk-3.0/` và `gtk-4.0/`: `settings.ini` (theme, icon, font, con trỏ), `bookmarks` (thư mục ghim trong file manager), và vài file css để chỉnh màu.
+
+**Service tự bật.** `units-enabled.txt`, hiện chỉ có `color-scheme-sync.service`.
+
+**Lệnh riêng sau khi cài.** Đổi `hooks/post-install.example.sh` thành `post-install.sh`, thêm lệnh của bạn, script sẽ chạy nó ở cuối.
+
+**Firefox.** Bỏ thư mục chứa `chrome/` và/hoặc `user.js` vào `firefox/`, script sẽ chép vào mọi profile tìm thấy (có sao lưu bản cũ). Hiện để trống nên bước này bị bỏ qua.
+
+## Một số chỗ chưa ổn
+
+Để khỏi ai đó clone về rồi bối rối:
+
+- Icon theme `MacTahoe-blue` được nhắc ở `gnome.ini`, `settings.ini` và script thời tiết, nhưng trong `files/.local/share/icons/` không có thư mục nào như vậy. Mấy thư mục `MacTahoe` và `MacTahoe-light` ở đó thực ra là con trỏ chuột (không có `index.theme`). Máy mới cần tự cài icon theme MacTahoe, hoặc đổi tên icon theme trong mấy file trên sang cái bạn đang có.
+- Một số extension (như dash-to-dock) trên máy gốc cài từ AUR hoặc extensions.gnome.org. Thiếu thì script chỉ cảnh báo, bạn tự cài.
+- Repo có font SF Pro / SF Mono của Apple, và `packages-foreign.txt` có `ttf-ms-fonts`, `wps-office`. Nhớ tự xem lại giấy phép nếu định công khai.
+- Một vài thứ mang dấu vết cá nhân của mình: `manifest.env` (tên user), hình nền, danh sách gói, `favorite-apps`. Fork về thì dọn lại cho đúng ý bạn.
+- Script không đụng tới hệ thống ngoài `~` (`/etc`, GDM, kernel...), cũng không mang theo tài khoản hay mật khẩu.

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=MacTahoe Icon Manager
+Name[vi]=Quản lý icon MacTahoe
+Comment=Set MacTahoe icons for installed and system applications
+Comment[vi]=Đổi icon MacTahoe cho ứng dụng đã cài và ứng dụng hệ thống
+Exec=@HOME@/.local/bin/mactahoe-icon-manager
+TryExec=@HOME@/.local/bin/mactahoe-icon-manager
+Icon=preferences-desktop-theme
+Terminal=false
+Categories=Settings;DesktopSettings;
+Keywords=icon;theme;mactahoe;tahoe;macos;icons;
+StartupNotify=true
+StartupWMClass=io.github.mactahoe.IconManager

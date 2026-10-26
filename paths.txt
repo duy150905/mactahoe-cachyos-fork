@@ -1,0 +1,13 @@
+.config/conky
+.config/gtk-3.0
+.config/gtk-4.0
+.config/systemd/user
+.local/bin
+.local/share/applications
+.local/share/mactahoe-widgets
+.local/share/mactahoe-apps
+.local/share/fonts
+.local/share/icons
+.local/share/gnome-shell/extensions
+.local/share/backgrounds
+.themes

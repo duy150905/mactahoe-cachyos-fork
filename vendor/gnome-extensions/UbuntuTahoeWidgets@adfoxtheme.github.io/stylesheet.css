@@ -1,9 +1,0 @@
-/* MacTahoe Widgets stylesheet */
-
-.tahoe-card-hover {
-    transition-duration: 200ms;
-}
-
-.tahoe-card-hover:hover {
-    brightness: 1.05;
-}
