@@ -1,3 +1,5 @@
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/37f1fb41-4291-4e37-b7a4-41cf8c61a13c" />
+
 # mactahoe-setup
 
 Mấy file mình dùng để dựng lại giao diện kiểu macOS Tahoe trên GNOME (CachyOS/Arch). Cài máy mới, đỡ phải ngồi chỉnh từng thứ một. Chép theme, icon, font, extension, widget Conky và thiết lập GNOME về đúng chỗ, chạy một script là xong.
