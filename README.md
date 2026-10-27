@@ -1,4 +1,5 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/37f1fb41-4291-4e37-b7a4-41cf8c61a13c" />
+![Uploading image.png…]()
+
 
 # mactahoe-setup
 
