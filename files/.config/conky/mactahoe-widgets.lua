@@ -197,6 +197,38 @@ local function get_gpu_name()
     return sys_gpu_name or "Unknown GPU"
 end
 
+local sys_cpu_name = nil
+local function get_cpu_name()
+    if sys_cpu_name then return sys_cpu_name end
+    local file = io.open('/proc/cpuinfo', 'r')
+    if file then
+        for line in file:lines() do
+            local name = line:match('model name%s+:%s+(.*)')
+            if name then
+                name = name:gsub('%(R%)', ''):gsub('%(TM%)', ''):gsub(' CPU .*', '')
+                sys_cpu_name = name:match('^%s*(.-)%s*$')
+                break
+            end
+        end
+        file:close()
+    end
+    return sys_cpu_name or "Unknown CPU"
+end
+
+local sys_gpu_name = nil
+local function get_gpu_name()
+    if sys_gpu_name then return sys_gpu_name end
+    local handle = io.popen('nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null')
+    if handle then
+        local name = handle:read('*l')
+        handle:close()
+        if name and name ~= "" then
+            sys_gpu_name = name:gsub('NVIDIA GeForce ', '')
+        end
+    end
+    return sys_gpu_name or "Unknown GPU"
+end
+
 local function draw_system(cr, width, height)
     card(cr, 10, 8, width - 20, height - 18, 26)
     text(cr, 32, 41, 'Hệ thống', 16, C.white, true, 'left', 'SF Pro Display')
@@ -204,7 +236,7 @@ local function draw_system(cr, width, height)
 
     local cpu = number(conky_value('${cpu}'))
     local cpu_temp = celsius_from_thermal()
-    local cpu_sub = local cpu_sub = get_cpu_name() .. (cpu_temp and ('  •  ' .. cpu_temp .. '°C') or '')
+    local cpu_sub = get_cpu_name() .. (cpu_temp and ('  •  ' .. cpu_temp .. '°C') or '')
     text(cr, 32, 69, 'CPU', 14.0, C.sub, true)
     text(cr, width - 32, 69, string.format('%.0f%%', cpu), 14.0, C.white, true, 'right')
     bar(cr, 32, 78, width - 64, 6, cpu)
@@ -213,7 +245,7 @@ local function draw_system(cr, width, height)
     local gpu = gpu_values()
     local gpu_util = gpu.util or 0
     local gpu_value = string.format('%.0f%%', gpu_util) .. (gpu.temp and ('  •  ' .. gpu.temp .. '°C') or '')
-    local gpu_sub = local gpu_sub = get_gpu_name() .. (gpu.used and string.format('  •  %d/%d MB', gpu.used, gpu.total) or '')
+    local gpu_sub = get_gpu_name() .. (gpu.used and string.format('  •  %d/%d MB', gpu.used, gpu.total) or '')
     text(cr, 32, 114, 'GPU', 14.0, C.sub, true)
     text(cr, width - 32, 114, gpu_value, 14.0, C.white, true, 'right')
     bar(cr, 32, 123, width - 64, 6, gpu_util)
