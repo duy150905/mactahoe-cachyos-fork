@@ -1,5 +1,6 @@
 breeze-icons
 conky
+cava
 dconf
 extension-manager
 fontconfig

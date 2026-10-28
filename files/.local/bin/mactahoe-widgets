@@ -26,6 +26,7 @@ SETTINGS_FILE = CONFIG_DIR / "settings.json"
 WEATHER_CONFIG = CONFIG_DIR / "weather.conf"
 WEATHER_FETCHER = HOME / ".local" / "bin" / "mactahoe-weather-fetch.py"
 LUA_FILE = CONKY_DIR / "mactahoe-widgets.lua"
+CAVA_FEEDER = HOME / ".local" / "bin" / "mactahoe-cava-feed"
 CLOCK_THEME_FILE = CACHE_DIR / "clock_theme.txt"
 DEFAULT_CLOCK_THEME = "cyan"
 CLOCK_THEMES = {
@@ -42,6 +43,7 @@ WIDGETS = {
     "lunar": {"label": "Âm lịch", "description": "Ngày âm lịch và thông tin lịch", "height": 150},
     "rest": {"label": "Nhắc nghỉ", "description": "Thời gian hoạt động và nhắc nghỉ", "height": 165},
     "clock": {"label": "Đồng hồ lớn", "description": "Đồng hồ trang trí bên trái màn hình", "height": 360},
+    "cava": {"label": "Sóng nhạc", "description": "Thanh sóng nhạc kiểu cava, nằm phía trên dock", "height": 0},
 }
 STACK_ORDER = ("weather", "system", "lunar", "rest")
 START_Y = 80
@@ -124,7 +126,34 @@ def is_running(widget_id: str) -> bool:
     return bool(widget_processes(widget_id))
 
 
+def feeder_processes() -> list[int]:
+    processes = []
+    try:
+        for proc_entry in Path("/proc").iterdir():
+            if not proc_entry.name.isdigit():
+                continue
+            try:
+                args = (proc_entry / "cmdline").read_bytes().split(b"\0")
+                if any(Path(arg.decode(errors="replace")).name == CAVA_FEEDER.name for arg in args[:3] if arg):
+                    processes.append(int(proc_entry.name))
+            except OSError:
+                continue
+    except OSError:
+        pass
+    return processes
+
+
+def stop_feeder() -> None:
+    for pid in feeder_processes():
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+
+
 def stop_widget(widget_id: str) -> None:
+    if widget_id == "cava":
+        stop_feeder()
     for pid in widget_processes(widget_id):
         try:
             os.kill(pid, signal.SIGTERM)
@@ -141,26 +170,42 @@ def stop_widget(widget_id: str) -> None:
     (PID_DIR / f"{widget_id}.pid").unlink(missing_ok=True)
 
 
-def runtime_config(widget_id: str, gap_y: int) -> Path:
+def runtime_config(widget_id: str, gap_y: int | None) -> Path:
     source = get_widget_config(widget_id)
     if not source.is_file():
         raise FileNotFoundError(f"Không tìm thấy cấu hình widget: {source}")
     content = source.read_text(encoding="utf-8")
-    pattern = re.compile(r"(?m)^(\s*gap_y\s*=\s*)\d+(\s*,.*)?$")
-    content, count = pattern.subn(lambda match: f"{match.group(1)}{gap_y}{match.group(2) or ''}", content, count=1)
-    if count != 1:
-        raise ValueError(f"Không tìm thấy gap_y trong {source}")
+    if gap_y is not None:
+        pattern = re.compile(r"(?m)^(\s*gap_y\s*=\s*)\d+(\s*,.*)?$")
+        content, count = pattern.subn(lambda match: f"{match.group(1)}{gap_y}{match.group(2) or ''}", content, count=1)
+        if count != 1:
+            raise ValueError(f"Không tìm thấy gap_y trong {source}")
     RUNTIME_DIR.mkdir(parents=True, exist_ok=True)
     target = RUNTIME_DIR / f"mactahoe-{widget_id}.conf"
     target.write_text(content, encoding="utf-8")
     return target
 
 
-def start_widget(widget_id: str, gap_y: int) -> None:
+def start_widget(widget_id: str, gap_y: int | None) -> None:
     conky = shutil.which("conky")
     if not conky:
         raise RuntimeError("Chưa cài Conky. Hãy cài lại bộ tiện ích MacTahoe.")
+    if widget_id == "cava":
+        if not shutil.which("cava"):
+            raise RuntimeError("Chưa cài cava (sudo pacman -S cava).")
+        if not CAVA_FEEDER.is_file():
+            raise RuntimeError(f"Không tìm thấy {CAVA_FEEDER}")
     config = runtime_config(widget_id, gap_y)
+    if widget_id == "cava":
+        stop_feeder()
+        subprocess.Popen(
+            [sys.executable, str(CAVA_FEEDER)],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+        time.sleep(0.3)
     process = subprocess.Popen(
         [conky, "-c", str(config)],
         stdin=subprocess.DEVNULL,
@@ -182,6 +227,8 @@ def calculate_positions(settings: dict) -> dict[str, int]:
             current_y += WIDGETS[widget_id]["height"] + WIDGET_GAP
     if selected.get("clock"):
         positions["clock"] = START_Y
+    if selected.get("cava"):
+        positions["cava"] = None  # vị trí cố định trong mactahoe-cava.conf (phía trên dock)
     return positions
 
 

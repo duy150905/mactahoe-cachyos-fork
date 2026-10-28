@@ -1,6 +1,4 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/71a159c9-0198-426c-b87b-f8a06811f48a" />
-
-
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/37f1fb41-4291-4e37-b7a4-41cf8c61a13c" />
 
 # mactahoe-setup
 
@@ -64,7 +62,7 @@ Trong `files/`:
 ```
 .themes/                       theme MacTahoe (Light/Dark, solid, hdpi, xhdpi)
 .config/gtk-3.0, gtk-4.0/      settings, css, bookmarks
-.config/conky/                 5 widget + file lua vẽ
+.config/conky/                 6 widget + file lua vẽ
 .config/systemd/user/          color-scheme-sync.service
 .local/bin/                    các script nhỏ (kể bên dưới)
 .local/share/applications/     launcher .desktop
@@ -81,6 +79,7 @@ Cả repo khoảng 200 MB, gần hết là icon/con trỏ, theme và font.
 Mấy script trong `.local/bin/`:
 
 - `mactahoe-widgets`: giao diện bật/tắt widget, chọn thành phố cho thời tiết, chọn màu đồng hồ lớn. Có lệnh `start|stop|restart|status|color [màu]`.
+- `mactahoe-cava-feed`: chạy `cava` và ghi dữ liệu sóng nhạc cho widget Sóng nhạc (do `mactahoe-widgets` tự gọi).
 - `mactahoe-weather-fetch.py`: lấy thời tiết từ Open-Meteo, Conky gọi 10 phút một lần.
 - `mactahoe-lunar-fetch.py`: tạo dữ liệu âm lịch cho widget.
 - `color-scheme-sync.sh`: theo dõi `color-scheme` của GNOME rồi tự đổi theme GTK/Shell giữa Light và Dark.

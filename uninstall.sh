@@ -88,6 +88,7 @@ if [ -x "$HOME/.local/bin/mactahoe-widgets" ]; then
     act "$HOME/.local/bin/mactahoe-widgets" stop 2>/dev/null || true
 fi
 pkill -u "$UID" -f 'conky -c .*/mactahoe-' 2>/dev/null || true
+pkill -u "$UID" -f 'mactahoe-cava-feed' 2>/dev/null || true
 if [ -s "$HERE/units-enabled.txt" ]; then
     while IFS= read -r unit; do
         [ -n "$unit" ] || continue

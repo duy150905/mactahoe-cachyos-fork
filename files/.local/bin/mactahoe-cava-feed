@@ -1,0 +1,83 @@
+#!/usr/bin/python3
+"""Chạy cava và ghi khung dữ liệu mới nhất ra một file nhỏ để widget Conky đọc."""
+
+from __future__ import annotations
+
+import os
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+BARS = 32
+FRAMERATE = 60
+
+
+def data_file() -> Path:
+    runtime = os.environ.get("XDG_RUNTIME_DIR")
+    base = Path(runtime) if runtime else Path.home() / ".cache" / "mactahoe-widgets"
+    base.mkdir(parents=True, exist_ok=True)
+    return base / "mactahoe-cava.dat"
+
+
+def main() -> int:
+    cava = shutil.which("cava")
+    if not cava:
+        print("Chưa cài cava (sudo pacman -S cava).", file=sys.stderr)
+        return 1
+    bars = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else BARS
+    target = data_file()
+    temp = target.with_suffix(".tmp")
+
+    config = f"""[general]
+bars = {bars}
+framerate = {FRAMERATE}
+
+[input]
+method = pulse
+source = auto
+
+[output]
+method = raw
+raw_target = /dev/stdout
+data_format = ascii
+ascii_max_range = 100
+bar_delimiter = 59
+frame_delimiter = 10
+
+[smoothing]
+noise_reduction = 60
+"""
+    with tempfile.NamedTemporaryFile("w", suffix=".conf", prefix="mactahoe-cava-", delete=False) as stream:
+        stream.write(config)
+        config_path = stream.name
+
+    process = subprocess.Popen([cava, "-p", config_path], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+
+    def stop(*_args):
+        process.terminate()
+
+    signal.signal(signal.SIGTERM, stop)
+    signal.signal(signal.SIGINT, stop)
+    try:
+        assert process.stdout is not None
+        for line in process.stdout:
+            line = line.strip()
+            if not line:
+                continue
+            temp.write_text(line + "\n", encoding="ascii")
+            os.replace(temp, target)
+    finally:
+        process.terminate()
+        for path in (config_path, str(target), str(temp)):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

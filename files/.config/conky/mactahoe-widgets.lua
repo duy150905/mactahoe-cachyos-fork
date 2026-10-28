@@ -426,6 +426,48 @@ local function draw_clock(cr)
     cairo_arc(cr, colon_x, text_y - 40, 10, 0, 2 * math.pi); cairo_fill(cr)
 end
 
+local function cava_file()
+    local runtime = os.getenv('XDG_RUNTIME_DIR')
+    local base = (runtime and runtime ~= '') and runtime or (os.getenv('HOME') .. '/.cache/mactahoe-widgets')
+    return base .. '/mactahoe-cava.dat'
+end
+
+local CAVA_COLORS = {
+    cyan = { 0.30, 0.85, 1.00 },
+    purple = { 0.85, 0.45, 1.00 },
+    emerald = { 0.25, 0.95, 0.60 },
+    sunset = { 1.00, 0.55, 0.30 },
+    white = { 1.00, 1.00, 1.00 },
+}
+
+local function draw_cava(cr, width, height)
+    local values = {}
+    local file = io.open(cava_file(), 'r')
+    if file then
+        local line = file:read('*l')
+        file:close()
+        if line then
+            for number in line:gmatch('%d+') do
+                values[#values + 1] = clamp(tonumber(number) / 100, 0, 1)
+            end
+        end
+    end
+    local count = #values
+    if count == 0 then return end
+
+    local color = CAVA_COLORS[read_clock_theme()] or CAVA_COLORS.cyan
+    local gap = 3
+    local bar_w = (width - gap * (count - 1)) / count
+    for i = 1, count do
+        local h = math.max(3, values[i] * height)
+        local x = (i - 1) * (bar_w + gap)
+        local alpha = 0.40 + 0.55 * values[i]
+        cairo_set_source_rgba(cr, color[1], color[2], color[3], alpha)
+        rounded_path(cr, x, height - h, bar_w, h, bar_w / 2)
+        cairo_fill(cr)
+    end
+end
+
 local function begin_draw()
     if conky_window == nil then return nil, nil end
     local surface = cairo_xlib_surface_create(
@@ -473,6 +515,13 @@ function conky_rest()
     local cr, surface = begin_draw()
     if cr == nil then return end
     draw_rest(cr, conky_window.width, conky_window.height)
+    end_draw(cr, surface)
+end
+
+function conky_cava()
+    local cr, surface = begin_draw()
+    if cr == nil then return end
+    draw_cava(cr, conky_window.width, conky_window.height)
     end_draw(cr, surface)
 end
 
