@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Widget MacTahoe (tự bật)
+Comment=Bật các widget MacTahoe đã chọn khi vào phiên GNOME
+Exec=@HOME@/.local/bin/mactahoe-widgets start
+TryExec=@HOME@/.local/bin/mactahoe-widgets
+Icon=preferences-desktop-display
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-Delay=3
+X-GNOME-Autostart-enabled=true

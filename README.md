@@ -56,7 +56,6 @@ dconf/gnome.ini                thiết lập GNOME
 dconf/skipped-sections.txt     các mục dconf cố ý bỏ ra ngoài (chỉ để xem)
 firefox/                       trống, bước Firefox sẽ tự bỏ qua
 hooks/post-install.example.sh  mẫu để chạy lệnh riêng sau khi cài
-change_clock_color.txt         ghi chú nhỏ về lệnh đổi màu đồng hồ
 files/                         thứ sẽ được chép vào $HOME, giữ nguyên cấu trúc thư mục
 ```
 
@@ -81,11 +80,10 @@ Cả repo khoảng 200 MB, gần hết là icon/con trỏ, theme và font.
 
 Mấy script trong `.local/bin/`:
 
-- `mactahoe-widgets`: giao diện bật/tắt widget, chọn thành phố cho thời tiết, chọn màu nhấn.
+- `mactahoe-widgets`: giao diện bật/tắt widget, chọn thành phố cho thời tiết, chọn màu đồng hồ lớn. Có lệnh `start|stop|restart|status|color [màu]`.
 - `mactahoe-weather-fetch.py`: lấy thời tiết từ Open-Meteo, Conky gọi 10 phút một lần.
 - `mactahoe-lunar-fetch.py`: tạo dữ liệu âm lịch cho widget.
 - `color-scheme-sync.sh`: theo dõi `color-scheme` của GNOME rồi tự đổi theme GTK/Shell giữa Light và Dark.
-- `mactahoe-color-menu`: hộp thoại chọn màu đồng hồ lớn.
 - `mactahoe-icon-manager`: app GTK4 đổi icon cho từng ứng dụng.
 - `gnome-theme-switcher`, `am-lich-viet-nam`, `image-compressor`: đúng như tên.
 
@@ -113,7 +111,9 @@ Khi `color-scheme-sync` đang chạy thì `gtk-theme` và `user-theme` bị nó 
 
 **Widget Conky.** `files/.config/conky/mactahoe-*.conf`. Mỗi widget một file, chỉnh `alignment`, `gap_x`/`gap_y`, độ rộng, `font`, `update_interval`. Vị trí hiện tính cho màn hình của mình; `mactahoe-widgets` có tự xếp lại khi bật/tắt. Đừng sửa `output_backend = 'x11'`, bỏ nó đi thì Conky bản mới trên Wayland dễ crash.
 
-**Màu đồng hồ lớn.** Chạy `mactahoe-color-menu`, lựa chọn lưu ở `~/.cache/mactahoe-widgets/clock_theme.txt`.
+**Màu đồng hồ lớn.** Chọn trong giao diện `mactahoe-widgets` (mục "Màu đồng hồ lớn") hoặc chạy `mactahoe-widgets color purple`. Lựa chọn lưu ở `~/.cache/mactahoe-widgets/clock_theme.txt`, đổi là áp dụng ngay.
+
+**Tự bật khi đăng nhập.** `files/.config/autostart/mactahoe-widgets.desktop` chạy `mactahoe-widgets start` sau khi vào phiên GNOME khoảng 3 giây, bật đúng các widget đang được chọn (mặc định là tất cả). Muốn tắt: xóa file này trong `~/.config/autostart/`.
 
 **GTK.** `files/.config/gtk-3.0/` và `gtk-4.0/`: `settings.ini` (theme, icon, font, con trỏ), `bookmarks` (thư mục ghim trong file manager), và vài file css để chỉnh màu.
 

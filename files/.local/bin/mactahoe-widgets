@@ -26,6 +26,15 @@ SETTINGS_FILE = CONFIG_DIR / "settings.json"
 WEATHER_CONFIG = CONFIG_DIR / "weather.conf"
 WEATHER_FETCHER = HOME / ".local" / "bin" / "mactahoe-weather-fetch.py"
 LUA_FILE = CONKY_DIR / "mactahoe-widgets.lua"
+CLOCK_THEME_FILE = CACHE_DIR / "clock_theme.txt"
+DEFAULT_CLOCK_THEME = "cyan"
+CLOCK_THEMES = {
+    "cyan": "Xanh băng (Cyan)",
+    "purple": "Tím mộng mơ (Purple)",
+    "emerald": "Xanh ngọc (Emerald)",
+    "sunset": "Hoàng hôn (Sunset)",
+    "white": "Trắng tinh khôi (White)",
+}
 
 WIDGETS = {
     "weather": {"label": "Thời tiết", "description": "Nhiệt độ và dự báo trong ngày", "height": 210},
@@ -208,6 +217,30 @@ def manager_enabled(settings: dict | None = None) -> bool:
     return bool(selected) and all(is_running(widget_id) for widget_id in selected)
 
 
+def load_clock_theme() -> str:
+    try:
+        theme = CLOCK_THEME_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        return DEFAULT_CLOCK_THEME
+    return theme if theme in CLOCK_THEMES else DEFAULT_CLOCK_THEME
+
+
+def save_clock_theme(theme: str) -> None:
+    if theme not in CLOCK_THEMES:
+        raise ValueError(f"Chủ đề màu không hợp lệ: {theme}")
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(dir=CACHE_DIR, prefix=".clock-", suffix=".txt")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            stream.write(theme + "\n")
+        os.replace(temp_name, CLOCK_THEME_FILE)
+    finally:
+        try:
+            os.unlink(temp_name)
+        except OSError:
+            pass
+
+
 def load_weather_config() -> dict[str, str]:
     values = {
         "LAT": "13.7820",
@@ -270,9 +303,28 @@ def print_status() -> None:
         running = is_running(widget_id)
         state = "đang hiển thị" if running else "đang ẩn"
         print(f"{info['label']}: {'được chọn' if enabled else 'đã tắt'} · {state}")
+    print(f"Màu đồng hồ lớn: {CLOCK_THEMES[load_clock_theme()]}")
 
 
-def run_command(command: str) -> int:
+def run_color_command(args: list[str]) -> int:
+    usage = f"Cách dùng: mactahoe-widgets color [{'|'.join(CLOCK_THEMES)}]"
+    if not args:
+        for theme_id, name in CLOCK_THEMES.items():
+            mark = "*" if theme_id == load_clock_theme() else " "
+            print(f"{mark} {theme_id:8} {name}")
+        return 0
+    if len(args) != 1 or args[0] not in CLOCK_THEMES:
+        print(usage, file=sys.stderr)
+        return 2
+    save_clock_theme(args[0])
+    print(f"Đã đổi màu đồng hồ lớn sang: {CLOCK_THEMES[args[0]]}")
+    return 0
+
+
+def run_command(command: str, args: list[str] | None = None) -> int:
+    args = args or []
+    if command == "color":
+        return run_color_command(args)
     if command == "start":
         start_selected()
         print("Đã bật các widget được chọn.")
@@ -287,10 +339,10 @@ def run_command(command: str) -> int:
     elif command == "gui":
         return -1
     elif command in ("--help", "-h"):
-        print("Cách dùng: mactahoe-widgets [gui|start|stop|restart|status]")
+        print("Cách dùng: mactahoe-widgets [gui|start|stop|restart|status|color [màu]]")
         return 0
     else:
-        print("Cách dùng: mactahoe-widgets [gui|start|stop|restart|status]", file=sys.stderr)
+        print("Cách dùng: mactahoe-widgets [gui|start|stop|restart|status|color [màu]]", file=sys.stderr)
         return 2
     return 0
 
@@ -319,6 +371,8 @@ def run_gui() -> int:
             self.auto_location = None
             self.city_entry = None
             self.updating_master = False
+            self.clock_dropdown = None
+            self.updating_clock = False
 
         def do_activate(self):
             if self.window:
@@ -431,6 +485,29 @@ def run_gui() -> int:
                     widget_card.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
             outer.append(widget_card)
 
+            color_heading = Gtk.Label(label="Màu đồng hồ lớn", xalign=0)
+            color_heading.add_css_class("section-title")
+            outer.append(color_heading)
+
+            color_card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            color_card.add_css_class("card")
+            color_text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
+            color_title = Gtk.Label(label="Chủ đề màu", xalign=0)
+            color_title.add_css_class("widget-title")
+            color_help = Gtk.Label(label="Đổi màu phát sáng của đồng hồ lớn, áp dụng ngay.", xalign=0)
+            color_help.add_css_class("muted")
+            color_text.append(color_title)
+            color_text.append(color_help)
+            color_text.set_hexpand(True)
+            self.clock_theme_ids = list(CLOCK_THEMES)
+            self.clock_dropdown = Gtk.DropDown.new(Gtk.StringList.new(list(CLOCK_THEMES.values())), None)
+            self.clock_dropdown.set_valign(Gtk.Align.CENTER)
+            self.clock_dropdown.set_selected(self.clock_theme_ids.index(load_clock_theme()))
+            self.clock_dropdown.connect("notify::selected", self.on_clock_theme_changed)
+            color_card.append(color_text)
+            color_card.append(self.clock_dropdown)
+            outer.append(color_card)
+
             location_heading = Gtk.Label(label="Vị trí thời tiết", xalign=0)
             location_heading.add_css_class("section-title")
             outer.append(location_heading)
@@ -485,6 +562,10 @@ def run_gui() -> int:
             self.updating_master = True
             self.master_switch.set_active(enabled)
             self.updating_master = False
+            if self.clock_dropdown is not None:
+                self.updating_clock = True
+                self.clock_dropdown.set_selected(self.clock_theme_ids.index(load_clock_theme()))
+                self.updating_clock = False
             running = sum(1 for widget_id in WIDGETS if is_running(widget_id))
             self.status_label.set_text(f"{running} widget đang hiển thị. Lựa chọn widget được lưu tự động.")
 
@@ -502,6 +583,20 @@ def run_gui() -> int:
                 stop_all()
                 self.set_status("Đã ẩn toàn bộ widget; lựa chọn riêng vẫn được giữ.")
             GLib.timeout_add(250, self.refresh_status_once)
+
+        def on_clock_theme_changed(self, dropdown, _property):
+            if self.updating_clock:
+                return
+            index = dropdown.get_selected()
+            if index >= len(self.clock_theme_ids):
+                return
+            theme = self.clock_theme_ids[index]
+            try:
+                save_clock_theme(theme)
+            except (OSError, ValueError) as exc:
+                self.set_status(f"Không lưu được màu đồng hồ: {exc}")
+                return
+            self.set_status(f"Đã đổi màu đồng hồ sang {CLOCK_THEMES[theme]}.")
 
         def refresh_status_once(self):
             self.refresh_status()
@@ -637,7 +732,7 @@ def run_gui() -> int:
 
 def main() -> int:
     if len(sys.argv) > 1:
-        result = run_command(sys.argv[1])
+        result = run_command(sys.argv[1], sys.argv[2:])
         if result >= 0:
             return result
     return run_gui()
