@@ -11,7 +11,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-BARS = 32
+BARS = 58
 FRAMERATE = 60
 
 
