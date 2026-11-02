@@ -43,6 +43,32 @@ CLOCK_THEMES = {
     "purple": "Tím mộng mơ (Purple)",
     "lavender": "Oải hương (Lavender)",
     "white": "Trắng tinh khôi (White)",
+    "magenta": "Hồng tím (Magenta)",
+    "crimson": "Đỏ thẫm (Crimson)",
+    "coral": "San hô (Coral)",
+    "peach": "Đào (Peach)",
+    "amber": "Hổ phách (Amber)",
+    "lemon": "Vàng chanh (Lemon)",
+    "mint": "Bạc hà (Mint)",
+    "forest": "Xanh rừng (Forest)",
+    "jade": "Ngọc bích (Jade)",
+    "seafoam": "Xanh bọt biển (Seafoam)",
+    "sky": "Xanh da trời (Sky)",
+    "azure": "Xanh thiên thanh (Azure)",
+    "cobalt": "Xanh coban (Cobalt)",
+    "indigo": "Chàm (Indigo)",
+    "violet": "Tím violet (Violet)",
+    "plum": "Mận (Plum)",
+    "fuchsia": "Hồng fuchsia (Fuchsia)",
+    "orchid": "Lan tím (Orchid)",
+    "ruby": "Đỏ ruby (Ruby)",
+    "pink": "Hồng phấn (Pink)",
+    "ice": "Băng giá (Ice)",
+    "silver": "Bạc (Silver)",
+    "slate": "Xám đá phiến (Slate)",
+    "bronze": "Đồng (Bronze)",
+    "chartreuse": "Vàng xanh (Chartreuse)",
+    "matcha": "Trà xanh (Matcha)",
 }
 
 WIDGETS = {
@@ -366,7 +392,7 @@ def run_color_command(args: list[str]) -> int:
     if not args:
         for theme_id, name in CLOCK_THEMES.items():
             mark = "*" if theme_id == load_clock_theme() else " "
-            print(f"{mark} {theme_id:8} {name}")
+            print(f"{mark} {theme_id:10} {name}")
         return 0
     if len(args) != 1 or args[0] not in CLOCK_THEMES:
         print(usage, file=sys.stderr)
