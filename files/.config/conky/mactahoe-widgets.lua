@@ -456,14 +456,34 @@ local function draw_cava(cr, width, height)
     if count == 0 then return end
 
     local color = CAVA_COLORS[read_clock_theme()] or CAVA_COLORS.cyan
-    local gap = 3
+    local gap = 5
     local bar_w = (width - gap * (count - 1)) / count
+
+    local halo_x = 1.8
+    local halo_y = 3
+    local base = height - halo_y
+    local max_h = height - 2 * halo_y
+
+    local heights = {}
     for i = 1, count do
-        local h = math.max(3, values[i] * height)
+        heights[i] = math.max(3, values[i] * max_h)
+    end
+
+    for i = 1, count do
+        local h = heights[i]
         local x = (i - 1) * (bar_w + gap)
-        local alpha = 0.40 + 0.55 * values[i]
+        local w = bar_w + 2 * halo_x
+        cairo_set_source_rgba(cr, 1, 1, 1, 0.55 + 0.4 * values[i])
+        rounded_path(cr, x - halo_x, base - h - halo_y, w, h + 2 * halo_y, w / 2)
+        cairo_fill(cr)
+    end
+
+    for i = 1, count do
+        local h = heights[i]
+        local x = (i - 1) * (bar_w + gap)
+        local alpha = 0.75 + 0.25 * values[i]
         cairo_set_source_rgba(cr, color[1], color[2], color[3], alpha)
-        rounded_path(cr, x, height - h, bar_w, h, bar_w / 2)
+        rounded_path(cr, x, base - h, bar_w, h, bar_w / 2)
         cairo_fill(cr)
     end
 end
