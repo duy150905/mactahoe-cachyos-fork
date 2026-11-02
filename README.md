@@ -1,4 +1,8 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ddba93bb-4a69-493c-8a72-94bc8b657788" />
+
+
+
+https://github.com/user-attachments/assets/578f4c55-c920-4664-9627-23d0bff9af52
+
 
 
 # mactahoe-setup
