@@ -31,9 +31,17 @@ CLOCK_THEME_FILE = CACHE_DIR / "clock_theme.txt"
 DEFAULT_CLOCK_THEME = "cyan"
 CLOCK_THEMES = {
     "cyan": "Xanh băng (Cyan)",
-    "purple": "Tím mộng mơ (Purple)",
+    "blue": "Xanh dương (Blue)",
+    "teal": "Xanh lam ngọc (Teal)",
     "emerald": "Xanh ngọc (Emerald)",
+    "lime": "Xanh chuối (Lime)",
+    "gold": "Vàng (Gold)",
+    "orange": "Cam (Orange)",
     "sunset": "Hoàng hôn (Sunset)",
+    "red": "Đỏ (Red)",
+    "rose": "Hồng (Rose)",
+    "purple": "Tím mộng mơ (Purple)",
+    "lavender": "Oải hương (Lavender)",
     "white": "Trắng tinh khôi (White)",
 }
 
@@ -350,7 +358,7 @@ def print_status() -> None:
         running = is_running(widget_id)
         state = "đang hiển thị" if running else "đang ẩn"
         print(f"{info['label']}: {'được chọn' if enabled else 'đã tắt'} · {state}")
-    print(f"Màu đồng hồ lớn: {CLOCK_THEMES[load_clock_theme()]}")
+    print(f"Màu đồng hồ và cava: {CLOCK_THEMES[load_clock_theme()]}")
 
 
 def run_color_command(args: list[str]) -> int:
@@ -364,7 +372,7 @@ def run_color_command(args: list[str]) -> int:
         print(usage, file=sys.stderr)
         return 2
     save_clock_theme(args[0])
-    print(f"Đã đổi màu đồng hồ lớn sang: {CLOCK_THEMES[args[0]]}")
+    print(f"Đã đổi màu đồng hồ và cava sang: {CLOCK_THEMES[args[0]]}")
     return 0
 
 
@@ -532,7 +540,7 @@ def run_gui() -> int:
                     widget_card.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
             outer.append(widget_card)
 
-            color_heading = Gtk.Label(label="Màu đồng hồ lớn", xalign=0)
+            color_heading = Gtk.Label(label="Màu đồng hồ và cava", xalign=0)
             color_heading.add_css_class("section-title")
             outer.append(color_heading)
 
@@ -541,7 +549,7 @@ def run_gui() -> int:
             color_text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
             color_title = Gtk.Label(label="Chủ đề màu", xalign=0)
             color_title.add_css_class("widget-title")
-            color_help = Gtk.Label(label="Đổi màu phát sáng của đồng hồ lớn, áp dụng ngay.", xalign=0)
+            color_help = Gtk.Label(label="Đổi màu phát sáng của đồng hồ lớn và cava, áp dụng ngay.", xalign=0)
             color_help.add_css_class("muted")
             color_text.append(color_title)
             color_text.append(color_help)

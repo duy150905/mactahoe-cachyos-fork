@@ -356,6 +356,26 @@ local function read_clock_theme()
     return theme and theme:gsub('%s+', '') or 'cyan'
 end
 
+local THEMES = {
+    cyan     = { glow = { 0.20, 0.80, 1.00 }, bot = { 0.60, 0.90, 1.00 }, bar = { 0.30, 0.85, 1.00 } },
+    blue     = { glow = { 0.25, 0.50, 1.00 }, bot = { 0.60, 0.75, 1.00 }, bar = { 0.40, 0.60, 1.00 } },
+    teal     = { glow = { 0.10, 0.85, 0.80 }, bot = { 0.55, 0.95, 0.90 }, bar = { 0.30, 0.90, 0.85 } },
+    emerald  = { glow = { 0.10, 0.90, 0.50 }, bot = { 0.50, 1.00, 0.70 }, bar = { 0.25, 0.95, 0.60 } },
+    lime     = { glow = { 0.55, 0.95, 0.20 }, bot = { 0.80, 1.00, 0.50 }, bar = { 0.65, 0.95, 0.35 } },
+    gold     = { glow = { 1.00, 0.85, 0.20 }, bot = { 1.00, 0.95, 0.60 }, bar = { 1.00, 0.90, 0.40 } },
+    orange   = { glow = { 1.00, 0.60, 0.10 }, bot = { 1.00, 0.80, 0.50 }, bar = { 1.00, 0.70, 0.30 } },
+    sunset   = { glow = { 1.00, 0.40, 0.20 }, bot = { 1.00, 0.80, 0.40 }, bar = { 1.00, 0.55, 0.30 } },
+    red      = { glow = { 1.00, 0.25, 0.25 }, bot = { 1.00, 0.60, 0.55 }, bar = { 1.00, 0.40, 0.40 } },
+    rose     = { glow = { 1.00, 0.35, 0.60 }, bot = { 1.00, 0.70, 0.80 }, bar = { 1.00, 0.50, 0.70 } },
+    purple   = { glow = { 0.80, 0.30, 1.00 }, bot = { 0.90, 0.60, 1.00 }, bar = { 0.85, 0.45, 1.00 } },
+    lavender = { glow = { 0.65, 0.60, 1.00 }, bot = { 0.85, 0.80, 1.00 }, bar = { 0.75, 0.70, 1.00 } },
+    white    = { glow = { 1.00, 1.00, 1.00 }, bot = { 0.80, 0.80, 0.80 }, bar = { 1.00, 1.00, 1.00 } },
+}
+
+local function theme_colors()
+    return THEMES[read_clock_theme()] or THEMES.cyan
+end
+
 local function draw_clock(cr)
     local hours = os.date('%H')
     local minutes = os.date('%M')
@@ -374,24 +394,10 @@ local function draw_clock(cr)
     cairo_move_to(cr, x + hours_width + colon_width + 6, text_y + 8)
     cairo_show_text(cr, minutes)
 
-    local theme = read_clock_theme()
-    local glow_r, glow_g, glow_b = 0.2, 0.8, 1.0
+    local colors = theme_colors()
+    local glow_r, glow_g, glow_b = colors.glow[1], colors.glow[2], colors.glow[3]
     local top_r, top_g, top_b = 1.0, 1.0, 1.0
-    local bot_r, bot_g, bot_b = 0.6, 0.9, 1.0
-
-    if theme == 'purple' then
-        glow_r, glow_g, glow_b = 0.8, 0.3, 1.0
-        bot_r, bot_g, bot_b = 0.9, 0.6, 1.0
-    elseif theme == 'emerald' then
-        glow_r, glow_g, glow_b = 0.1, 0.9, 0.5
-        bot_r, bot_g, bot_b = 0.5, 1.0, 0.7
-    elseif theme == 'sunset' then
-        glow_r, glow_g, glow_b = 1.0, 0.4, 0.2
-        bot_r, bot_g, bot_b = 1.0, 0.8, 0.4
-    elseif theme == 'white' then
-        glow_r, glow_g, glow_b = 1.0, 1.0, 1.0
-        bot_r, bot_g, bot_b = 0.8, 0.8, 0.8
-    end
+    local bot_r, bot_g, bot_b = colors.bot[1], colors.bot[2], colors.bot[3]
 
     for i = 1, 6 do
         cairo_set_source_rgba(cr, glow_r, glow_g, glow_b, 0.04)
@@ -432,14 +438,6 @@ local function cava_file()
     return base .. '/mactahoe-cava.dat'
 end
 
-local CAVA_COLORS = {
-    cyan = { 0.30, 0.85, 1.00 },
-    purple = { 0.85, 0.45, 1.00 },
-    emerald = { 0.25, 0.95, 0.60 },
-    sunset = { 1.00, 0.55, 0.30 },
-    white = { 1.00, 1.00, 1.00 },
-}
-
 local function draw_cava(cr, width, height)
     local values = {}
     local file = io.open(cava_file(), 'r')
@@ -455,7 +453,7 @@ local function draw_cava(cr, width, height)
     local count = #values
     if count == 0 then return end
 
-    local color = CAVA_COLORS[read_clock_theme()] or CAVA_COLORS.cyan
+    local color = theme_colors().bar
     local gap = 5
     local bar_w = (width - gap * (count - 1)) / count
 
