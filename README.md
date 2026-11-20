@@ -60,12 +60,12 @@ Trong `files/`:
 ```
 .themes/                               MacTahoe (Light/Dark, solid)
 .config/gtk-3.0, gtk-4.0/              settings, css, bookmarks
-.config/conky/                         6 widget và file lua vẽ
+.config/conky/                         7 widget và các file lua vẽ
 .config/systemd/user/                  color-scheme-sync.service
 .local/bin/                            các script nhỏ (bên dưới)
 .local/share/applications/             launcher .desktop
 .local/share/backgrounds/              hình nền mặc định
-.local/share/fonts/                    Nerd Font và vài font lẻ
+.local/share/fonts/                    Montserrat, Allura (thẻ ngày giờ), Nerd Font và vài font lẻ
 .local/share/icons/                    con trỏ MacTahoe, icon theme WhiteSur
 .local/share/gnome-shell/extensions/   CachyOSTahoe, CachyOSTahoeDock, blur-my-shell, moveclock
 .local/share/mactahoe-apps/            hai app Python: âm lịch, nén ảnh
@@ -110,6 +110,8 @@ Khi `color-scheme-sync` đang chạy, `gtk-theme` và `user-theme` bị nó đ�
 
 **Màu đồng hồ lớn.** Chọn trong giao diện `mactahoe-widgets` hoặc chạy `mactahoe-widgets color purple`. Lựa chọn lưu ở `~/.cache/mactahoe-widgets/clock_theme.txt` và áp dụng ngay.
 
+**Thẻ ngày giờ.** Widget `datecard` hiện thứ, ngày (viết bằng chữ), tháng và giờ ở giữa phía trên màn hình. Mặc định tắt; bật trong menu `mactahoe-widgets`. Chữ trắng và cam cố định, không đổi theo mục "Màu đồng hồ và cava". Chỉnh nhanh ở đầu `files/.config/conky/mactahoe-datecard.lua`: `FONT_DAY`, `FONT_SCRIPT`, `SCALE`, `ORANGE`. Vì nằm giữa màn hình nên thẻ có thể chồng lên Đồng hồ lớn; chỉ nên bật một trong hai, hoặc chỉnh `gap_x` trong `mactahoe-datecard.conf`.
+
 **Tự bật widget khi đăng nhập.** `files/.config/autostart/mactahoe-widgets.desktop`. Muốn tắt, xóa file này trong `~/.config/autostart/`.
 
 **Lệnh riêng sau khi cài.** Đổi `hooks/post-install.example.sh` thành `hooks/post-install.sh` và thêm lệnh của bạn; `install.sh` chạy nó ở cuối. File này đã được `.gitignore` bỏ qua.
@@ -127,6 +129,7 @@ Khi `color-scheme-sync` đang chạy, `gtk-theme` và `user-theme` bị nó đ�
 - Extension CachyOSTahoe và CachyOSTahoeDock: dựa trên [adfoxtheme/mactahoe-ubuntu](https://github.com/adfoxtheme/mactahoe-ubuntu).
 - [Blur my Shell](https://github.com/aunetx/blur-my-shell) của aunetx.
 - [moveclock](https://github.com/kuvaus/moveclock) của kuvaus.
+- Font [Montserrat](https://github.com/JulietaUla/Montserrat) và [Allura](https://github.com/googlefonts/allura) theo SIL Open Font License 1.1; bản giấy phép nằm cạnh file font trong `files/.local/share/fonts/`.
 
 ## Giấy phép
 
