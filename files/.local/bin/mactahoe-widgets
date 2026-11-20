@@ -81,6 +81,12 @@ WIDGETS = {
     "cava": {"label": "Sóng nhạc", "description": "Thanh sóng nhạc kiểu cava, nằm phía trên dock", "height": 0},
 }
 STACK_ORDER = ("weather", "system", "lunar", "rest")
+
+# Các tab ở thanh bên trái của cửa sổ quản lý: (id, nhãn, tên icon).
+# Muốn thêm tab mới: thêm một dòng vào đây rồi viết hàm WidgetManager.build_page_<id>().
+SIDEBAR_PAGES = (
+    ("widgets", "Quản lý widget", "view-grid-symbolic"),
+)
 START_Y = 80
 WIDGET_GAP = 2
 SYSTEM_ACCENT_COLORS = {
@@ -461,6 +467,11 @@ def run_gui() -> int:
             self.updating_master = False
             self.clock_dropdown = None
             self.updating_clock = False
+            self.page_stack = None
+            self.sidebar_list = None
+            self.sidebar_page_ids = []
+            self.use_city_button = None
+            self.location_status = None
 
         def do_activate(self):
             if self.window:
@@ -469,9 +480,12 @@ def run_gui() -> int:
             self.build_window()
             self.window.present()
 
+        # ------------------------------------------------------------------
+        # Khung cửa sổ: thanh bên trái (tab) + vùng nội dung (Gtk.Stack)
+        # ------------------------------------------------------------------
         def build_window(self):
             self.window = Gtk.ApplicationWindow(application=self, title="")
-            self.window.set_default_size(540, 720)
+            self.window.set_default_size(980, 680)
             self.window.set_resizable(True)
 
             try:
@@ -490,6 +504,18 @@ def run_gui() -> int:
                 .widget-title {{ font-weight: 600; }}
                 .muted {{ color: @theme_fg_color; font-size: 12px; }}
                 .accent {{ color: @app_accent; }}
+                .sidebar-pane {{
+                    background: alpha(@theme_base_color, 0.55);
+                    border-right: 1px solid alpha(@theme_fg_color, 0.08);
+                }}
+                .sidebar-title {{ font-size: 15px; font-weight: 700; }}
+                .sidebar-pane list {{ background: transparent; }}
+                .sidebar-pane row {{ border-radius: 10px; margin: 2px 0; }}
+                .sidebar-pane row:selected,
+                .sidebar-pane row:selected:hover {{
+                    background: alpha(@app_accent, 0.16);
+                    color: @app_accent;
+                }}
                 switch:checked,
                 switch:checked:hover,
                 switch:checked:active,
@@ -504,25 +530,142 @@ def run_gui() -> int:
             if display:
                 Gtk.StyleContext.add_provider_for_display(display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-            outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
-            outer.set_margin_top(22)
-            outer.set_margin_bottom(22)
-            outer.set_margin_start(22)
-            outer.set_margin_end(22)
-            scrolled = Gtk.ScrolledWindow()
-            scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-            scrolled.set_child(outer)
-            self.window.set_child(scrolled)
+            root = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+            self.window.set_child(root)
 
+            self.page_stack = Gtk.Stack()
+            self.page_stack.set_hexpand(True)
+            self.page_stack.set_vexpand(True)
+            self.page_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+
+            root.append(self.build_sidebar())
+            root.append(self.page_stack)
+
+            for page_id, _label, _icon in SIDEBAR_PAGES:
+                builder = getattr(self, f"build_page_{page_id}")
+                scrolled = Gtk.ScrolledWindow()
+                scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+                scrolled.set_child(builder())
+                self.page_stack.add_named(scrolled, page_id)
+
+            first_row = self.sidebar_list.get_row_at_index(0)
+            if first_row:
+                self.sidebar_list.select_row(first_row)
+            self.refresh_status()
+
+        def build_sidebar(self):
+            pane = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+            pane.add_css_class("sidebar-pane")
+            pane.set_size_request(220, -1)
+            pane.set_margin_top(0)
+
+            sidebar_title = Gtk.Label(label="Cài đặt", xalign=0)
+            sidebar_title.add_css_class("sidebar-title")
+            sidebar_title.set_margin_top(18)
+            sidebar_title.set_margin_start(20)
+            sidebar_title.set_margin_end(14)
+            pane.append(sidebar_title)
+
+            self.sidebar_list = Gtk.ListBox()
+            self.sidebar_list.set_selection_mode(Gtk.SelectionMode.SINGLE)
+            self.sidebar_list.add_css_class("navigation-sidebar")
+            self.sidebar_list.set_margin_start(10)
+            self.sidebar_list.set_margin_end(10)
+            self.sidebar_page_ids = []
+            for page_id, label, icon in SIDEBAR_PAGES:
+                row = Gtk.ListBoxRow()
+                box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+                box.set_margin_top(9)
+                box.set_margin_bottom(9)
+                box.set_margin_start(10)
+                box.set_margin_end(10)
+                box.append(Gtk.Image.new_from_icon_name(icon))
+                box.append(Gtk.Label(label=label, xalign=0, hexpand=True))
+                row.set_child(box)
+                self.sidebar_list.append(row)
+                self.sidebar_page_ids.append(page_id)
+            self.sidebar_list.connect("row-selected", self.on_page_selected)
+            pane.append(self.sidebar_list)
+            return pane
+
+        def on_page_selected(self, _listbox, row):
+            if row is None:
+                return
+            index = row.get_index()
+            if 0 <= index < len(self.sidebar_page_ids):
+                self.page_stack.set_visible_child_name(self.sidebar_page_ids[index])
+
+        # ------------------------------------------------------------------
+        # Hàm dựng nhỏ dùng chung cho các trang
+        # ------------------------------------------------------------------
+        def make_page_box(self):
+            page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
+            page.set_margin_top(22)
+            page.set_margin_bottom(22)
+            page.set_margin_start(22)
+            page.set_margin_end(22)
+            return page
+
+        def make_page_heading(self, title_text, subtitle_text):
             heading = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-            title = Gtk.Label(label="Widget MacTahoe", xalign=0)
+            title = Gtk.Label(label=title_text, xalign=0)
             title.add_css_class("title")
-            subtitle = Gtk.Label(label="Chọn widget muốn hiển thị trên màn hình.", xalign=0)
+            subtitle = Gtk.Label(label=subtitle_text, xalign=0)
             subtitle.add_css_class("subtitle")
             heading.append(title)
             heading.append(subtitle)
-            outer.append(heading)
+            return heading
 
+        def make_section_heading(self, text):
+            label = Gtk.Label(label=text, xalign=0)
+            label.add_css_class("section-title")
+            return label
+
+        def make_grid(self, min_per_line, max_per_line, homogeneous=True):
+            grid = Gtk.FlowBox()
+            grid.set_selection_mode(Gtk.SelectionMode.NONE)
+            grid.set_homogeneous(homogeneous)
+            grid.set_column_spacing(12)
+            grid.set_row_spacing(12)
+            grid.set_min_children_per_line(min_per_line)
+            grid.set_max_children_per_line(max_per_line)
+            grid.set_valign(Gtk.Align.START)
+            return grid
+
+        def make_widget_tile(self, widget_id, info):
+            tile = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            tile.add_css_class("card")
+            tile.set_size_request(200, 112)
+
+            top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+            label = Gtk.Label(label=info["label"], xalign=0, hexpand=True)
+            label.add_css_class("widget-title")
+            toggle = Gtk.Switch()
+            toggle.add_css_class("system-accent")
+            toggle.set_valign(Gtk.Align.CENTER)
+            toggle.set_active(self.settings["widgets"].get(widget_id, widget_id not in DEFAULT_OFF))
+            toggle.connect("notify::active", self.on_widget_changed, widget_id)
+            self.widget_switches[widget_id] = toggle
+            top.append(label)
+            top.append(toggle)
+
+            description = Gtk.Label(label=info["description"], xalign=0, yalign=0, wrap=True)
+            description.set_max_width_chars(28)
+            description.set_vexpand(True)
+            description.add_css_class("muted")
+
+            tile.append(top)
+            tile.append(description)
+            return tile
+
+        # ------------------------------------------------------------------
+        # Trang "Quản lý widget"
+        # ------------------------------------------------------------------
+        def build_page_widgets(self):
+            page = self.make_page_box()
+            page.append(self.make_page_heading("Widget MacTahoe", "Chọn widget muốn hiển thị trên màn hình."))
+
+            # Công tắc tổng
             master_card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=14)
             master_card.add_css_class("card")
             master_text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
@@ -540,75 +683,65 @@ def run_gui() -> int:
             self.master_switch.connect("notify::active", self.on_master_changed)
             master_card.append(master_text)
             master_card.append(self.master_switch)
-            outer.append(master_card)
+            page.append(master_card)
 
-            widget_heading = Gtk.Label(label="Widget", xalign=0)
-            widget_heading.add_css_class("section-title")
-            outer.append(widget_heading)
+            # Lưới widget: mỗi widget là một ô thẻ (2-3 ô mỗi hàng tuỳ độ rộng cửa sổ)
+            page.append(self.make_section_heading("Widget"))
+            widget_grid = self.make_grid(2, 3)
+            for widget_id, info in WIDGETS.items():
+                widget_grid.append(self.make_widget_tile(widget_id, info))
+            page.append(widget_grid)
 
-            widget_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-            widget_card.add_css_class("card")
-            for index, (widget_id, info) in enumerate(WIDGETS.items()):
-                row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-                row.set_margin_top(8)
-                row.set_margin_bottom(8)
-                text_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
-                label = Gtk.Label(label=info["label"], xalign=0)
-                label.add_css_class("widget-title")
-                description = Gtk.Label(label=info["description"], xalign=0)
-                description.add_css_class("muted")
-                text_box.append(label)
-                text_box.append(description)
-                text_box.set_hexpand(True)
-                toggle = Gtk.Switch()
-                toggle.add_css_class("system-accent")
-                toggle.set_valign(Gtk.Align.CENTER)
-                toggle.set_active(self.settings["widgets"].get(widget_id, widget_id not in DEFAULT_OFF))
-                toggle.connect("notify::active", self.on_widget_changed, widget_id)
-                self.widget_switches[widget_id] = toggle
-                row.append(text_box)
-                row.append(toggle)
-                widget_card.append(row)
-                if index < len(WIDGETS) - 1:
-                    widget_card.append(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
-            outer.append(widget_card)
+            # Lưới cài đặt phụ: Màu + Vị trí thời tiết (cao thấp khác nhau nên không đồng nhất)
+            settings_grid = self.make_grid(1, 2, homogeneous=False)
+            settings_grid.append(self.build_color_section())
+            settings_grid.append(self.build_location_section())
+            page.append(settings_grid)
 
-            color_heading = Gtk.Label(label="Màu đồng hồ và cava", xalign=0)
-            color_heading.add_css_class("section-title")
-            outer.append(color_heading)
+            self.status_label = Gtk.Label(label="", xalign=0, wrap=True)
+            self.status_label.add_css_class("accent")
+            page.append(self.status_label)
+            return page
 
-            color_card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-            color_card.add_css_class("card")
-            color_text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
-            color_title = Gtk.Label(label="Chủ đề màu", xalign=0)
-            color_title.add_css_class("widget-title")
-            color_help = Gtk.Label(label="Đổi màu phát sáng của đồng hồ lớn và cava, áp dụng ngay.", xalign=0)
-            color_help.add_css_class("muted")
-            color_text.append(color_title)
-            color_text.append(color_help)
-            color_text.set_hexpand(True)
+        def build_color_section(self):
+            section = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            section.set_valign(Gtk.Align.START)
+            section.set_size_request(260, -1)
+            section.append(self.make_section_heading("Màu đồng hồ và cava"))
+
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+            card.add_css_class("card")
+            title = Gtk.Label(label="Chủ đề màu", xalign=0)
+            title.add_css_class("widget-title")
+            help_label = Gtk.Label(label="Đổi màu phát sáng của đồng hồ lớn và cava, áp dụng ngay.", xalign=0, wrap=True)
+            help_label.add_css_class("muted")
             self.clock_theme_ids = list(CLOCK_THEMES)
             self.clock_dropdown = Gtk.DropDown.new(Gtk.StringList.new(list(CLOCK_THEMES.values())), None)
-            self.clock_dropdown.set_valign(Gtk.Align.CENTER)
+            self.clock_dropdown.set_hexpand(True)
             self.clock_dropdown.set_selected(self.clock_theme_ids.index(load_clock_theme()))
             self.clock_dropdown.connect("notify::selected", self.on_clock_theme_changed)
-            color_card.append(color_text)
-            color_card.append(self.clock_dropdown)
-            outer.append(color_card)
+            card.append(title)
+            card.append(help_label)
+            card.append(self.clock_dropdown)
+            section.append(card)
+            return section
 
-            location_heading = Gtk.Label(label="Vị trí thời tiết", xalign=0)
-            location_heading.add_css_class("section-title")
-            outer.append(location_heading)
+        def build_location_section(self):
+            section = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            section.set_valign(Gtk.Align.START)
+            section.set_size_request(260, -1)
+            section.append(self.make_section_heading("Vị trí thời tiết"))
 
-            location_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-            location_card.add_css_class("card")
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            card.add_css_class("card")
             weather_config = load_weather_config()
             self.auto_location = Gtk.CheckButton(label="Tự xác định vị trí gần đúng qua Internet")
             self.auto_location.set_active(weather_config.get("LOCATION_MODE") == "auto")
-            location_card.append(self.auto_location)
+            card.append(self.auto_location)
             privacy = Gtk.Label(label="Dùng vị trí theo IP (không phải GPS); dịch vụ định vị sẽ thấy IP công khai của máy.", xalign=0, wrap=True)
             privacy.add_css_class("muted")
-            location_card.append(privacy)
+            card.append(privacy)
+
             city_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
             self.city_entry = Gtk.Entry()
             self.city_entry.set_placeholder_text("Nhập thành phố, ví dụ: Quy Nhơn")
@@ -618,28 +751,27 @@ def run_gui() -> int:
             search_button.connect("clicked", self.on_search_city)
             city_row.append(self.city_entry)
             city_row.append(search_button)
-            location_card.append(city_row)
+            card.append(city_row)
+
             self.city_dropdown = Gtk.DropDown.new(Gtk.StringList.new([]), None)
             self.city_dropdown.set_visible(False)
-            location_card.append(self.city_dropdown)
-            use_city_button = Gtk.Button(label="Dùng thành phố đã chọn")
-            use_city_button.set_halign(Gtk.Align.END)
-            use_city_button.set_visible(False)
-            use_city_button.connect("clicked", self.on_use_city)
-            self.use_city_button = use_city_button
-            location_card.append(use_city_button)
-            self.location_status = Gtk.Label(label=f"Đang dùng: {weather_config.get("CITY", "Hà Nội")}", xalign=0, wrap=True)
+            card.append(self.city_dropdown)
+            self.use_city_button = Gtk.Button(label="Dùng thành phố đã chọn")
+            self.use_city_button.set_halign(Gtk.Align.END)
+            self.use_city_button.set_visible(False)
+            self.use_city_button.connect("clicked", self.on_use_city)
+            card.append(self.use_city_button)
+
+            current_city = weather_config.get("CITY", "Hà Nội")
+            self.location_status = Gtk.Label(label=f"Đang dùng: {current_city}", xalign=0, wrap=True)
             self.location_status.add_css_class("muted")
-            location_card.append(self.location_status)
+            card.append(self.location_status)
+
             apply_location = Gtk.Button(label="Áp dụng chế độ vị trí")
             apply_location.connect("clicked", self.on_apply_location)
-            location_card.append(apply_location)
-            outer.append(location_card)
-
-            self.status_label = Gtk.Label(label="", xalign=0, wrap=True)
-            self.status_label.add_css_class("accent")
-            outer.append(self.status_label)
-            self.refresh_status()
+            card.append(apply_location)
+            section.append(card)
+            return section
 
         def set_status(self, message: str):
             self.status_label.set_text(message)

@@ -122,9 +122,6 @@ for rel in "${PATHS[@]}"; do
         act rm -rf -- "$HOME/$rel/$name"
     done < <(find "$src" -mindepth 1 -maxdepth 1 -printf '%f\0')
 done
-# >>> mactahoe-fix: wallpaper
-act rm -f -- "$HOME/.local/share/backgrounds/astronaut_4k_1.png"
-# <<< mactahoe-fix: wallpaper
 act rm -rf -- "$HOME/.cache/mactahoe-widgets" "$HOME/.config/mactahoe-widgets"
 [ "$DRY" -eq 1 ] || systemctl --user daemon-reload 2>/dev/null || true
 

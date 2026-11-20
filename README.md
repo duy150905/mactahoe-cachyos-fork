@@ -122,7 +122,7 @@ Khi `color-scheme-sync` đang chạy, `gtk-theme` và `user-theme` bị nó đ�
 - **Icon theme và con trỏ.** Mặc định dùng icon `WhiteSur-dark`, con trỏ `MacTahoe-dark-cursors`, Shell và GTK `MacTahoe-Light` (đều có sẵn trong repo). `mactahoe-icon-manager` cần icon theme `MacTahoe` cài riêng (vinceliuice/MacTahoe-icon-theme); các icon thời tiết của widget dùng bản symbolic của WhiteSur.
 - **Extension.** `install.sh` chỉ *bổ sung* các extension đánh dấu `bật` trong `data/extensions.tsv` (qua `data/merge-extensions.py`), không ghi đè danh sách extension bạn đang dùng. User Themes luôn được bật để theme Shell có hiệu lực. `extension-manager` nằm trong `data/packages.txt`.
 - **Extension hệ thống** (`user-theme`, `system-monitor`...) nằm trong gói `gnome-shell-extensions`, đã có trong `data/packages.txt`.
-- **Hình nền.** Hình nền mặc định là `files/Wallpaper/astronaut_4k_1.png`: `install.sh` chép nó vào `~/.local/share/backgrounds/` và đặt làm nền (nếu thiếu file thì giữ ảnh cũ `mactahoe-default.jpg`). Muốn dùng ảnh khác, sửa `picture-uri` và `picture-uri-dark` trong `dconf/gnome.ini` (cùng đoạn chép ảnh trong `install.sh`). `files/Wallpapers/` không được cài tự động. Các ảnh chưa ghi rõ nguồn và giấy phép; hãy thay bằng ảnh của bạn nếu định phân phối lại.
+- **Hình nền.** `files/.local/share/backgrounds/mactahoe-default.jpg` là hình nền mặc định. `files/Wallpapers/` không được cài tự động. Cả hai chưa ghi rõ nguồn và giấy phép; hãy thay bằng ảnh của bạn nếu định phân phối lại.
 - Script chỉ thao tác trong `~`, không đụng tới `/etc`, GDM hay kernel, và không mang theo tài khoản hay mật khẩu.
 
 ## Ghi công

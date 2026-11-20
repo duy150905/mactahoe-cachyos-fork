@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
+# >>> mactahoe-portable-perms
+# Dự án có thể bị mất quyền thực thi khi zip/giải nén/chép sang máy khác.
+# Gán lại +x và bỏ CRLF cho script trong files/.local/bin trước khi cài.
+__mt_dir="$(cd "$(dirname "$0")" 2>/dev/null && pwd)"
+if [ -d "$__mt_dir/files/.local/bin" ]; then
+    for __mt_f in "$__mt_dir"/files/.local/bin/*; do
+        [ -f "$__mt_f" ] || continue
+        sed -i 's/\r$//' "$__mt_f" 2>/dev/null || true
+        chmod +x "$__mt_f" 2>/dev/null || true
+    done
+fi
+unset __mt_dir __mt_f
+# <<< mactahoe-portable-perms
 # Cài giao diện MacTahoe cho GNOME trên CachyOS/Arch.
 # Chạy bằng tài khoản thường (không dùng sudo). Xem README.md để biết các tùy chọn.
 set -Eeuo pipefail
@@ -140,25 +153,6 @@ if [ "$DRY" -eq 0 ]; then
     done
 fi
 
-# >>> mactahoe-fix: wallpaper
-WALL_NAME="astronaut_4k_1.png"
-WALL_DST="$HOME/.local/share/backgrounds/$WALL_NAME"
-WALL_SRC=""
-for wall_dir in Wallpaper Wallpapers; do
-    if [ -f "$HERE/files/$wall_dir/$WALL_NAME" ]; then
-        WALL_SRC="$HERE/files/$wall_dir/$WALL_NAME"
-        break
-    fi
-done
-if [ -n "$WALL_SRC" ]; then
-    info "Chép hình nền mặc định ($WALL_NAME)"
-    act mkdir -p "$(dirname "$WALL_DST")"
-    act cp -f -- "$WALL_SRC" "$WALL_DST"
-else
-    warn "Không thấy files/Wallpaper/$WALL_NAME; giữ hình nền mặc định cũ."
-fi
-# <<< mactahoe-fix: wallpaper
-
 if [ "$NO_DCONF" -eq 0 ] && [ -s "$HERE/dconf/gnome.ini" ]; then
     info "Nạp thiết lập GNOME (dconf)"
     if [ "$DRY" -eq 1 ]; then
@@ -166,10 +160,6 @@ if [ "$NO_DCONF" -eq 0 ] && [ -s "$HERE/dconf/gnome.ini" ]; then
     else
         TMP_INI="$(mktemp)"
         sed "s#@HOME@#$HOME_REPL#g" "$HERE/dconf/gnome.ini" >"$TMP_INI"
-        # Thiếu ảnh nền mới thì quay về ảnh cũ, tránh trỏ tới file không tồn tại
-        if [ ! -f "$WALL_DST" ]; then
-            sed -i "s#backgrounds/$WALL_NAME#backgrounds/mactahoe-default.jpg#g" "$TMP_INI"
-        fi
         python3 - "$TMP_INI" <<'PY'
 import ast, os, re, sys
 path = sys.argv[1]
