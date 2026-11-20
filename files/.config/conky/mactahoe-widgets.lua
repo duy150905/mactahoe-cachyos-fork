@@ -51,7 +51,7 @@ end
 
 local function text(cr, x, y, value, size, color, bold, align, family)
     if value == nil or value == '' then return end
-    cairo_select_font_face(cr, family or 'SF Pro Text', CAIRO_FONT_SLANT_NORMAL,
+    cairo_select_font_face(cr, family or 'Inter', CAIRO_FONT_SLANT_NORMAL,
         bold and CAIRO_FONT_WEIGHT_BOLD or CAIRO_FONT_WEIGHT_NORMAL)
     cairo_set_font_size(cr, size)
 
@@ -150,9 +150,9 @@ end
 local function draw_weather(cr, width, height)
     card(cr, 10, 8, width - 20, height - 18, 26)
     local state = read_state()
-    text(cr, 32, 41, state.city or 'Hà Nội', 16, C.white, true, 'left', 'SF Pro Display')
+    text(cr, 32, 41, state.city or 'Hà Nội', 16, C.white, true, 'left', 'Inter')
     text(cr, 32, 60, state.date or '', 13.0, C.sub, false, 'left')
-    text(cr, 32, 119, (state.temp or '--') .. '°', 54, C.white, true, 'left', 'SF Pro Display')
+    text(cr, 32, 119, (state.temp or '--') .. '°', 54, C.white, true, 'left', 'Inter')
     text(cr, 32, 142, state.condition or 'Đang tải…', 15.0, C.sub, true)
     text(cr, 32, 164, 'H:' .. (state.high or '--') .. '°    L:' .. (state.low or '--') .. '°', 14.0, C.sub, false)
     text(cr, 32, 184,
@@ -230,7 +230,7 @@ end
 
 local function draw_system(cr, width, height)
     card(cr, 10, 8, width - 20, height - 18, 26)
-    text(cr, 32, 41, 'Hệ thống', 16, C.white, true, 'left', 'SF Pro Display')
+    text(cr, 32, 41, 'Hệ thống', 16, C.white, true, 'left', 'Inter')
     text(cr, width - 32, 41, conky_value('${uptime}'), 12.0, C.sub, true, 'right')
 
     local cpu = number(conky_value('${cpu}'))
@@ -284,13 +284,13 @@ local function draw_lunar(cr, width, height)
     card(cr, 10, 8, width - 20, height - 18, 24)
     local state = read_state(LUNAR_STATE)
 
-    text(cr, 32, 37, 'Âm lịch', 16, C.white, true, 'left', 'SF Pro Display')
+    text(cr, 32, 37, 'Âm lịch', 16, C.white, true, 'left', 'Inter')
     text(cr, width - 32, 37, 'Hôm nay', 12.0, C.sub, true, 'right')
-    text(cr, 32, 95, state.lunar_day or '--', 46, C.white, true, 'left', 'SF Pro Display')
+    text(cr, 32, 95, state.lunar_day or '--', 46, C.white, true, 'left', 'Inter')
 
     local lunar_month_label = 'Tháng ' .. (state.lunar_month or '--') .. (state.lunar_leap == '1' and ' nhuận' or '')
     text(cr, 104, 67, lunar_month_label .. ' · ' .. (state.lunar_year_name or ''), 15.0, C.white, true, 'left',
-        'SF Pro Display')
+        'Inter')
     text(cr, 104, 88, 'Âm lịch hôm nay', 13.0, C.sub, true)
 
     cairo_set_source_rgba(cr, 1, 1, 1, 0.2)
@@ -326,8 +326,8 @@ local function draw_rest(cr, width, height)
     local uptime_label = days > 0 and string.format('%d ngày %dh', days, hours) or
         (hours > 0 and string.format('%dh %02dm', hours, minutes) or string.format('%d phút', minutes))
 
-    text(cr, 32, 37, 'Nhắc nghỉ', 16, C.white, true, 'left', 'SF Pro Display')
-    text(cr, 32, 72, uptime_label, 27, C.white, true, 'left', 'SF Pro Display')
+    text(cr, 32, 37, 'Nhắc nghỉ', 16, C.white, true, 'left', 'Inter')
+    text(cr, 32, 72, uptime_label, 27, C.white, true, 'left', 'Inter')
     text(cr, 32, 93, 'Máy hoạt động', 12.0, C.sub, true)
 
     local progress, status, hint
@@ -413,7 +413,7 @@ local function draw_clock(cr)
     local colon_width = size * 0.30
     local text_y = 238
 
-    cairo_select_font_face(cr, 'SF Pro Rounded', CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
+    cairo_select_font_face(cr, 'Inter', CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
     cairo_set_font_size(cr, size)
 
     cairo_set_source_rgba(cr, 0, 0, 0, 0.6)

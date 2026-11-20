@@ -44,7 +44,7 @@ done
 
 [ "$EUID" -ne 0 ] || die "Hãy chạy bằng tài khoản thường, không dùng sudo."
 [ -n "${HOME:-}" ] || die "Biến HOME trống."
-for need in paths.txt files; do
+for need in data/paths.txt files; do
     [ -e "$HERE/$need" ] || die "Thiếu '$need' trong thư mục cài đặt."
 done
 if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ] && [ -S "/run/user/$UID/bus" ]; then
@@ -81,7 +81,7 @@ if [ "$YES" -eq 0 ] && [ "$DRY" -eq 0 ]; then
     esac
 fi
 
-mapfile -t PATHS <"$HERE/paths.txt"
+mapfile -t PATHS <"$HERE/data/paths.txt"
 
 info "Dừng widget và dịch vụ systemd --user"
 if [ -x "$HOME/.local/bin/mactahoe-widgets" ]; then
@@ -89,11 +89,11 @@ if [ -x "$HOME/.local/bin/mactahoe-widgets" ]; then
 fi
 pkill -u "$UID" -f 'conky -c .*/mactahoe-' 2>/dev/null || true
 pkill -u "$UID" -f 'mactahoe-cava-feed' 2>/dev/null || true
-if [ -s "$HERE/units-enabled.txt" ]; then
+if [ -s "$HERE/data/units-enabled.txt" ]; then
     while IFS= read -r unit; do
         [ -n "$unit" ] || continue
         act systemctl --user disable --now "$unit" 2>/dev/null || true
-    done <"$HERE/units-enabled.txt"
+    done <"$HERE/data/units-enabled.txt"
 fi
 
 info "Tắt extension do bộ cài chép vào"
@@ -103,7 +103,7 @@ if command -v gnome-extensions >/dev/null 2>&1 && [ -d "$HERE/files/.local/share
     done < <(find "$HERE/files/.local/share/gnome-shell/extensions" -mindepth 1 -maxdepth 1 -printf '%f\0')
 fi
 
-info "Gỡ extension Tahoe bất kể tên (gồm bản cũ UbuntuTahoe*)"
+info "Gỡ mọi extension *Tahoe@adfoxtheme.github.io (kể cả bản cũ)"
 EXT_DIR="$HOME/.local/share/gnome-shell/extensions"
 if [ -d "$EXT_DIR" ]; then
     while IFS= read -r -d '' uuid; do
@@ -159,23 +159,6 @@ PY
         act bash -c 'dconf load / <"$1"' _ "$DCONF_BEFORE" || warn "dconf load báo lỗi"
     fi
 fi
-
-info "Khôi phục Firefox (nếu có bản sao lưu)"
-for root in "$HOME/.mozilla/firefox" "$HOME/.config/mozilla/firefox" \
-    "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox" \
-    "$HOME/.var/app/org.mozilla.firefox/config/mozilla/firefox"; do
-    [ -d "$root" ] || continue
-    while IFS= read -r -d '' prefs; do
-        profile="${prefs%/prefs.js}"
-        if [ -d "$profile/chrome.restore-backup" ]; then
-            act rm -rf -- "$profile/chrome"
-            act mv "$profile/chrome.restore-backup" "$profile/chrome"
-        fi
-        if [ -f "$profile/user.js.restore-backup" ]; then
-            act mv "$profile/user.js.restore-backup" "$profile/user.js"
-        fi
-    done < <(find "$root" -mindepth 2 -maxdepth 3 -type f -name prefs.js -print0)
-done
 
 if [ "$DRY" -eq 0 ]; then
     command -v fc-cache >/dev/null 2>&1 && fc-cache -f >/dev/null 2>&1 || true

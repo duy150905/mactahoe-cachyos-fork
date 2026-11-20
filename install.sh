@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
+# Cài giao diện MacTahoe cho GNOME trên CachyOS/Arch.
+# Chạy bằng tài khoản thường (không dùng sudo). Xem README.md để biết các tùy chọn.
 set -Eeuo pipefail
 
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DATA="$HERE/data"
 DRY=0
 SKIP_PACKAGES=0
-WITH_AUR=0
-WITH_FLATPAK=0
-NO_FIREFOX=0
 NO_DCONF=0
 USER="${USER:-$(id -un)}"
 export USER
@@ -23,16 +23,23 @@ warn() {
 info() { printf '==> %s\n' "$*"; }
 act() { if [ "$DRY" -eq 1 ]; then printf '[dry-run] %s\n' "$*"; else "$@"; fi; }
 
+usage() {
+    cat <<'USAGE'
+Dùng: ./install.sh [--dry-run] [--skip-packages] [--no-dconf]
+
+  --dry-run         chỉ in ra việc sẽ làm, không thay đổi gì
+  --skip-packages   không cài gói pacman (chỉ chép cấu hình)
+  --no-dconf        không nạp thiết lập GNOME (dconf)
+USAGE
+}
+
 while [ "$#" -gt 0 ]; do
     case "$1" in
     --dry-run) DRY=1 ;;
     --skip-packages) SKIP_PACKAGES=1 ;;
-    --with-aur) WITH_AUR=1 ;;
-    --with-flatpak) WITH_FLATPAK=1 ;;
-    --no-firefox) NO_FIREFOX=1 ;;
     --no-dconf) NO_DCONF=1 ;;
     -h | --help)
-        sed -n '2,5p' "${BASH_SOURCE[0]}"
+        usage
         exit 0
         ;;
     *) die "Tham số không hợp lệ: $1 (xem --help)" ;;
@@ -48,19 +55,22 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 trap 'printf "\nLỗi tại dòng %s: %s\nChi tiết: %s\n" "$LINENO" "$BASH_COMMAND" "$LOG_FILE" >&2' ERR
 
 [ "$EUID" -ne 0 ] || die "Hãy chạy bằng tài khoản thường, không dùng sudo."
-for need in manifest.env paths.txt files; do
-    [ -e "$HERE/$need" ] || die "Thiếu '$need' trong thư mục cài đặt. Bản chụp bị thiếu file?"
+for need in data/manifest.env data/paths.txt files; do
+    [ -e "$HERE/$need" ] || die "Thiếu '$need' trong thư mục cài đặt."
 done
-\. "$HERE/manifest.env"
-\. /etc/os-release 2>/dev/null || true
+
+# shellcheck source=data/manifest.env
+. "$DATA/manifest.env"
+# shellcheck disable=SC1091
+. /etc/os-release 2>/dev/null || true
 case " ${ID:-} ${ID_LIKE:-} " in
 *" cachyos "* | *" arch "*) ;;
-*) die "Bản chụp này dành cho CachyOS/Arch; máy này là '${PRETTY_NAME:-unknown}'." ;;
+*) die "Bộ cài này dành cho CachyOS/Arch; máy này là '${PRETTY_NAME:-unknown}'." ;;
 esac
 command -v gnome-shell >/dev/null 2>&1 || die "Chưa cài GNOME Shell."
 shell_major="$(gnome-shell --version | grep -oE '[0-9]+' | head -n1 || true)"
 if [ -n "${GNOME_SHELL_MAJOR:-}" ] && [ "$shell_major" != "$GNOME_SHELL_MAJOR" ]; then
-    warn "Bản chụp từ GNOME Shell $GNOME_SHELL_MAJOR nhưng máy này là $shell_major: extension có thể cần cập nhật."
+    warn "Bộ cài được kiểm tra trên GNOME Shell $GNOME_SHELL_MAJOR nhưng máy này là $shell_major: extension có thể cần cập nhật."
 fi
 if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ] && [ -S "/run/user/$UID/bus" ]; then
     export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$UID/bus"
@@ -70,7 +80,7 @@ fi
 
 sed_repl() { printf '%s' "$1" | sed 's/[&#\\]/\\&/g'; }
 HOME_REPL="$(sed_repl "$HOME")"
-mapfile -t PATHS <"$HERE/paths.txt"
+mapfile -t PATHS <"$DATA/paths.txt"
 
 info "Sao lưu cấu hình hiện có"
 existing=()
@@ -85,47 +95,20 @@ if [ "$DRY" -eq 0 ] && command -v dconf >/dev/null 2>&1; then
     dconf dump / >"$STATE_DIR/dconf-before-$STAMP.ini" || true
 fi
 
-if [ "$SKIP_PACKAGES" -eq 0 ]; then
+if [ "$SKIP_PACKAGES" -eq 0 ] && [ -s "$DATA/packages.txt" ]; then
     info "Cài gói pacman"
-    if [ -s "$HERE/packages-theme.txt" ]; then
-        mapfile -t PKGS < <(grep -vE '^\s*(#|$)' "$HERE/packages-theme.txt")
-        if [ "$DRY" -eq 1 ]; then
-            printf '[dry-run] sudo pacman -S --needed --noconfirm %s\n' "${PKGS[*]}"
-        else
-            command -v sudo >/dev/null 2>&1 || die "Cần sudo để cài gói (hoặc dùng --skip-packages)."
-            sudo -v || die "Không lấy được quyền sudo."
-            if ! sudo pacman -S --needed --noconfirm "${PKGS[@]}"; then
-                warn "Cài hàng loạt thất bại; thử từng gói để tìm gói lỗi."
-                for pkg in "${PKGS[@]}"; do
-                    sudo pacman -S --needed --noconfirm "$pkg" || warn "Không cài được: $pkg"
-                done
-            fi
+    mapfile -t PKGS < <(grep -vE '^\s*(#|$)' "$DATA/packages.txt")
+    if [ "$DRY" -eq 1 ]; then
+        printf '[dry-run] sudo pacman -S --needed --noconfirm %s\n' "${PKGS[*]}"
+    else
+        command -v sudo >/dev/null 2>&1 || die "Cần sudo để cài gói (hoặc dùng --skip-packages)."
+        sudo -v || die "Không lấy được quyền sudo."
+        if ! sudo pacman -S --needed --noconfirm "${PKGS[@]}"; then
+            warn "Cài hàng loạt thất bại; thử từng gói để tìm gói lỗi."
+            for pkg in "${PKGS[@]}"; do
+                sudo pacman -S --needed --noconfirm "$pkg" || warn "Không cài được: $pkg"
+            done
         fi
-    fi
-    if [ -s "$HERE/packages-foreign.txt" ]; then
-        if [ "$WITH_AUR" -eq 1 ]; then
-            helper=""
-            for h in paru yay; do command -v "$h" >/dev/null 2>&1 && {
-                helper="$h"
-                break
-            }; done
-            if [ -n "$helper" ]; then
-                while IFS= read -r pkg; do
-                    [ -n "$pkg" ] || continue
-                    act "$helper" -S --needed --noconfirm "$pkg" || warn "Không cài được gói AUR: $pkg"
-                done <"$HERE/packages-foreign.txt"
-            else
-                warn "--with-aur: không thấy paru/yay. Danh sách gói AUR: packages-foreign.txt"
-            fi
-        else
-            info "Bỏ qua gói AUR ($(wc -l <"$HERE/packages-foreign.txt") gói); thêm --with-aur nếu muốn. Danh sách: packages-foreign.txt"
-        fi
-    fi
-    if [ "$WITH_FLATPAK" -eq 1 ] && [ -s "$HERE/flatpak-apps.txt" ] && command -v flatpak >/dev/null 2>&1; then
-        while IFS= read -r app; do
-            [ -n "$app" ] || continue
-            act flatpak install -y --noninteractive flathub "$app" || warn "Không cài được flatpak: $app"
-        done <"$HERE/flatpak-apps.txt"
     fi
 fi
 
@@ -188,42 +171,17 @@ PY
     fi
 fi
 
-if [ -s "$HERE/units-enabled.txt" ]; then
+if [ -s "$DATA/units-enabled.txt" ]; then
     info "Bật dịch vụ systemd --user"
     act systemctl --user daemon-reload || warn "daemon-reload thất bại"
     while IFS= read -r unit; do
         [ -n "$unit" ] || continue
         act systemctl --user enable --now "$unit" || warn "Không bật được $unit"
-    done <"$HERE/units-enabled.txt"
-fi
-
-if [ "$NO_FIREFOX" -eq 0 ] && [ -d "$HERE/firefox" ] && [ -n "$(ls -A "$HERE/firefox" 2>/dev/null)" ]; then
-    info "Khôi phục theme Firefox"
-    if pgrep -u "$UID" -x firefox >/dev/null 2>&1; then
-        warn "Firefox đang chạy; hãy đóng hẳn rồi mở lại để nhận theme."
-    fi
-    first_snap="$(find "$HERE/firefox" -mindepth 1 -maxdepth 1 -type d | sort | head -n1)"
-    for root in "$HOME/.mozilla/firefox" "$HOME/.config/mozilla/firefox" \
-        "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox" \
-        "$HOME/.var/app/org.mozilla.firefox/config/mozilla/firefox"; do
-        [ -d "$root" ] || continue
-        while IFS= read -r -d '' prefs; do
-            profile="${prefs%/prefs.js}"
-            if [ -d "$profile/chrome" ] && [ ! -e "$profile/chrome.restore-backup" ]; then
-                act cp -a "$profile/chrome" "$profile/chrome.restore-backup"
-            fi
-            [ -d "$first_snap/chrome" ] && act cp -a "$first_snap/chrome" "$profile/"
-            if [ -f "$first_snap/user.js" ]; then
-                [ -f "$profile/user.js" ] && [ ! -e "$profile/user.js.restore-backup" ] &&
-                    act cp -a "$profile/user.js" "$profile/user.js.restore-backup"
-                act cp "$first_snap/user.js" "$profile/user.js"
-            fi
-        done < <(find "$root" -mindepth 2 -maxdepth 3 -type f -name prefs.js -print0)
-    done
+    done <"$DATA/units-enabled.txt"
 fi
 
 if [ -f "$HERE/hooks/post-install.sh" ]; then
-    info "Chạy hooks/post-install.sh (lệnh sửa lỗi do bạn tự thêm)"
+    info "Chạy hooks/post-install.sh"
     act bash "$HERE/hooks/post-install.sh" || warn "hooks/post-install.sh báo lỗi"
 fi
 
@@ -253,24 +211,31 @@ if [ "$DRY" -eq 0 ]; then
             check_fail "còn placeholder @HOME@ trong ~/$rel"
         fi
     done
-    if [ -f "$HERE/extensions.tsv" ]; then
+    if [ -f "$DATA/extensions.tsv" ]; then
         while IFS=$'\t' read -r uuid state _ where; do
             case "$uuid" in '#'* | '') continue ;; esac
             [ "$state" = "bật" ] || continue
             if [ ! -d "$HOME/.local/share/gnome-shell/extensions/$uuid" ] &&
                 [ ! -d "/usr/share/gnome-shell/extensions/$uuid" ]; then
-                warn "Extension đang bật ở máy nguồn nhưng chưa có ở đây: $uuid ($where). Cài từ extensions.gnome.org hoặc gói pacman."
+                warn "Extension cần bật nhưng chưa có: $uuid ($where). Cài từ extensions.gnome.org hoặc gói pacman."
             fi
-        done <"$HERE/extensions.tsv"
+        done <"$DATA/extensions.tsv"
     fi
     for conf in "$HOME"/.config/conky/mactahoe-*.conf; do
         [ -f "$conf" ] || continue
         grep -q "output_backend *= *'x11'" "$conf" || warn "$(basename "$conf") không ép backend X11 (Conky >= 1.25 trên Wayland có thể crash)."
     done
+    if [ "$NO_DCONF" -eq 0 ]; then
+        icon_theme="$(sed -n "s/^icon-theme='\(.*\)'$/\1/p" "$HERE/dconf/gnome.ini" | head -n1)"
+        if [ -n "$icon_theme" ] &&
+            [ ! -d "$HOME/.local/share/icons/$icon_theme" ] &&
+            [ ! -d "/usr/share/icons/$icon_theme" ]; then
+            warn "Icon theme '$icon_theme' chưa có trên máy (bộ cài không kèm theo). Hãy cài nó hoặc đổi icon-theme trong dconf/gnome.ini."
+        fi
+    fi
     [ "$failures" -eq 0 ] || die "$failures kiểm tra không đạt. Xem log: $LOG_FILE"
 fi
 
 printf '\nHoàn tất%s. Đăng xuất rồi đăng nhập lại để GNOME nạp theme và extension.\n' \
     "$([ "$WARNINGS" -gt 0 ] && printf ' (có %s cảnh báo, xem phía trên)' "$WARNINGS")"
-printf 'Sao lưu bản cũ: %s\nLog: %s\n' "$BACKUP_TAR" "$LOG_FILE"
-printf 'Muốn hoàn tác: tar -C ~ -xzf %s   rồi   dconf load / < %s/dconf-before-%s.ini\n' "$BACKUP_TAR" "$STATE_DIR" "$STAMP"
+printf 'Sao lưu bản cũ: %s\nLog: %s\nMuốn hoàn tác: ./uninstall.sh\n' "$BACKUP_TAR" "$LOG_FILE"

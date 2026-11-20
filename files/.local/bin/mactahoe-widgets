@@ -324,9 +324,9 @@ def save_clock_theme(theme: str) -> None:
 
 def load_weather_config() -> dict[str, str]:
     values = {
-        "LAT": "13.7820",
-        "LON": "109.2190",
-        "CITY": "Quy Nhơn",
+        "LAT": "21.0285",
+        "LON": "105.8542",
+        "CITY": "Hà Nội",
         "TIMEZONE": "Asia/Ho_Chi_Minh",
         "ICON_THEME": str(HOME / ".local/share/icons/MacTahoe-blue/status/32"),
         "LOCATION_MODE": "manual",
@@ -621,7 +621,7 @@ def run_gui() -> int:
             use_city_button.connect("clicked", self.on_use_city)
             self.use_city_button = use_city_button
             location_card.append(use_city_button)
-            self.location_status = Gtk.Label(label=f"Đang dùng: {weather_config.get('CITY', 'Quy Nhơn')}", xalign=0, wrap=True)
+            self.location_status = Gtk.Label(label=f"Đang dùng: {weather_config.get("CITY", "Hà Nội")}", xalign=0, wrap=True)
             self.location_status.add_css_class("muted")
             location_card.append(self.location_status)
             apply_location = Gtk.Button(label="Áp dụng chế độ vị trí")
@@ -759,7 +759,7 @@ def run_gui() -> int:
             else:
                 config["LOCATION_MODE"] = "manual"
                 save_weather_config(config)
-                self.location_status.set_text(f"Đang dùng: {config.get('CITY', 'Quy Nhơn')}")
+                self.location_status.set_text(f"Đang dùng: {config.get("CITY", "Hà Nội")}")
                 self.set_status("Đã lưu chế độ thành phố thủ công. Đang cập nhật thời tiết…")
                 self.refresh_weather_async("manual")
 
