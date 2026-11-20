@@ -28,7 +28,7 @@ DEFAULT_CONFIG = {
     "LOCATION_MODE": "manual",
     "ICON_THEME": str(
         Path.home()
-        / ".local/share/icons/MacTahoe-blue/status/32"
+        / ".local/share/icons/WhiteSur-dark/status/symbolic"
     ),
 }
 
@@ -183,16 +183,23 @@ def cache_age() -> float:
         return 10**9
 
 
+def _icon_candidates(theme_dir: Path, icon_name: str) -> list[Path]:
+    """Thử tên gốc, bản -symbolic, bản rút gọn (-large/-scattered), rồi icon 'không có'."""
+    simple = icon_name.replace("-large", "").replace("-scattered", "")
+    names: list[str] = []
+    for name in (icon_name, simple, "weather-none-available"):
+        for variant in (name, f"{name}-symbolic"):
+            if variant not in names:
+                names.append(variant)
+    return [theme_dir / f"{n}.svg" for n in names]
+
+
 def make_icon(theme_dir: Path, icon_name: str) -> str:
     ICON_DIR.mkdir(parents=True, exist_ok=True)
-    source = theme_dir / f"{icon_name}.svg"
     target = ICON_DIR / f"{icon_name}.png"
-    if not source.exists():
-        fallback = theme_dir / "weather-none-available.svg"
-        if fallback.exists():
-            source = fallback
-        else:
-            return ""
+    source = next((p for p in _icon_candidates(theme_dir, icon_name) if p.exists()), None)
+    if source is None:
+        return ""
     try:
         if (
             not target.exists()

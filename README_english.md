@@ -116,9 +116,10 @@ When `color-scheme-sync` is running, `gtk-theme` and `user-theme` are automatica
 
 ## Notes
 
-- **Icon Theme.** `dconf/gnome.ini` and `settings.ini` point to the `MacTahoe-blue` icon theme, which is not bundled in this repository. Please install it separately, or switch `icon-theme` to an available theme (`WhiteSur-dark` and `WhiteSur-light` are included). `install.sh` will warn you if the configured icon theme is missing.
+- **Icon theme and cursor.** Defaults to the `WhiteSur-dark` icons, the `MacTahoe-dark-cursors` cursor, and `MacTahoe-Light` for Shell and GTK (all bundled in this repository). `mactahoe-icon-manager` needs the `MacTahoe` icon theme installed separately (vinceliuice/MacTahoe-icon-theme); the weather widget uses WhiteSur's symbolic icons.
+- **Extensions.** `install.sh` only *adds* the extensions marked `bật` in `data/extensions.tsv` (via `data/merge-extensions.py`) and never overwrites the list of extensions you already use. User Themes is always enabled so the Shell theme takes effect. `extension-manager` is listed in `data/packages.txt`.
 - **System Extensions** (`user-theme`, `system-monitor`, etc.) are part of the `gnome-shell-extensions` package, which is already included in `data/packages.txt`.
-- **Wallpapers.** `files/.local/share/backgrounds/mactahoe-default.jpg` is the default wallpaper. `files/Wallpapers/` is not installed automatically. Neither has explicit source or license attribution; please replace them with your own images if you plan to redistribute this project.
+- **Wallpapers.** The default wallpaper is `files/Wallpaper/astronaut_4k_1.png`: `install.sh` copies it to `~/.local/share/backgrounds/` and sets it as the background (if the file is missing, the old `mactahoe-default.jpg` is kept). To use another image, edit `picture-uri` and `picture-uri-dark` in `dconf/gnome.ini` (and the copy step in `install.sh`). `files/Wallpapers/` is not installed automatically. The images have no explicit source or license attribution; please replace them with your own if you plan to redistribute this project.
 - The scripts only operate within `~`, never touching `/etc`, GDM, or the kernel, and contain no personal accounts or passwords.
 
 ## Credits

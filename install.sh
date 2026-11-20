@@ -140,6 +140,25 @@ if [ "$DRY" -eq 0 ]; then
     done
 fi
 
+# >>> mactahoe-fix: wallpaper
+WALL_NAME="astronaut_4k_1.png"
+WALL_DST="$HOME/.local/share/backgrounds/$WALL_NAME"
+WALL_SRC=""
+for wall_dir in Wallpaper Wallpapers; do
+    if [ -f "$HERE/files/$wall_dir/$WALL_NAME" ]; then
+        WALL_SRC="$HERE/files/$wall_dir/$WALL_NAME"
+        break
+    fi
+done
+if [ -n "$WALL_SRC" ]; then
+    info "Chép hình nền mặc định ($WALL_NAME)"
+    act mkdir -p "$(dirname "$WALL_DST")"
+    act cp -f -- "$WALL_SRC" "$WALL_DST"
+else
+    warn "Không thấy files/Wallpaper/$WALL_NAME; giữ hình nền mặc định cũ."
+fi
+# <<< mactahoe-fix: wallpaper
+
 if [ "$NO_DCONF" -eq 0 ] && [ -s "$HERE/dconf/gnome.ini" ]; then
     info "Nạp thiết lập GNOME (dconf)"
     if [ "$DRY" -eq 1 ]; then
@@ -147,6 +166,10 @@ if [ "$NO_DCONF" -eq 0 ] && [ -s "$HERE/dconf/gnome.ini" ]; then
     else
         TMP_INI="$(mktemp)"
         sed "s#@HOME@#$HOME_REPL#g" "$HERE/dconf/gnome.ini" >"$TMP_INI"
+        # Thiếu ảnh nền mới thì quay về ảnh cũ, tránh trỏ tới file không tồn tại
+        if [ ! -f "$WALL_DST" ]; then
+            sed -i "s#backgrounds/$WALL_NAME#backgrounds/mactahoe-default.jpg#g" "$TMP_INI"
+        fi
         python3 - "$TMP_INI" <<'PY'
 import ast, os, re, sys
 path = sys.argv[1]
@@ -170,6 +193,17 @@ PY
         rm -f -- "$TMP_INI"
     fi
 fi
+
+# >>> mactahoe-fix: extensions
+if [ -f "$DATA/merge-extensions.py" ] && [ -f "$DATA/extensions.tsv" ]; then
+    info "Bật extension (gộp với danh sách đang bật, không ghi đè)"
+    if [ "$DRY" -eq 1 ]; then
+        python3 "$DATA/merge-extensions.py" --dry-run "$DATA/extensions.tsv" || true
+    else
+        python3 "$DATA/merge-extensions.py" "$DATA/extensions.tsv" || warn "Không gộp được danh sách extension"
+    fi
+fi
+# <<< mactahoe-fix: extensions
 
 if [ -s "$DATA/units-enabled.txt" ]; then
     info "Bật dịch vụ systemd --user"

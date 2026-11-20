@@ -335,7 +335,7 @@ def load_weather_config() -> dict[str, str]:
         "LON": "105.8542",
         "CITY": "Hà Nội",
         "TIMEZONE": "Asia/Ho_Chi_Minh",
-        "ICON_THEME": str(HOME / ".local/share/icons/MacTahoe-blue/status/32"),
+        "ICON_THEME": str(HOME / ".local/share/icons/WhiteSur-dark/status/symbolic"),
         "LOCATION_MODE": "manual",
     }
     try:
