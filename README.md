@@ -1,4 +1,5 @@
-<img width="1920" height="1080" alt="MacTahoe trên CachyOS" src="https://github.com/user-attachments/assets/ddba93bb-4a69-493c-8a72-94bc8b657788" />
+<img width="1920" height="1080" alt="Screenshot From 2026-11-20 17-06-25" src="https://github.com/user-attachments/assets/d76b571b-e558-4f80-83bc-d790b8a3d659" />
+
 
 # MacTahoe cho CachyOS
 
