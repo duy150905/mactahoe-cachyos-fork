@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# >>> mactahoe-portable-perms
-# Dự án có thể bị mất quyền thực thi khi zip/giải nén/chép sang máy khác.
-# Gán lại +x và bỏ CRLF cho script trong files/.local/bin trước khi cài.
 __mt_dir="$(cd "$(dirname "$0")" 2>/dev/null && pwd)"
 if [ -d "$__mt_dir/files/.local/bin" ]; then
     for __mt_f in "$__mt_dir"/files/.local/bin/*; do
@@ -11,9 +8,6 @@ if [ -d "$__mt_dir/files/.local/bin" ]; then
     done
 fi
 unset __mt_dir __mt_f
-# <<< mactahoe-portable-perms
-# Cài giao diện MacTahoe cho GNOME trên CachyOS/Arch.
-# Chạy bằng tài khoản thường (không dùng sudo). Xem README.md để biết các tùy chọn.
 set -Eeuo pipefail
 
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -72,9 +66,7 @@ for need in data/manifest.env data/paths.txt files; do
     [ -e "$HERE/$need" ] || die "Thiếu '$need' trong thư mục cài đặt."
 done
 
-# shellcheck source=data/manifest.env
 . "$DATA/manifest.env"
-# shellcheck disable=SC1091
 . /etc/os-release 2>/dev/null || true
 case " ${ID:-} ${ID_LIKE:-} " in
 *" cachyos "* | *" arch "*) ;;
@@ -184,7 +176,6 @@ PY
     fi
 fi
 
-# >>> mactahoe-fix: extensions
 if [ -f "$DATA/merge-extensions.py" ] && [ -f "$DATA/extensions.tsv" ]; then
     info "Bật extension (gộp với danh sách đang bật, không ghi đè)"
     if [ "$DRY" -eq 1 ]; then
@@ -193,7 +184,6 @@ if [ -f "$DATA/merge-extensions.py" ] && [ -f "$DATA/extensions.tsv" ]; then
         python3 "$DATA/merge-extensions.py" "$DATA/extensions.tsv" || warn "Không gộp được danh sách extension"
     fi
 fi
-# <<< mactahoe-fix: extensions
 
 if [ -s "$DATA/units-enabled.txt" ]; then
     info "Bật dịch vụ systemd --user"

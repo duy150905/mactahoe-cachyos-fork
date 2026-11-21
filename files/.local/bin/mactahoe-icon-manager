@@ -1,25 +1,3 @@
-#!/usr/bin/env python3
-"""
-MacTahoe Icon Manager
----------------------
-Ứng dụng GTK4/Adw để đổi icon MacTahoe cho các ứng dụng đã cài
-(hệ thống, snap, flatpak, app local).
-
-- Quét các file .desktop trong:
-  ~/.local/share/applications
-  ~/.local/share/flatpak/exports/share/applications
-  /var/lib/flatpak/exports/share/applications
-  /var/lib/snapd/desktop/applications
-  các thư mục trong XDG_DATA_DIRS (thường /usr/local/share, /usr/share)
-
-- Ghi đè an toàn vào ~/.local/share/applications/<tên>.desktop
-- Backup file gốc vào ~/.local/share/mactahoe-icon-manager/backups/
-- Có nút Khôi phục để trả lại icon gốc
-
-Chạy: mactahoe-icon-manager
-Kiểm tra dữ liệu: mactahoe-icon-manager --self-test
-"""
-
 from __future__ import annotations
 
 import os
@@ -38,9 +16,6 @@ gi.require_version("Pango", "1.0")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk, Pango
 
 
-# ---------------------------------------------------------------------------
-# Đường dẫn
-# ---------------------------------------------------------------------------
 
 HOME = Path.home()
 DATA_HOME = Path(os.environ.get("XDG_DATA_HOME") or (HOME / ".local/share")).expanduser()
@@ -84,9 +59,6 @@ ICON_THEME_ROOTS = _unique_dirs(
 )
 
 
-# ---------------------------------------------------------------------------
-# Dữ liệu ứng dụng
-# ---------------------------------------------------------------------------
 
 @dataclass
 class AppEntry:
@@ -286,7 +258,6 @@ def apply_icon(entry: AppEntry, icon_path: Path) -> str:
     if not icon_path.is_file():
         raise OSError(f"Không tìm thấy file icon: {icon_path}")
 
-    # Copy icon sang thư mục riêng để update/đổi theme không làm hỏng đường dẫn.
     stable_icon = ICON_STORE_DIR / (
         entry.desktop_id.removesuffix(".desktop") + icon_path.suffix.lower()
     )
@@ -353,9 +324,6 @@ def reset_icon(entry: AppEntry) -> str:
     return "Không có ghi đè để khôi phục"
 
 
-# ---------------------------------------------------------------------------
-# Icon MacTahoe
-# ---------------------------------------------------------------------------
 
 def find_icon_theme() -> Path | None:
     names: list[str] = []
@@ -468,10 +436,6 @@ def make_icon_image(icon_value: str, size: int) -> Gtk.Image:
     image.set_pixel_size(size)
     return image
 
-
-# ---------------------------------------------------------------------------
-# Giao diện
-# ---------------------------------------------------------------------------
 
 class IconManagerWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
@@ -948,9 +912,6 @@ class IconManagerApplication(Adw.Application):
         window.present()
 
 
-# ---------------------------------------------------------------------------
-# Self-test (không cần màn hình)
-# ---------------------------------------------------------------------------
 
 def self_test() -> int:
     print(f"DATA_HOME : {DATA_HOME}")

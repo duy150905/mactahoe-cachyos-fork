@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-"""Chạy cava và ghi khung dữ liệu mới nhất ra một file nhỏ để widget Conky đọc."""
-
 from __future__ import annotations
 
 import os
