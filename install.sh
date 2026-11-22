@@ -145,6 +145,18 @@ if [ "$DRY" -eq 0 ]; then
     done
 fi
 
+DIND_UUID="Dind@adfoxtheme.github.io"
+if [ -d "$DATA/dind/$DIND_UUID" ]; then
+    info "Cài extension Dind"
+    act mkdir -p "$HOME/.local/share/gnome-shell/extensions"
+    act rm -rf -- "$HOME/.local/share/gnome-shell/extensions/$DIND_UUID"
+    act cp -a -- "$DATA/dind/$DIND_UUID" "$HOME/.local/share/gnome-shell/extensions/"
+    if [ "$DRY" -eq 0 ]; then
+        glib-compile-schemas "$HOME/.local/share/gnome-shell/extensions/$DIND_UUID/schemas" ||
+            warn "Không biên dịch được schema của Dind"
+    fi
+fi
+
 if [ "$NO_DCONF" -eq 0 ] && [ -s "$HERE/dconf/gnome.ini" ]; then
     info "Nạp thiết lập GNOME (dconf)"
     if [ "$DRY" -eq 1 ]; then

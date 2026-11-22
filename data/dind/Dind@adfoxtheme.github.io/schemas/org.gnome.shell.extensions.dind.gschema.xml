@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.dind" path="/org/gnome/shell/extensions/dind/">
+    <key name="pipeline-id" type="s">
+      <default>''</default>
+      <summary>Pipeline của Blur My Shell dùng cho nền Dind</summary>
+      <description>Để trống: Dind tự tạo pipeline "Dind" (sao chép từ pipeline của top bar) và lưu id vào đây. Có thể chỉnh pipeline này trong phần Pipelines của Blur My Shell.</description>
+    </key>
+    <key name="expanded-width" type="i">
+      <default>440</default>
+      <range min="320" max="800"/>
+      <summary>Chiều rộng khi phóng to (px)</summary>
+    </key>
+    <key name="expanded-height" type="i">
+      <default>216</default>
+      <range min="160" max="480"/>
+      <summary>Chiều cao khi phóng to (px)</summary>
+    </key>
+    <key name="expanded-gap" type="i">
+      <default>6</default>
+      <range min="0" max="40"/>
+      <summary>Khoảng cách giữa top bar và Dind khi phóng to (px)</summary>
+    </key>
+    <key name="corner-radius-expanded" type="i">
+      <default>28</default>
+      <range min="8" max="60"/>
+      <summary>Bo góc khi phóng to (px)</summary>
+    </key>
+    <key name="lyrics-enabled" type="b">
+      <default>true</default>
+      <summary>Hiện lời bài hát (tải từ lrclib.net)</summary>
+    </key>
+    <key name="lyrics-offset-ms" type="i">
+      <default>0</default>
+      <range min="-5000" max="5000"/>
+      <summary>Độ lệch thời gian lời bài hát (ms, dương = lời hiện sớm hơn)</summary>
+    </key>
+  </schema>
+</schemalist>

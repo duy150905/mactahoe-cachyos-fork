@@ -1,4 +1,3 @@
-<img width="1920" height="1080" alt="Screenshot From 2026-11-20 17-06-25" src="https://github.com/user-attachments/assets/d76b571b-e558-4f80-83bc-d790b8a3d659" />
 
 
 # MacTahoe cho CachyOS
@@ -68,9 +67,9 @@ Trong `files/`:
 .local/share/backgrounds/              hình nền mặc định
 .local/share/fonts/                    Montserrat, Allura (thẻ ngày giờ), Nerd Font và vài font lẻ
 .local/share/icons/                    con trỏ MacTahoe, icon theme WhiteSur
-.local/share/gnome-shell/extensions/   CachyOSTahoe, CachyOSTahoeDock, blur-my-shell, moveclock
+.local/share/gnome-shell/extensions/   CachyOSTahoe, CachyOSTahoeDock, blur-my-shell, moveclock, Dind
 .local/share/mactahoe-apps/            hai app Python: âm lịch, nén ảnh
-.local/share/mactahoe-widgets/         lunar.py cho widget âm lịch
+.local/share/mactahoe-widgets/         lunar.py cho widget âm lịch, mactahoe-settings.svg là icon của MacTahoe Settings
 ```
 
 Các script trong `.local/bin/`:

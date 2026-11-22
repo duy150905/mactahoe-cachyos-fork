@@ -1,0 +1,9 @@
+{
+  "name": "Dind",
+  "description": "Dynamic Island cho GNOME Shell: viên thuốc trên top bar, bấm để phóng to thành bảng có các tab trượt (tab đầu: trình phát nhạc MPRIS + lời bài hát). Nền blur dùng pipeline của Blur My Shell.",
+  "uuid": "Dind@adfoxtheme.github.io",
+  "settings-schema": "org.gnome.shell.extensions.dind",
+  "shell-version": ["49", "50", "51"],
+  "url": "https://github.com/adfoxtheme/mactahoe-ubuntu",
+  "version": 1
+}

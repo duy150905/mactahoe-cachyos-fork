@@ -112,6 +112,13 @@ if [ -d "$EXT_DIR" ]; then
     done < <(find "$EXT_DIR" -mindepth 1 -maxdepth 1 -iname '*Tahoe*@adfoxtheme.github.io' -printf '%f\0')
 fi
 
+info "Gỡ extension Dind"
+if command -v gnome-extensions >/dev/null 2>&1; then
+    act gnome-extensions disable "Dind@adfoxtheme.github.io" 2>/dev/null || true
+fi
+act rm -rf -- "$HOME/.local/share/gnome-shell/extensions/Dind@adfoxtheme.github.io"
+[ "$DRY" -eq 1 ] || dconf reset -f /org/gnome/shell/extensions/dind/ 2>/dev/null || true
+
 info "Xóa file đã cài"
 for rel in "${PATHS[@]}"; do
     [ -n "$rel" ] || continue

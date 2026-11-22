@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import json
 import os
 import re
@@ -86,6 +87,21 @@ STACK_ORDER = ("weather", "system", "lunar", "rest")
 # Muốn thêm tab mới: thêm một dòng vào đây rồi viết hàm WidgetManager.build_page_<id>().
 SIDEBAR_PAGES = (
     ("widgets", "Quản lý widget", "view-grid-symbolic"),
+    ("extensions", "Gnome Extension", "application-x-addon-symbolic"),
+)
+APP_TITLE = "MacTahoe Settings"
+EXTENSION_DIRS = (
+    HOME / ".local" / "share" / "gnome-shell" / "extensions",
+    Path("/usr/share/gnome-shell/extensions"),
+)
+DIND_UUID = "Dind@adfoxtheme.github.io"
+DIND_SCHEMA = "org.gnome.shell.extensions.dind"
+DIND_NUMBER_OPTIONS = (
+    ("expanded-width", "Chiều rộng khi phóng to", "px", 320, 800, 10),
+    ("expanded-height", "Chiều cao khi phóng to", "px", 160, 480, 10),
+    ("expanded-gap", "Khoảng cách với top bar", "px", 0, 40, 1),
+    ("corner-radius-expanded", "Bo góc khi phóng to", "px", 8, 60, 1),
+    ("lyrics-offset-ms", "Lệch thời gian lời bài hát", "ms", -5000, 5000, 100),
 )
 START_Y = 80
 WIDGET_GAP = 2
@@ -389,6 +405,72 @@ def describe_location(location: dict) -> str:
     return ", ".join(dict.fromkeys(part for part in parts if part))
 
 
+def list_extensions() -> list[dict]:
+    found: dict[str, dict] = {}
+    for base in EXTENSION_DIRS:
+        if not base.is_dir():
+            continue
+        for folder in sorted(base.iterdir()):
+            meta_file = folder / "metadata.json"
+            if folder.name in found or not meta_file.is_file():
+                continue
+            try:
+                meta = json.loads(meta_file.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            description = str(meta.get("description", "")).strip().split("\n")[0]
+            if len(description) > 140:
+                description = description[:137].rstrip() + "..."
+            found[folder.name] = {
+                "uuid": folder.name,
+                "name": str(meta.get("name", folder.name)),
+                "description": description,
+                "has_prefs": (folder / "prefs.js").is_file(),
+            }
+    return sorted(found.values(), key=lambda item: item["name"].lower())
+
+
+def enabled_extensions() -> set[str]:
+    result = subprocess.run(
+        ["gsettings", "get", "org.gnome.shell", "enabled-extensions"], capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        return set()
+    text = result.stdout.strip()
+    if text.startswith("@as"):
+        text = text[3:].strip()
+    try:
+        return set(ast.literal_eval(text))
+    except (ValueError, SyntaxError):
+        return set()
+
+
+def set_extension_enabled(uuid: str, enabled: bool) -> str:
+    try:
+        result = subprocess.run(
+            ["gnome-extensions", "enable" if enabled else "disable", uuid],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return str(exc)
+    return "" if result.returncode == 0 else (result.stderr.strip() or result.stdout.strip() or "Lỗi không rõ")
+
+
+def open_extension_prefs(uuid: str) -> str:
+    try:
+        subprocess.Popen(
+            ["gnome-extensions", "prefs", uuid],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+    except OSError as exc:
+        return str(exc)
+    return ""
+
+
 def print_status() -> None:
     settings = load_settings()
     print(f"Widget MacTahoe tổng thể: {'đang bật' if manager_enabled(settings) else 'đang tắt'}")
@@ -472,6 +554,14 @@ def run_gui() -> int:
             self.sidebar_page_ids = []
             self.use_city_button = None
             self.location_status = None
+            self.extension_switches = {}
+            self.updating_extension = False
+            self.extension_status = None
+            self.dind_settings = None
+
+        def do_startup(self):
+            Gtk.Application.do_startup(self)
+            GLib.set_application_name(APP_TITLE)
 
         def do_activate(self):
             if self.window:
@@ -559,7 +649,7 @@ def run_gui() -> int:
             pane.set_size_request(220, -1)
             pane.set_margin_top(0)
 
-            sidebar_title = Gtk.Label(label="Cài đặt", xalign=0)
+            sidebar_title = Gtk.Label(label=APP_TITLE, xalign=0)
             sidebar_title.add_css_class("sidebar-title")
             sidebar_title.set_margin_top(18)
             sidebar_title.set_margin_start(20)
@@ -663,7 +753,7 @@ def run_gui() -> int:
         # ------------------------------------------------------------------
         def build_page_widgets(self):
             page = self.make_page_box()
-            page.append(self.make_page_heading("Widget MacTahoe", "Chọn widget muốn hiển thị trên màn hình."))
+            page.append(self.make_page_heading("Quản lý widget", "Chọn widget muốn hiển thị trên màn hình."))
 
             # Công tắc tổng
             master_card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=14)
@@ -702,6 +792,127 @@ def run_gui() -> int:
             self.status_label.add_css_class("accent")
             page.append(self.status_label)
             return page
+
+        # ------------------------------------------------------------------
+        # Trang "Gnome Extension"
+        # ------------------------------------------------------------------
+        def build_page_extensions(self):
+            page = self.make_page_box()
+            page.append(self.make_page_heading("Gnome Extension", "Bật, tắt và chỉnh tuỳ chọn các extension của GNOME Shell."))
+
+            dind_section = self.build_dind_section()
+            if dind_section is not None:
+                page.append(dind_section)
+
+            page.append(self.make_section_heading("Extension đã cài"))
+            enabled = enabled_extensions()
+            list_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+            for info in list_extensions():
+                list_box.append(self.make_extension_row(info, info["uuid"] in enabled))
+            page.append(list_box)
+
+            self.extension_status = Gtk.Label(label="", xalign=0, wrap=True)
+            self.extension_status.add_css_class("accent")
+            page.append(self.extension_status)
+            return page
+
+        def make_extension_row(self, info, is_enabled):
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            row.add_css_class("card")
+
+            text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+            text.set_hexpand(True)
+            title = Gtk.Label(label=info["name"], xalign=0)
+            title.add_css_class("widget-title")
+            text.append(title)
+            if info["description"]:
+                description = Gtk.Label(label=info["description"], xalign=0, wrap=True)
+                description.add_css_class("muted")
+                text.append(description)
+            row.append(text)
+
+            if info["has_prefs"]:
+                button = Gtk.Button(label="Tuỳ chọn")
+                button.set_valign(Gtk.Align.CENTER)
+                button.connect("clicked", self.on_extension_prefs, info["uuid"])
+                row.append(button)
+
+            toggle = Gtk.Switch()
+            toggle.set_valign(Gtk.Align.CENTER)
+            toggle.set_active(is_enabled)
+            toggle.connect("notify::active", self.on_extension_toggled, info["uuid"], info["name"])
+            self.extension_switches[info["uuid"]] = toggle
+            row.append(toggle)
+            return row
+
+        def build_dind_section(self):
+            schema_dir = None
+            for base in EXTENSION_DIRS:
+                candidate = base / DIND_UUID / "schemas"
+                if (candidate / "gschemas.compiled").is_file():
+                    schema_dir = candidate
+                    break
+            if schema_dir is None:
+                return None
+            try:
+                source = Gio.SettingsSchemaSource.new_from_directory(
+                    str(schema_dir), Gio.SettingsSchemaSource.get_default(), False
+                )
+                schema = source.lookup(DIND_SCHEMA, False)
+                if schema is None:
+                    return None
+                self.dind_settings = Gio.Settings.new_full(schema, None, None)
+            except GLib.Error:
+                return None
+
+            section = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+            section.append(self.make_section_heading("Dind"))
+            card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            card.add_css_class("card")
+
+            lyrics_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+            lyrics_label = Gtk.Label(label="Hiện lời bài hát", xalign=0, hexpand=True)
+            lyrics_switch = Gtk.Switch()
+            lyrics_switch.set_valign(Gtk.Align.CENTER)
+            lyrics_switch.set_active(self.dind_settings.get_boolean("lyrics-enabled"))
+            lyrics_switch.connect(
+                "notify::active", lambda sw, _p: self.dind_settings.set_boolean("lyrics-enabled", sw.get_active())
+            )
+            lyrics_row.append(lyrics_label)
+            lyrics_row.append(lyrics_switch)
+            card.append(lyrics_row)
+
+            for key, label_text, unit, low, high, step in DIND_NUMBER_OPTIONS:
+                option_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+                option_label = Gtk.Label(label=f"{label_text} ({unit})", xalign=0, hexpand=True)
+                spin = Gtk.SpinButton.new_with_range(low, high, step)
+                spin.set_valign(Gtk.Align.CENTER)
+                spin.set_value(self.dind_settings.get_int(key))
+                spin.connect("value-changed", lambda sp, k=key: self.dind_settings.set_int(k, int(sp.get_value())))
+                option_row.append(option_label)
+                option_row.append(spin)
+                card.append(option_row)
+
+            section.append(card)
+            return section
+
+        def on_extension_toggled(self, switch, _property, uuid, name):
+            if self.updating_extension:
+                return
+            wanted = switch.get_active()
+            error = set_extension_enabled(uuid, wanted)
+            if error:
+                self.updating_extension = True
+                switch.set_active(not wanted)
+                self.updating_extension = False
+                self.extension_status.set_text(f"Không {'bật' if wanted else 'tắt'} được {name}: {error}")
+                return
+            self.extension_status.set_text(f"Đã {'bật' if wanted else 'tắt'} {name}.")
+
+        def on_extension_prefs(self, _button, uuid):
+            error = open_extension_prefs(uuid)
+            if error:
+                self.extension_status.set_text(f"Không mở được tuỳ chọn: {error}")
 
         def build_color_section(self):
             section = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)

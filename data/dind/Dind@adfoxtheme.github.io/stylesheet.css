@@ -1,0 +1,142 @@
+.dind-island {
+    background-color: transparent;
+}
+
+.dind-tint {
+    background-color: rgba(14, 14, 18, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 15px;
+}
+
+.dind-island:hover .dind-tint {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.dind-island.dind-no-blur .dind-tint {
+    background-color: rgba(18, 18, 22, 0.94);
+}
+
+.dind-collapsed {
+    spacing: 8px;
+    padding: 0 14px;
+}
+
+.dind-collapsed-label {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dind-collapsed-art {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.dind-music {
+    padding: 15px 17px 11px 17px;
+    spacing: 5px;
+}
+
+.dind-music-top {
+    spacing: 16px;
+}
+
+.dind-cover {
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.10);
+}
+
+.dind-cover-icon {
+    icon-size: 36px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.dind-info {
+    spacing: 3px;
+}
+
+.dind-title {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.dind-artist {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 12px;
+}
+
+.dind-controls {
+    spacing: 14px;
+    padding: 2px 0;
+}
+
+.dind-btn {
+    border-radius: 99px;
+    padding: 6px;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+.dind-btn:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.dind-btn:active {
+    background-color: rgba(255, 255, 255, 0.24);
+}
+
+.dind-btn:disabled,
+.dind-btn:disabled:hover,
+.dind-btn:disabled:active {
+    background-color: transparent;
+}
+
+.dind-btn-icon {
+    icon-size: 30px;
+}
+
+.dind-btn-main .dind-btn-icon {
+    icon-size: 35px;
+}
+
+.dind-progress {
+    spacing: 8px;
+}
+
+.dind-time {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 10px;
+}
+
+.dind-lyrics {
+}
+
+.dind-lyric-line {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.dind-lyric-msg {
+    color: rgba(255, 255, 255, 0.70);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dind-dots {
+    spacing: 6px;
+    padding-bottom: 6px;
+}
+
+.dind-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.30);
+}
+
+.dind-dot:active {
+    width: 16px;
+    background-color: #ffffff;
+}
