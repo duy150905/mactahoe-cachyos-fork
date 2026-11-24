@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.open-app-animation" path="/org/gnome/shell/extensions/open-app-animation/">
+
+    <key type="s" name="minimize-effect">
+      <default>"lamp"</default>
+      <summary>Hiệu ứng thu nhỏ/phóng to</summary>
+      <description>"lamp" = Magic Lamp, "default" = dùng hiệu ứng mặc định của GNOME</description>
+    </key>
+
+    <key type="s" name="effect">
+      <default>"default"</default>
+      <summary>Kiểu đường cong của Magic Lamp</summary>
+      <description>"default" hoặc "sine"</description>
+    </key>
+
+    <key type="d" name="duration">
+      <default>400</default>
+      <summary>Thời gian Magic Lamp (ms)</summary>
+      <description/>
+    </key>
+
+    <key type="d" name="x-tiles">
+      <default>10.0</default>
+      <summary>Số ô theo chiều ngang</summary>
+      <description/>
+    </key>
+
+    <key type="d" name="y-tiles">
+      <default>10.0</default>
+      <summary>Số ô theo chiều dọc</summary>
+      <description/>
+    </key>
+
+    <key type="s" name="open-effect">
+      <default>"scale"</default>
+      <summary>Hiệu ứng mở ứng dụng</summary>
+      <description>"default" (của GNOME), "none", "scale" hoặc "tv"</description>
+    </key>
+
+    <key type="s" name="close-effect">
+      <default>"scale"</default>
+      <summary>Hiệu ứng đóng ứng dụng</summary>
+      <description>"default" (của GNOME), "none", "scale" hoặc "tv"</description>
+    </key>
+
+    <key type="d" name="open-duration">
+      <default>350</default>
+      <summary>Thời gian hiệu ứng mở (ms)</summary>
+      <description/>
+    </key>
+
+    <key type="d" name="close-duration">
+      <default>300</default>
+      <summary>Thời gian hiệu ứng đóng (ms)</summary>
+      <description/>
+    </key>
+
+  </schema>
+</schemalist>

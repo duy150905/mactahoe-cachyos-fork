@@ -188,6 +188,21 @@ PY
     fi
 fi
 
+# Open App Animation vá cùng một chỗ trong GNOME Shell với bản Magic Lamp gốc
+# và Burn My Windows; bật chung sẽ xung đột nên tắt bản gốc, còn Burn My Windows chỉ cảnh báo.
+if command -v gnome-extensions >/dev/null 2>&1 &&
+    [ -d "$HERE/files/.local/share/gnome-shell/extensions/OpenAppAnimation@duy150905.github.io" ]; then
+    for dup in "compiz-alike-magic-lamp-effect@hermes83.github.com"; do
+        if gnome-extensions list 2>/dev/null | grep -qxF "$dup"; then
+            info "Tắt $dup (đã được Open App Animation thay thế)"
+            act gnome-extensions disable "$dup" 2>/dev/null || true
+        fi
+    done
+    if gnome-extensions list --enabled 2>/dev/null | grep -qxF "burn-my-windows@schneegans.github.com"; then
+        warn "Burn My Windows đang bật và sẽ tranh hoạt ảnh mở/đóng với Open App Animation. Chọn một trong hai (hoặc đặt hiệu ứng mở/đóng của Open App Animation về 'Mặc định của GNOME')."
+    fi
+fi
+
 if [ -f "$DATA/merge-extensions.py" ] && [ -f "$DATA/extensions.tsv" ]; then
     info "Bật extension (gộp với danh sách đang bật, không ghi đè)"
     if [ "$DRY" -eq 1 ]; then

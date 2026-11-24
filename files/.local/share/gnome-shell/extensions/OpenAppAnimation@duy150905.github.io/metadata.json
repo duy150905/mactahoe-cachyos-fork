@@ -1,0 +1,17 @@
+{
+  "name": "Open App Animation",
+  "description": "Hiệu ứng cửa sổ cho GNOME Shell: Magic Lamp khi thu nhỏ/phóng to, cùng hiệu ứng mở/đóng ứng dụng (zoom, TV).\n\nDựa trên \"Compiz alike magic lamp effect\" của Mauro Pepe (hermes83), đã được tác giả đồng ý cho đổi tên và chỉnh sửa: https://github.com/hermes83/compiz-alike-magic-lamp-effect\n\nNếu lỗi sau khi cập nhật: Wayland thì đăng xuất rồi đăng nhập lại, Xorg thì nhấn ALT+F2, gõ r rồi Enter.",
+  "uuid": "OpenAppAnimation@duy150905.github.io",
+  "settings-schema": "org.gnome.shell.extensions.open-app-animation",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/duy150905/mactahoe-cachyos-fork",
+  "version": 1
+}

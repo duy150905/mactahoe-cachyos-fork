@@ -160,6 +160,7 @@ PY
             [ -n "$sub" ] || continue
             dconf reset -f "/org/gnome/shell/extensions/$sub" 2>/dev/null || true
         done < <(dconf list /org/gnome/shell/extensions/ 2>/dev/null | grep -i 'tahoe' || true)
+        dconf reset -f /org/gnome/shell/extensions/open-app-animation/ 2>/dev/null || true
     fi
     if [ -n "$DCONF_BEFORE" ]; then
         info "Nạp lại dconf như trước khi cài ($DCONF_BEFORE)"
