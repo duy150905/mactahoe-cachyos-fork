@@ -1,5 +1,6 @@
 import Cairo from 'gi://cairo';
 import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Pango from 'gi://Pango';
 import St from 'gi://St';
@@ -20,6 +21,13 @@ const BAR_H = 14;
 const BAR_THICK = 4;
 const BAR_THICK_ACTIVE = 6;
 const KNOB_R = 6;
+
+const LEFT_W = 360;
+
+const COMPACT_H = 158;
+
+const TOGGLE_ICON = Gio.File.new_for_uri(import.meta.url).get_parent()
+    .get_child('icons').get_child('dind-lyrics-notebook.png');
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
@@ -50,6 +58,7 @@ export class MusicTab {
         this._art = art;
         this._lyrics = lyrics;
         this._settings = settings;
+        this._wide = settings.get_boolean('music-wide');
 
         this._player = null;
         this._visible = false;
@@ -89,8 +98,23 @@ export class MusicTab {
             orientation: Clutter.Orientation.VERTICAL,
         });
 
-        const top = new St.BoxLayout({ style_class: 'dind-music-top' });
-        this._root.add_child(top);
+        this._row = new St.BoxLayout({ style_class: 'dind-music-row', x_expand: true });
+        this._root.add_child(this._row);
+
+        this._leftCol = new St.BoxLayout({
+            style_class: 'dind-music-left',
+            orientation: Clutter.Orientation.VERTICAL,
+            x_expand: true,
+            y_expand: true,
+        });
+        this._row.add_child(this._leftCol);
+
+        const top = new St.BoxLayout({
+            style_class: 'dind-music-top',
+            x_expand: true,
+        });
+        this._left = top;
+        this._leftCol.add_child(top);
 
         this._cover = new St.Widget({
             style_class: 'dind-cover',
@@ -118,6 +142,7 @@ export class MusicTab {
             y_align: Clutter.ActorAlign.CENTER,
         });
         top.add_child(info);
+        this._info = info;
 
         this._title = label('dind-title');
         this._artist = label('dind-artist');
@@ -126,15 +151,26 @@ export class MusicTab {
 
         const controls = new St.BoxLayout({
             style_class: 'dind-controls',
-            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
         });
         this._prev = this._button('media-skip-backward-symbolic', () => this._player?.previous());
         this._play = this._button('media-playback-start-symbolic', () => this._player?.playPause(), true);
         this._next = this._button('media-skip-forward-symbolic', () => this._player?.next());
         [this._prev, this._play, this._next].forEach(b => controls.add_child(b));
+
+        this._toggle = this._button('audio-x-generic-symbolic', () => {
+            this._settings.set_boolean('music-wide', !this._wide);
+        });
+        this._toggle._icon.icon_name = null;
+        this._toggle._icon.gicon = new Gio.FileIcon({ file: TOGGLE_ICON });
+        this._toggle.add_style_class_name('dind-btn-small');
+        this._toggle.add_style_class_name('dind-btn-toggle');
+        this._toggle.x_expand = true;
+        this._toggle.x_align = Clutter.ActorAlign.END;
+        controls.add_child(this._toggle);
         info.add_child(controls);
 
-        const progress = new St.BoxLayout({ style_class: 'dind-progress' });
+        const progress = new St.BoxLayout({ style_class: 'dind-progress', x_expand: true });
         this._cur = new St.Label({ style_class: 'dind-time', text: '0:00', y_align: Clutter.ActorAlign.CENTER });
         this._dur = new St.Label({ style_class: 'dind-time', text: '--:--', y_align: Clutter.ActorAlign.CENTER });
         this._trackWrap = new St.DrawingArea({
@@ -156,7 +192,7 @@ export class MusicTab {
         progress.add_child(this._cur);
         progress.add_child(this._trackWrap);
         progress.add_child(this._dur);
-        info.add_child(progress);
+        this._progressRow = progress;
 
         this._lyricsBox = new St.Widget({
             style_class: 'dind-lyrics',
@@ -178,7 +214,56 @@ export class MusicTab {
         }
         this._lyricsBox.add_child(this._lyList);
         this._lyricsBox.add_child(this._lyMsg);
-        this._root.add_child(this._lyricsBox);
+
+        this._divider = new St.Widget({ style_class: 'dind-divider', y_expand: true });
+
+        this._applyMode();
+    }
+
+    preferredSize() {
+        if (!this._wide)
+            return [this._settings.get_int('expanded-width'), COMPACT_H];
+        return [this._settings.get_int('wide-width'), this._settings.get_int('wide-height')];
+    }
+
+    syncMode() {
+        const wide = this._settings.get_boolean('music-wide');
+        if (wide === this._wide)
+            return;
+        this._wide = wide;
+        this._applyMode();
+    }
+
+    _applyMode() {
+        const wide = this._wide;
+        for (const a of [this._progressRow, this._lyricsBox, this._divider])
+            a.get_parent()?.remove_child(a);
+
+        if (wide) {
+            this._root.add_style_class_name('dind-music-wide');
+            this._row.y_expand = true;
+            this._leftCol.y_align = Clutter.ActorAlign.CENTER;
+            this._leftCol.add_child(this._progressRow);
+            this._row.add_child(this._divider);
+            this._row.add_child(this._lyricsBox);
+        } else {
+            this._root.remove_style_class_name('dind-music-wide');
+            this._row.y_expand = false;
+            this._leftCol.y_align = Clutter.ActorAlign.FILL;
+            this._root.add_child(this._progressRow);
+        }
+        this._setLyricsPane(this._settings.get_boolean('lyrics-enabled'));
+        this._lyDirty = true;
+        if (wide && this._visible)
+            this._ensureLyrics();
+    }
+
+    _setLyricsPane(on) {
+        const show = on && this._wide;
+        this._lyricsBox.visible = show;
+        this._divider.visible = show;
+        this._leftCol.x_expand = !show;
+        this._leftCol.width = show ? LEFT_W : -1;
     }
 
     _button(iconName, onClick, main = false) {
@@ -239,7 +324,7 @@ export class MusicTab {
         this._setEnabled(this._prev, player.canGoPrevious);
         this._setEnabled(this._next, player.canGoNext);
         this._setEnabled(this._play, true);
-        this._lyricsBox.visible = this._settings.get_boolean('lyrics-enabled');
+        this._setLyricsPane(this._settings.get_boolean('lyrics-enabled'));
 
         const key = `${m.trackId}|${m.title}|${m.artist}|${m.length}`;
         if (key !== this._key) {
@@ -299,7 +384,7 @@ export class MusicTab {
     _ensureLyrics() {
         const player = this._player;
         const settled = this._lyricsData && this._lyricsData.state !== 'error';
-        if (!player || !player.hasTrack || settled || this._cancelLyrics)
+        if (!this._wide || !player || !player.hasTrack || settled || this._cancelLyrics)
             return;
         if (!this._settings.get_boolean('lyrics-enabled'))
             return;
@@ -417,6 +502,8 @@ export class MusicTab {
         const w = this._lyW;
         let y = 0;
         this._lyLabels.forEach((l, i) => {
+            l.ensure_style();
+            l.set_width(w);
             const [, h] = l.get_preferred_height(w);
             const height = Math.ceil(h);
             this._lyOff[i] = y;
@@ -426,6 +513,7 @@ export class MusicTab {
             y += height + LYRIC_GAP;
         });
         this._lyList.set_size(w, Math.max(0, y - LYRIC_GAP));
+        this._lyList.queue_relayout();
     }
 
     _syncLyricGeometry() {
@@ -451,6 +539,7 @@ export class MusicTab {
         this._lyList.remove_all_transitions();
         this._lyList.opacity = 0;
         this._lyList.show();
+        this._lyDirty = true;
         this._lyList.ease({ opacity: 255, duration: 280, mode: Clutter.AnimationMode.EASE_OUT_QUAD });
     }
 

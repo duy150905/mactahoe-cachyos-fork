@@ -26,6 +26,21 @@
       <range min="8" max="60"/>
       <summary>Bo góc khi phóng to (px)</summary>
     </key>
+    <key name="music-wide" type="b">
+      <default>false</default>
+      <summary>Tab Nhạc ở chế độ rộng (lời bài hát bên phải)</summary>
+      <description>Bật bằng nút ở hàng điều khiển của tab Nhạc. Tắt: tab Nhạc dùng cỡ mặc định như các tab khác.</description>
+    </key>
+    <key name="wide-width" type="i">
+      <default>680</default>
+      <range min="440" max="800"/>
+      <summary>Chiều rộng tab Nhạc ở chế độ rộng (px)</summary>
+    </key>
+    <key name="wide-height" type="i">
+      <default>190</default>
+      <range min="160" max="480"/>
+      <summary>Chiều cao tab Nhạc ở chế độ rộng (px)</summary>
+    </key>
     <key name="lyrics-enabled" type="b">
       <default>true</default>
       <summary>Hiện lời bài hát (tải từ lrclib.net)</summary>

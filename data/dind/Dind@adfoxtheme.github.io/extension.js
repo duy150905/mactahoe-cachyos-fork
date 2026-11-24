@@ -83,7 +83,6 @@ export default class DindExtension extends Extension {
         this._settings = null;
     }
 
-    /// Gắn/gỡ blur tuỳ theo Blur My Shell có đang chạy hay không.
     async _syncBlur() {
         const token = ++this._blurToken;
         const island = this._island;

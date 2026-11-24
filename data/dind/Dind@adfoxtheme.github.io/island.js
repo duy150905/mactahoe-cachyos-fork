@@ -187,7 +187,7 @@ export class Island {
         this._connect(Main.overview, 'showing', () => this.collapse());
         this._connect(Main.layoutManager, 'monitors-changed', () => this.reposition());
         this._connect(Main.layoutManager.panelBox, 'notify::height', () => this.reposition());
-        this._connect(this._settings, 'changed', () => this._onSettingsChanged());
+        this._connect(this._settings, 'changed', (_s, key) => this._onSettingsChanged(key));
     }
 
     _connect(obj, signal, callback) {
@@ -238,15 +238,32 @@ export class Island {
 
     get hasBlur() { return this._pipeline !== null; }
 
+    _tabSize(tab) {
+        return tab?.preferredSize?.() ??
+            [this._settings.get_int('expanded-width'), this._settings.get_int('expanded-height')];
+    }
+
     _expandedSize() {
-        return [this._settings.get_int('expanded-width'), this._settings.get_int('expanded-height')];
+        return this._tabSize(this._tabs?.[this._tabIndex]);
     }
 
     _applySizes() {
         const [w, h] = this._expandedSize();
         this._expandedBox.set_size(w, h);
         this._viewport.set_size(w, h);
-        this._tabs.forEach(tab => tab.actor.set_size(w, h));
+        this._tabs.forEach(tab => {
+            const [tw, th] = this._tabSize(tab);
+            tab.actor.set_size(tw, th);
+        });
+    }
+
+    _resizeExpanded() {
+        this._applySizes();
+        this._layoutTabs(false);
+        if (this._expanded)
+            this._animate(this._metrics().expanded, SPRING_RESIZE);
+        else
+            this._placeNow();
     }
 
     _collapsedWidth() {
@@ -519,9 +536,18 @@ export class Island {
     }
 
     _layoutTabs(animate) {
-        const [w] = this._expandedSize();
+        const widths = this._tabs.map(tab => this._tabSize(tab)[0]);
+        const cur = this._tabIndex;
         this._tabs.forEach((tab, i) => {
-            const x = (i - this._tabIndex) * w;
+            let x = 0;
+            if (i > cur) {
+                x = widths[cur];
+                for (let j = cur + 1; j < i; j++)
+                    x += widths[j];
+            } else if (i < cur) {
+                for (let j = i; j < cur; j++)
+                    x -= widths[j];
+            }
             if (animate) {
                 tab.actor.ease({ x, duration: TAB_SLIDE_MS, mode: Clutter.AnimationMode.EASE_OUT_CUBIC });
             } else {
@@ -546,7 +572,10 @@ export class Island {
         this._tabIndex = index;
         if (this._expanded)
             this._tabs[index].onShow();
+        this._applySizes();
         this._layoutTabs(true);
+        if (this._expanded)
+            this._animate(this._metrics().expanded, SPRING_RESIZE);
     }
 
     _onScroll(event) {
@@ -588,7 +617,12 @@ export class Island {
         return Clutter.EVENT_STOP;
     }
 
-    _onSettingsChanged() {
+    _onSettingsChanged(key) {
+        if (key === 'music-wide') {
+            this._tabs.forEach(tab => tab.syncMode?.());
+            this._resizeExpanded();
+            return;
+        }
         this._applySizes();
         this._layoutTabs(false);
         this._placeNow();

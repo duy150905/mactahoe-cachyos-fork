@@ -33,12 +33,27 @@
 }
 
 .dind-music {
-    padding: 15px 17px 11px 17px;
-    spacing: 5px;
+    padding: 15px 17px 14px 17px;
+    spacing: 10px;
+}
+
+.dind-music-left {
+    spacing: 10px;
 }
 
 .dind-music-top {
     spacing: 16px;
+}
+
+.dind-music-wide {
+    padding: 15px 17px 20px 17px;
+    spacing: 8px;
+}
+
+.dind-divider {
+    width: 1px;
+    margin: 6px 16px;
+    background-color: rgba(255, 255, 255, 0.18);
 }
 
 .dind-cover {
@@ -98,6 +113,14 @@
 
 .dind-btn-main .dind-btn-icon {
     icon-size: 35px;
+}
+
+.dind-btn-small .dind-btn-icon {
+    icon-size: 18px;
+}
+
+.dind-btn-toggle .dind-btn-icon {
+    icon-size: 24px;
 }
 
 .dind-progress {
