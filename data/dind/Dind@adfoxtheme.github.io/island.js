@@ -8,6 +8,9 @@ import { MusicTab } from './music_tab.js';
 
 const COLLAPSED_MIN_W = 120;
 const COLLAPSED_MAX_W = 300;
+const COLLAPSED_LYRIC_MAX_W = 480;  // lời bài hát được rộng hơn tên bài
+const COLLAPSED_LYRIC_TICK_MS = 250;
+const COLLAPSED_SYNC_EVERY_TICKS = 20;
 const COLLAPSED_PAD = 14;
 const COLLAPSED_ART = 18;
 const COLLAPSED_SPACING = 8;
@@ -58,6 +61,10 @@ export class Island {
         this._hMin = 30;
         this._hMax = 216;
         this._signals = [];
+        this._baseText = 'Dind Island';
+        this._showingLyric = false;
+        this._lyricTickId = 0;
+        this._lyricTicks = 0;
 
         this._build();
     }
@@ -238,6 +245,7 @@ export class Island {
 
     get hasBlur() { return this._pipeline !== null; }
 
+    // Cỡ riêng của một tab (vd. tab Nhạc ở chế độ rộng); không có thì dùng cỡ mặc định
     _tabSize(tab) {
         return tab?.preferredSize?.() ??
             [this._settings.get_int('expanded-width'), this._settings.get_int('expanded-height')];
@@ -257,6 +265,7 @@ export class Island {
         });
     }
 
+    // Đổi cỡ island khi đang mở (chuyển tab / bật tắt chế độ rộng), có animation lò xo
     _resizeExpanded() {
         this._applySizes();
         this._layoutTabs(false);
@@ -270,9 +279,10 @@ export class Island {
         this._cLabel.set_width(-1);
         const [, natural] = this._cLabel.get_preferred_width(-1);
         const extra = this._cArt.visible ? COLLAPSED_ART + COLLAPSED_SPACING : 0;
-        const labelW = Math.min(natural, COLLAPSED_MAX_W - 2 * COLLAPSED_PAD - extra);
+        const maxW = this._showingLyric ? COLLAPSED_LYRIC_MAX_W : COLLAPSED_MAX_W;
+        const labelW = Math.min(natural, maxW - 2 * COLLAPSED_PAD - extra);
         this._cLabel.set_width(labelW);
-        return clamp(labelW + extra + 2 * COLLAPSED_PAD, COLLAPSED_MIN_W, COLLAPSED_MAX_W);
+        return clamp(labelW + extra + 2 * COLLAPSED_PAD, COLLAPSED_MIN_W, maxW);
     }
 
     _metrics() {
@@ -315,6 +325,48 @@ export class Island {
         this._applySizes();
         this._placeNow();
         this.refresh();
+        this._startLyricTick();
+    }
+
+    // Khi nút mở rộng đang bật và island thu nhỏ: hiện câu lời đang hát thay cho tên bài
+    _startLyricTick() {
+        if (this._lyricTickId)
+            return;
+        this._lyricTickId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, COLLAPSED_LYRIC_TICK_MS, () => {
+            if (!this._expanded && this._settings.get_boolean('music-wide')) {
+                const player = this._mpris.active;
+                if (player?.status === 'Playing' && ++this._lyricTicks % COLLAPSED_SYNC_EVERY_TICKS === 0)
+                    player.syncPosition();
+                this._applyCollapsedText(true);
+            }
+            return GLib.SOURCE_CONTINUE;
+        });
+        GLib.Source.set_name_by_id(this._lyricTickId, '[dind] collapsed lyric tick');
+    }
+
+    _stopLyricTick() {
+        if (this._lyricTickId)
+            GLib.source_remove(this._lyricTickId);
+        this._lyricTickId = 0;
+    }
+
+    _applyCollapsedText(resize) {
+        let text = this._baseText;
+        let lyric = false;
+        if (this._settings.get_boolean('music-wide')) {
+            const tab = this._tabs?.find(t => typeof t.collapsedLyric === 'function');
+            const line = tab?.collapsedLyric();
+            if (line) {
+                text = line;
+                lyric = true;
+            }
+        }
+        this._showingLyric = lyric;
+        if (this._cLabel.text === text)
+            return;
+        this._cLabel.text = text;
+        if (resize)
+            this._resizeCollapsed();
     }
 
     _animate(target, spring) {
@@ -440,6 +492,7 @@ export class Island {
         dbg('collapse() bắt đầu; cur=', JSON.stringify(this._cur));
         this._expanded = false;
         this._unwatchOutside();
+        this._applyCollapsedText(false);
         this._animate(this._metrics().collapsed, SPRING_COLLAPSE);
         this._tabCall('onHide');
     }
@@ -498,8 +551,10 @@ export class Island {
             paused = player.status !== 'Playing';
         }
 
-        this._cLabel.text = text;
+        this._baseText = text;
         this._cLabel.opacity = paused ? 150 : 255;
+        this._cLabel.text = text;
+        this._applyCollapsedText(false);
         this._setCollapsedArt(artUrl);
         if (this._expanded)
             this._tabs[this._tabIndex].refresh();
@@ -625,12 +680,14 @@ export class Island {
         }
         this._applySizes();
         this._layoutTabs(false);
+        this._applyCollapsedText(false);
         this._placeNow();
         if (this._expanded)
             this._tabs[this._tabIndex].refresh();
     }
 
     destroy() {
+        this._stopLyricTick();
         this._unwatchOutside();
         this._stopTimeline();
         if (this._scrollLockId)

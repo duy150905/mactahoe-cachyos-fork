@@ -13,8 +13,8 @@ const LYRIC_SCROLL_MS = 520;
 const LYRIC_FADE_MS = 380;
 const LYRIC_LEVELS = [
     { opacity: 255, scale: 1.0 },
-    { opacity: 105, scale: 0.94 },
-    { opacity: 55, scale: 0.90 },
+    { opacity: 140, scale: 1.0 },
+    { opacity: 85, scale: 1.0 },
 ];
 
 const BAR_H = 14;
@@ -22,10 +22,13 @@ const BAR_THICK = 4;
 const BAR_THICK_ACTIVE = 6;
 const KNOB_R = 6;
 
+// Chế độ rộng: độ rộng cột trái (bìa + điều khiển + thanh tiến trình) trước vạch ngăn
 const LEFT_W = 360;
 
+// Chế độ gọn: không có lời, nên island thấp hơn (bìa 104 + thanh tiến trình + padding)
 const COMPACT_H = 158;
 
+// Icon nút chuyển chế độ (cuốn sổ có nốt nhạc)
 const TOGGLE_ICON = Gio.File.new_for_uri(import.meta.url).get_parent()
     .get_child('icons').get_child('dind-lyrics-notebook.png');
 
@@ -98,9 +101,11 @@ export class MusicTab {
             orientation: Clutter.Orientation.VERTICAL,
         });
 
+        // Hàng chính: [bìa + thông tin + nút]  (chế độ rộng: | lời bài hát)
         this._row = new St.BoxLayout({ style_class: 'dind-music-row', x_expand: true });
         this._root.add_child(this._row);
 
+        // Cột trái (dọc): [bìa + thông tin + nút] rồi (chế độ rộng) thanh tiến trình bên dưới
         this._leftCol = new St.BoxLayout({
             style_class: 'dind-music-left',
             orientation: Clutter.Orientation.VERTICAL,
@@ -158,6 +163,7 @@ export class MusicTab {
         this._next = this._button('media-skip-forward-symbolic', () => this._player?.next());
         [this._prev, this._play, this._next].forEach(b => controls.add_child(b));
 
+        // Nút chuyển qua lại giữa chế độ gọn (không lời) và chế độ rộng (có lời bên phải)
         this._toggle = this._button('audio-x-generic-symbolic', () => {
             this._settings.set_boolean('music-wide', !this._wide);
         });
@@ -220,12 +226,14 @@ export class MusicTab {
         this._applyMode();
     }
 
+    // Kích thước island khi tab này đang hiện; null = dùng cỡ mặc định của island
     preferredSize() {
         if (!this._wide)
             return [this._settings.get_int('expanded-width'), COMPACT_H];
         return [this._settings.get_int('wide-width'), this._settings.get_int('wide-height')];
     }
 
+    // Đồng bộ lại với khoá `music-wide` (island gọi khi khoá đổi)
     syncMode() {
         const wide = this._settings.get_boolean('music-wide');
         if (wide === this._wide)
@@ -240,6 +248,7 @@ export class MusicTab {
             a.get_parent()?.remove_child(a);
 
         if (wide) {
+            // [bìa + điều khiển + tiến trình] | [lời]; tiến trình chỉ nằm gọn trong cột trái
             this._root.add_style_class_name('dind-music-wide');
             this._row.y_expand = true;
             this._leftCol.y_align = Clutter.ActorAlign.CENTER;
@@ -247,6 +256,7 @@ export class MusicTab {
             this._row.add_child(this._divider);
             this._row.add_child(this._lyricsBox);
         } else {
+            // Chế độ gọn: không hiện lời, thanh tiến trình nằm dưới cùng, trải hết chiều rộng
             this._root.remove_style_class_name('dind-music-wide');
             this._row.y_expand = false;
             this._leftCol.y_align = Clutter.ActorAlign.FILL;
@@ -259,6 +269,7 @@ export class MusicTab {
     }
 
     _setLyricsPane(on) {
+        // Lời chỉ hiện ở chế độ rộng
         const show = on && this._wide;
         this._lyricsBox.visible = show;
         this._divider.visible = show;
@@ -416,6 +427,31 @@ export class MusicTab {
         }
     }
 
+    // Câu lời đang hát, dùng cho trạng thái thu nhỏ của island (tab không hiện).
+    // Trả về null nếu chưa có lời / chưa tới câu đầu để island hiện tên bài như thường.
+    collapsedLyric() {
+        if (!this._settings.get_boolean('music-wide') || !this._settings.get_boolean('lyrics-enabled'))
+            return null;
+        const player = this._mpris.active;
+        const m = player?.metadata;
+        if (!player || !m?.title)
+            return null;
+
+        const key = `${m.trackId}|${m.title}|${m.artist}|${m.length}`;
+        if (key !== this._key || player !== this._player)
+            this.refresh();
+        this._ensureLyrics();
+
+        const data = this._lyricsData;
+        if (data?.state !== 'ok' || !data.lines.length)
+            return null;
+        const offset = this._settings.get_int('lyrics-offset-ms');
+        const idx = this._lineIndex(data.lines, player.positionUs / 1000 + offset);
+        if (idx < 0)
+            return null;
+        return data.lines[idx].text || '♪';
+    }
+
     _lineIndex(lines, posMs) {
         let lo = 0;
         let hi = lines.length - 1;
@@ -502,6 +538,8 @@ export class MusicTab {
         const w = this._lyW;
         let y = 0;
         this._lyLabels.forEach((l, i) => {
+            // Đảm bảo style (font, cỡ chữ) đã áp dụng trước khi đo, nếu không dòng dài
+            // bị đo thiếu số dòng và phần xuống hàng bị cắt mất
             l.ensure_style();
             l.set_width(w);
             const [, h] = l.get_preferred_height(w);
@@ -539,7 +577,7 @@ export class MusicTab {
         this._lyList.remove_all_transitions();
         this._lyList.opacity = 0;
         this._lyList.show();
-        this._lyDirty = true;
+        this._lyDirty = true;  // đo lại một lần khi nhãn đã hiện thật để lấy đúng số dòng
         this._lyList.ease({ opacity: 255, duration: 280, mode: Clutter.AnimationMode.EASE_OUT_QUAD });
     }
 

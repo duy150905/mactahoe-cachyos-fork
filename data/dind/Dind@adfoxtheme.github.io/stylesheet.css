@@ -45,6 +45,7 @@
     spacing: 16px;
 }
 
+/* Chế độ rộng: chừa chỗ ở đáy cho chấm điều hướng tab */
 .dind-music-wide {
     padding: 15px 17px 20px 17px;
     spacing: 8px;
