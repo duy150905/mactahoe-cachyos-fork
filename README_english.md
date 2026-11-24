@@ -108,6 +108,8 @@ When `color-scheme-sync` is running, `gtk-theme` and `user-theme` are automatica
 
 **Large Clock Color.** Select via the `mactahoe-widgets` GUI or run `mactahoe-widgets color purple`. The selection is saved in `~/.cache/mactahoe-widgets/clock_theme.txt` and applied immediately.
 
+**Music visualizer (cava).** Its position, width and bar count follow the active widgets: if **Lunar** is on, the visualizer is as wide as the Lunar card and sits right above it; if Lunar is off but **System** is on, it sits right above the System card; if both are off, it returns to the center above the dock with the original size and bar count (82 bars). The layout is recalculated whenever widgets are toggled (`cava_layout` in `mactahoe-widgets`); quick tweaks at the top of that file: `CAVA_SIDE_HEIGHT`, `CAVA_SIDE_GAP`, `CAVA_BAR_PITCH` (smaller means more bars).
+
 **Date Card.** The `datecard` widget displays the weekday, day (spelled out in words), month, and time at the top center of the screen. Disabled by default; enable it in the `mactahoe-widgets` menu. Its white and orange colors are fixed and do not follow the "Clock and cava color" setting. Quick tweaks are available at the top of `files/.config/conky/mactahoe-datecard.lua`: `FONT_DAY`, `FONT_SCRIPT`, `SCALE`, `ORANGE`. Because it sits at the center of the screen, it may overlap with the Large Clock; enable only one of the two, or adjust `gap_x` in `mactahoe-datecard.conf`.
 
 **Autostart Widgets on Login.** Handled by `files/.config/autostart/mactahoe-widgets.desktop`. To disable, delete this file from `~/.config/autostart/`.

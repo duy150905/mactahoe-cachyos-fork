@@ -79,7 +79,7 @@ WIDGETS = {
     "rest": {"label": "Nhắc nghỉ", "description": "Thời gian hoạt động và nhắc nghỉ", "height": 165},
     "clock": {"label": "Đồng hồ lớn", "description": "Đồng hồ trang trí bên trái màn hình", "height": 360},
     "datecard": {"label": "Thẻ ngày giờ", "description": "Thứ, ngày, tháng và giờ kiểu chữ viết tay, giữa phía trên màn hình", "height": 0},
-    "cava": {"label": "Sóng nhạc", "description": "Thanh sóng nhạc kiểu cava, nằm phía trên dock", "height": 0},
+    "cava": {"label": "Sóng nhạc", "description": "Sóng nhạc kiểu cava: nằm trên widget Âm lịch hoặc Hệ thống nếu đang bật, không thì giữa phía trên dock", "height": 0},
 }
 STACK_ORDER = ("weather", "system", "lunar", "rest")
 
@@ -105,6 +105,11 @@ DIND_NUMBER_OPTIONS = (
 )
 START_Y = 80
 WIDGET_GAP = 2
+CARD_SIDE_INSET = 10
+CARD_TOP_INSET = 8
+CAVA_SIDE_HEIGHT = 40
+CAVA_SIDE_GAP = 20
+CAVA_BAR_PITCH = 12.3
 SYSTEM_ACCENT_COLORS = {
     "blue": "#3584e4",
     "teal": "#2190a4",
@@ -119,7 +124,6 @@ SYSTEM_ACCENT_COLORS = {
 }
 
 
-# Widget nào mặc định tắt (thẻ ngày giờ nằm giữa màn hình, dễ chồng lên đồng hồ lớn).
 DEFAULT_OFF = frozenset({"datecard"})
 
 
@@ -231,23 +235,43 @@ def stop_widget(widget_id: str) -> None:
     (PID_DIR / f"{widget_id}.pid").unlink(missing_ok=True)
 
 
-def runtime_config(widget_id: str, gap_y: int | None) -> Path:
+def conf_value(path: Path, key: str, default: int) -> int:
+    try:
+        match = re.search(rf"(?m)^\s*{key}\s*=\s*(\d+)", path.read_text(encoding="utf-8"))
+    except OSError:
+        return default
+    return int(match.group(1)) if match else default
+
+
+def patch_conf(content: str, source: Path, values: dict) -> str:
+    for key, value in values.items():
+        text = f"'{value}'" if isinstance(value, str) else str(value)
+        pattern = re.compile(rf"(?m)^(\s*{key}\s*=\s*)[^,\n]+(\s*,.*)?$")
+        content, count = pattern.subn(lambda match: f"{match.group(1)}{text}{match.group(2) or ''}", content, count=1)
+        if count != 1:
+            raise ValueError(f"Không tìm thấy {key} trong {source}")
+    return content
+
+
+def runtime_config(widget_id: str, gap_y: int | None, layout: dict | None = None) -> Path:
     source = get_widget_config(widget_id)
     if not source.is_file():
         raise FileNotFoundError(f"Không tìm thấy cấu hình widget: {source}")
     content = source.read_text(encoding="utf-8")
+    values = {}
     if gap_y is not None:
-        pattern = re.compile(r"(?m)^(\s*gap_y\s*=\s*)\d+(\s*,.*)?$")
-        content, count = pattern.subn(lambda match: f"{match.group(1)}{gap_y}{match.group(2) or ''}", content, count=1)
-        if count != 1:
-            raise ValueError(f"Không tìm thấy gap_y trong {source}")
+        values["gap_y"] = gap_y
+    if layout:
+        values.update(layout.get("conf", {}))
+    if values:
+        content = patch_conf(content, source, values)
     RUNTIME_DIR.mkdir(parents=True, exist_ok=True)
     target = RUNTIME_DIR / f"mactahoe-{widget_id}.conf"
     target.write_text(content, encoding="utf-8")
     return target
 
 
-def start_widget(widget_id: str, gap_y: int | None) -> None:
+def start_widget(widget_id: str, gap_y: int | None, layout: dict | None = None) -> None:
     conky = shutil.which("conky")
     if not conky:
         raise RuntimeError("Chưa cài Conky. Hãy cài lại bộ tiện ích MacTahoe.")
@@ -256,11 +280,14 @@ def start_widget(widget_id: str, gap_y: int | None) -> None:
             raise RuntimeError("Chưa cài cava (sudo pacman -S cava).")
         if not CAVA_FEEDER.is_file():
             raise RuntimeError(f"Không tìm thấy {CAVA_FEEDER}")
-    config = runtime_config(widget_id, gap_y)
+    config = runtime_config(widget_id, gap_y, layout)
     if widget_id == "cava":
         stop_feeder()
+        feeder_command = [sys.executable, str(CAVA_FEEDER)]
+        if layout and layout.get("bars"):
+            feeder_command.append(str(layout["bars"]))
         subprocess.Popen(
-            [sys.executable, str(CAVA_FEEDER)],
+            feeder_command,
             stdin=subprocess.DEVNULL,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -289,10 +316,41 @@ def calculate_positions(settings: dict) -> dict[str, int]:
     if selected.get("clock"):
         positions["clock"] = START_Y
     if selected.get("cava"):
-        positions["cava"] = None  # vị trí cố định trong mactahoe-cava.conf (phía trên dock)
+        positions["cava"] = None
     if selected.get("datecard"):
-        positions["datecard"] = None  # vị trí cố định trong mactahoe-datecard.conf (giữa phía trên)
+        positions["datecard"] = None
     return positions
+
+
+def cava_layout(settings: dict, positions: dict) -> dict | None:
+    selected = settings["widgets"]
+    for target in ("lunar", "system"):
+        if not selected.get(target) or positions.get(target) is None:
+            continue
+        source = get_widget_config(target)
+        side_x = conf_value(source, "gap_x", 20)
+        width = conf_value(source, "minimum_width", 360) - 2 * CARD_SIDE_INSET
+        height = CAVA_SIDE_HEIGHT
+        if target == "lunar":
+            alignment = "top_right"
+            gap_y = positions[target] + CARD_TOP_INSET - CAVA_SIDE_GAP - height
+        else:
+            alignment = "bottom_left"
+            card_top = positions[target] + conf_value(source, "minimum_height", WIDGETS[target]["height"]) - CARD_TOP_INSET
+            gap_y = card_top + CAVA_SIDE_GAP
+        bars = max(8, round((width + 5) / CAVA_BAR_PITCH))
+        return {
+            "bars": bars,
+            "conf": {
+                "alignment": alignment,
+                "gap_x": side_x + CARD_SIDE_INSET,
+                "gap_y": max(0, gap_y),
+                "minimum_width": width,
+                "maximum_width": width,
+                "minimum_height": height,
+            },
+        }
+    return None
 
 
 def start_selected(settings: dict | None = None) -> None:
@@ -305,7 +363,8 @@ def start_selected(settings: dict | None = None) -> None:
         if not selected.get(widget_id):
             continue
         try:
-            start_widget(widget_id, positions[widget_id])
+            layout = cava_layout(settings, positions) if widget_id == "cava" else None
+            start_widget(widget_id, positions[widget_id], layout)
         except (OSError, RuntimeError, ValueError) as exc:
             errors.append(f"{WIDGETS[widget_id]['label']}: {exc}")
     if errors:
@@ -570,9 +629,6 @@ def run_gui() -> int:
             self.build_window()
             self.window.present()
 
-        # ------------------------------------------------------------------
-        # Khung cửa sổ: thanh bên trái (tab) + vùng nội dung (Gtk.Stack)
-        # ------------------------------------------------------------------
         def build_window(self):
             self.window = Gtk.ApplicationWindow(application=self, title="")
             self.window.set_default_size(980, 680)
@@ -685,9 +741,6 @@ def run_gui() -> int:
             if 0 <= index < len(self.sidebar_page_ids):
                 self.page_stack.set_visible_child_name(self.sidebar_page_ids[index])
 
-        # ------------------------------------------------------------------
-        # Hàm dựng nhỏ dùng chung cho các trang
-        # ------------------------------------------------------------------
         def make_page_box(self):
             page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
             page.set_margin_top(22)
@@ -748,14 +801,10 @@ def run_gui() -> int:
             tile.append(description)
             return tile
 
-        # ------------------------------------------------------------------
-        # Trang "Quản lý widget"
-        # ------------------------------------------------------------------
         def build_page_widgets(self):
             page = self.make_page_box()
             page.append(self.make_page_heading("Quản lý widget", "Chọn widget muốn hiển thị trên màn hình."))
 
-            # Công tắc tổng
             master_card = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=14)
             master_card.add_css_class("card")
             master_text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
@@ -775,14 +824,12 @@ def run_gui() -> int:
             master_card.append(self.master_switch)
             page.append(master_card)
 
-            # Lưới widget: mỗi widget là một ô thẻ (2-3 ô mỗi hàng tuỳ độ rộng cửa sổ)
             page.append(self.make_section_heading("Widget"))
             widget_grid = self.make_grid(2, 3)
             for widget_id, info in WIDGETS.items():
                 widget_grid.append(self.make_widget_tile(widget_id, info))
             page.append(widget_grid)
 
-            # Lưới cài đặt phụ: Màu + Vị trí thời tiết (cao thấp khác nhau nên không đồng nhất)
             settings_grid = self.make_grid(1, 2, homogeneous=False)
             settings_grid.append(self.build_color_section())
             settings_grid.append(self.build_location_section())
@@ -793,9 +840,6 @@ def run_gui() -> int:
             page.append(self.status_label)
             return page
 
-        # ------------------------------------------------------------------
-        # Trang "Gnome Extension"
-        # ------------------------------------------------------------------
         def build_page_extensions(self):
             page = self.make_page_box()
             page.append(self.make_page_heading("Gnome Extension", "Bật, tắt và chỉnh tuỳ chọn các extension của GNOME Shell."))

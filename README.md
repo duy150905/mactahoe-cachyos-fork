@@ -110,6 +110,8 @@ Khi `color-scheme-sync` đang chạy, `gtk-theme` và `user-theme` bị nó đ�
 
 **Màu đồng hồ lớn.** Chọn trong giao diện `mactahoe-widgets` hoặc chạy `mactahoe-widgets color purple`. Lựa chọn lưu ở `~/.cache/mactahoe-widgets/clock_theme.txt` và áp dụng ngay.
 
+**Sóng nhạc (cava).** Vị trí, độ rộng và số cột tự đổi theo widget đang bật: nếu **Âm lịch** bật thì sóng nhạc rộng bằng thẻ Âm lịch và nằm ngay trên thẻ đó; nếu Âm lịch tắt mà **Hệ thống** bật thì nằm ngay trên thẻ Hệ thống; nếu cả hai tắt thì về giữa phía trên dock với kích thước và số cột như ban đầu (82 cột). Bố cục được tính lại mỗi khi bật/tắt widget (hàm `cava_layout` trong `mactahoe-widgets`); chỉnh nhanh ở đầu file đó: `CAVA_SIDE_HEIGHT` (chiều cao), `CAVA_SIDE_GAP` (khoảng hở với thẻ bên dưới), `CAVA_BAR_PITCH` (bề ngang mỗi cột, càng nhỏ càng nhiều cột).
+
 **Thẻ ngày giờ.** Widget `datecard` hiện thứ, ngày (viết bằng chữ), tháng và giờ ở giữa phía trên màn hình. Mặc định tắt; bật trong menu `mactahoe-widgets`. Chữ trắng và cam cố định, không đổi theo mục "Màu đồng hồ và cava". Chỉnh nhanh ở đầu `files/.config/conky/mactahoe-datecard.lua`: `FONT_DAY`, `FONT_SCRIPT`, `SCALE`, `ORANGE`. Vì nằm giữa màn hình nên thẻ có thể chồng lên Đồng hồ lớn; chỉ nên bật một trong hai, hoặc chỉnh `gap_x` trong `mactahoe-datecard.conf`.
 
 **Tự bật widget khi đăng nhập.** `files/.config/autostart/mactahoe-widgets.desktop`. Muốn tắt, xóa file này trong `~/.config/autostart/`.
