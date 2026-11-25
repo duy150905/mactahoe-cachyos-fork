@@ -8,7 +8,7 @@ import { MusicTab } from './music_tab.js';
 
 const COLLAPSED_MIN_W = 120;
 const COLLAPSED_MAX_W = 300;
-const COLLAPSED_LYRIC_MAX_W = 480;  // lời bài hát được rộng hơn tên bài
+const COLLAPSED_LYRIC_MAX_W = 480;
 const COLLAPSED_LYRIC_TICK_MS = 250;
 const COLLAPSED_SYNC_EVERY_TICKS = 20;
 const COLLAPSED_PAD = 14;
@@ -245,7 +245,6 @@ export class Island {
 
     get hasBlur() { return this._pipeline !== null; }
 
-    // Cỡ riêng của một tab (vd. tab Nhạc ở chế độ rộng); không có thì dùng cỡ mặc định
     _tabSize(tab) {
         return tab?.preferredSize?.() ??
             [this._settings.get_int('expanded-width'), this._settings.get_int('expanded-height')];
@@ -265,7 +264,6 @@ export class Island {
         });
     }
 
-    // Đổi cỡ island khi đang mở (chuyển tab / bật tắt chế độ rộng), có animation lò xo
     _resizeExpanded() {
         this._applySizes();
         this._layoutTabs(false);
@@ -328,7 +326,6 @@ export class Island {
         this._startLyricTick();
     }
 
-    // Khi nút mở rộng đang bật và island thu nhỏ: hiện câu lời đang hát thay cho tên bài
     _startLyricTick() {
         if (this._lyricTickId)
             return;
